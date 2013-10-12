@@ -16,6 +16,7 @@ bin/
 .settings/
 libs/
 obj/
+win32_external/
 *.ncb
 *.suo
 *.user
