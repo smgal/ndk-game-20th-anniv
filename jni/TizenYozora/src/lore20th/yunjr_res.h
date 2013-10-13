@@ -204,7 +204,9 @@ namespace yunjr
 
 	///////////////////////////////////////////////////////////////////////////////
 
-	const int NUM_TILE_ID_GROUND = (1344 / TILE_W) * (96 / TILE_H);
+	const int NUM_TILE_ID_GROUND_W = (1344 / TILE_W);
+	const int NUM_TILE_ID_GROUND_H = (96 / TILE_H);
+	const int NUM_TILE_ID_GROUND = NUM_TILE_ID_GROUND_W * NUM_TILE_ID_GROUND_H;
 	const int NUM_TILE_ID_PLAYER = (672 / TILE_W) * (24 / TILE_H);
 
 	enum TileId
@@ -228,6 +230,9 @@ namespace yunjr
 	public:
 		Resource();
 		~Resource();
+
+		static void setCurrentMapPos(int x, int y);
+		static void getCurrentMapPos(int& x, int& y);
 
 		void setFrameBuffer(const BufferDesc* p_buffer);
 		void setCurrentFont(shared_ptr<yunjr::Font> p_font);

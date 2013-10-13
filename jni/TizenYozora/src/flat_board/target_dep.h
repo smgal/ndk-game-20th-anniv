@@ -2,6 +2,10 @@
 #ifndef __TARGET_DEP_H__
 #define __TARGET_DEP_H__
 
+#ifdef SEEK_END
+#undef SEEK_END
+#endif
+
 namespace target
 {
 	////////////////////////////////////////////////////////////////////////////

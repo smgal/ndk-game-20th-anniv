@@ -311,7 +311,7 @@ yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int widt
 				for (int i = 0; i < 3; i++)
 				{
 					if (_p_this->text[i])
-						text_board.renderTextFx(text_x, text_y, *_p_this->text[i], 0xFFFFFFFF, 0xFFFFD0FF);
+						text_board.renderTextFx(text_x, text_y, *_p_this->text[i], 0xFFFFFFFF, 0xFFFFFFFF);
 
 					text_y += text_line_gap;
 				}
@@ -325,7 +325,7 @@ yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int widt
 		{
 			AttributeConsole& attribute = *((AttributeConsole*)p_this->getAttribute());
 
-			return true;
+			return false;
 		}
 	};
 

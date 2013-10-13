@@ -1,4 +1,6 @@
 
+#include "hd_class_map.h"
+
 #include "yunjr_base.h"
 #include "yunjr_base_gfx.h"
 
@@ -19,7 +21,7 @@ namespace yunjr
 		void expandW(Pixel*& p_d, Pixel*& p_s);
 
 		template <typename Pixel>
-		void expandH(Pixel*& p_d, Pixel*& p_s);
+		void expandH(Pixel*& p_d, int src_ppl, int dst_ppl);
 	};
 
 	template <>
@@ -37,9 +39,9 @@ namespace yunjr
 		}
 
 		template <typename Pixel>
-		static inline void expandH(Pixel* p_d, int ppl)
+		static inline void expandH(Pixel* p_d, int src_ppl, int dst_ppl)
 		{
-			memcpy(p_d + ppl, p_d, ppl * sizeof(Pixel) * (SCALE-1));
+			memcpy(p_d + dst_ppl, p_d, src_ppl * sizeof(Pixel) * SCALE);
 		}
 	};
 
@@ -59,15 +61,11 @@ namespace yunjr
 		}
 
 		template <typename Pixel>
-		static inline void expandH(Pixel* p_d, int ppl)
+		static inline void expandH(Pixel* p_d, int src_ppl, int dst_ppl)
 		{
-		#if 1
-			memcpy(p_d + ppl, p_d, ppl * sizeof(Pixel));
-			memcpy(p_d + ppl*2, p_d, ppl * sizeof(Pixel));
-		#else
-			// interlace effect
-			// memcpy(p_d + ppl, p_d, ppl * sizeof(Pixel) * (SCALE-2));
-		#endif
+			memcpy(p_d + dst_ppl, p_d, src_ppl * sizeof(Pixel) * SCALE);
+			// if you apply alpha attenuation to this line, interlace effect occurs.
+			memcpy(p_d + dst_ppl*2, p_d, src_ppl * sizeof(Pixel) * SCALE);
 		}
 	};
 }
@@ -76,6 +74,37 @@ namespace yunjr
 yunjr::ControlMap::ControlMap()
 {
 }
+
+struct MapCallback
+{
+	static void actBlock(int x1, int y1, bool bUseless)
+	{
+	}
+	static void actMove(int x1, int y1, bool bEncounter)
+	{
+	}
+	static void actEvent(int x1, int y1, bool bUseless)
+	{
+	}
+	static void actEnter(int x1, int y1, bool bUseless)
+	{
+	}
+	static void actSign(int x1, int y1, bool bUseless)
+	{
+	}
+	static void actWater(int x1, int y1, bool bUseless)
+	{
+	}
+	static void actSwamp(int x1, int y1, bool bUseless)
+	{
+	}
+	static void actLava(int x1, int y1, bool bUseless)
+	{
+	}
+	static void actTalk(int x1, int y1, bool bUseless)
+	{
+	}
+};
 
 yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int height)
 {
@@ -98,10 +127,56 @@ yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int h
 
 			auto_buffer.bind(new FlatBoard32::Pixel[buffer_w * buffer_h]);
 			new (&map_board) FlatBoard32(auto_buffer.get(), buffer_w, buffer_h, buffer_w);
+
+			map.bind(new hadar::Map());
+
+			{
+				target::file_io::StreamReadFile file("lore20th/K_DEN2.MAP");
+
+				int buffer_size = file.getSize();
+
+				if (buffer_size > 0)
+				{
+					map->clearData();
+
+					/*
+						TYPE_TOWN:   'DEN*.MAP', 'K_DEN1.MAP', 'PYRAMID1.MAP', 'K_DEN2.MAP (last)'
+						TYPE_KEEP:   'KEEP*.MAP'
+						TYPE_GROUND: 'GROUND*.MAP'
+						TYPE_DEN:    'DEN*.MAP', 'K_DEN2.MAP'
+					*/
+					map->setType(hadar::Map::TYPE_DEN);
+
+					unsigned char byte;
+
+					file.read(&byte, 1);
+					map->width  = byte;
+
+					file.read(&byte, 1);
+					map->height = byte;
+
+					for (int y = 0; y < map->height; y++)
+					{
+						file.read(&map->data[y][0], map->width);
+					}
+				}
+/*
+				map->act_func[hadar::Map::ACT_BLOCK] = &MapCallback::actBlock;
+				map->act_func[hadar::Map::ACT_MOVE]  = &MapCallback::actMove;
+				map->act_func[hadar::Map::ACT_EVENT] = &MapCallback::actEvent;
+				map->act_func[hadar::Map::ACT_ENTER] = &MapCallback::actEnter;
+				map->act_func[hadar::Map::ACT_SIGN]  = &MapCallback::actSign;
+				map->act_func[hadar::Map::ACT_WATER] = &MapCallback::actWater;
+				map->act_func[hadar::Map::ACT_SWAMP] = &MapCallback::actSwamp;
+				map->act_func[hadar::Map::ACT_LAVA]  = &MapCallback::actLava;
+				map->act_func[hadar::Map::ACT_TALK]  = &MapCallback::actTalk;
+*/
+			}
 		}
 
 		auto_ptr<FlatBoard32::Pixel[]> auto_buffer;
 		FlatBoard32 map_board;
+		auto_ptr<hadar::Map> map;
 	};
 
 	struct ShapeMap: public Visible::Shape
@@ -124,15 +199,27 @@ yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int h
 				int NUM_MAP_X = (ScaleTraits<SCALE>::GUIDE_WIDTH + (TILE_W-1)) / TILE_W;
 				int NUM_MAP_Y = (ScaleTraits<SCALE>::GUIDE_HEIGHT + (TILE_H-1)) / TILE_H;
 
-				for (int y = 0; y < NUM_MAP_Y; y++)
-				for (int x = 0; x < NUM_MAP_X; x++)
+				int map_offset_x;
+				int map_offset_y;
+
+				Resource::getCurrentMapPos(map_offset_x, map_offset_y);
+
+				int display_offset_x = - map_offset_x % TILE_W;
+				int display_offset_y = - map_offset_y % TILE_H;
+
+				map_offset_x = map_offset_x / TILE_W - NUM_MAP_Y / 2;
+				map_offset_y = map_offset_y / TILE_H - NUM_MAP_X / 2;
+
+				for (int y = 0; y <= NUM_MAP_Y; y++)
+				for (int x = 0; x <= NUM_MAP_X; x++)
 				{
 					int x_pos = x * TILE_W + 0;
 					int y_pos = y * TILE_H + 0;
 
-					gfx::drawTile(attribute.map_board, x_pos, y_pos, TILE_ID_GROUND, 19);
-					if (((2*(x + y) + (x - y) * 7) % 13) == 0)
-						gfx::drawTile(attribute.map_board, x_pos, y_pos, TILE_ID_GROUND, 7);
+					int ix_map = attribute.map->operator()(x + map_offset_x, y + map_offset_y);
+					ix_map += NUM_TILE_ID_GROUND_W * attribute.map->type;
+
+					gfx::drawTile(attribute.map_board, x_pos + display_offset_x, y_pos + display_offset_y, TILE_ID_GROUND, ix_map);
 				}
 
 				// playable
@@ -178,7 +265,7 @@ yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int h
 						for (int x = 0; x < src_w; x++)
 							ScaleTraits<SCALE>::expandW(p_d, p_s);
 
-						ScaleTraits<SCALE>::expandH(p_m, dst_p);
+						ScaleTraits<SCALE>::expandH(p_m, src_p, dst_p);
 					}
 				}
 			}
@@ -191,6 +278,10 @@ yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int h
 		{
 			std::vector<Chara*>& chara_list = yunjr::res_collection::getCharaList();
 			std::for_each(chara_list.begin(), chara_list.end(), Operator<Chara*, unsigned long>(tick));
+
+			Playable* p_chara = (Playable*)chara_list[0];
+			assert(p_chara);
+			Resource::setCurrentMapPos(p_chara->getPosX(), p_chara->getPosY());
 
 			return true;
 		}

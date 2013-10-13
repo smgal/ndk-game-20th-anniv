@@ -147,6 +147,11 @@ SRC_AKIYU       := \
                    $(SRC_ROOT)/lore20th/yunjr_class_control_lv1.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_class_control_lv2.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_res.cpp \
+                   $(SRC_ROOT)/lore20th/hd_base_serialized.cpp \
+                   $(SRC_ROOT)/lore20th/hd_class_map.cpp \
+                   $(SRC_ROOT)/lore20th/util/sm_util_random.cpp \
+                   $(SRC_ROOT)/lore20th/util/sm_util_set.cpp \
+                   $(SRC_ROOT)/lore20th/util/sm_util_stream.cpp \
                    $(SRC_AKIYU_FT)
 
 LOCAL_MODULE    := lore20th

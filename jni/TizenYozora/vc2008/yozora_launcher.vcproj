@@ -215,6 +215,22 @@
 				Name="lore20th"
 				>
 				<File
+					RelativePath="..\src\lore20th\hd_base_serialized.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\hd_base_serialized.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\hd_class_map.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\hd_class_map.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\lore20th\yunjr_base.h"
 					>
 				</File>
@@ -501,6 +517,46 @@
 							</File>
 						</Filter>
 					</Filter>
+				</Filter>
+				<Filter
+					Name="util"
+					>
+					<File
+						RelativePath="..\src\lore20th\util\sm_util.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\lore20th\util\sm_util_random.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\lore20th\util\sm_util_script.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\lore20th\util\sm_util_sena.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\lore20th\util\sm_util_set.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\lore20th\util\sm_util_set.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\lore20th\util\sm_util_stream.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\lore20th\util\sm_util_stream.h"
+						>
+					</File>
+					<File
+						RelativePath="..\src\lore20th\util\sm_util_string.h"
+						>
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>

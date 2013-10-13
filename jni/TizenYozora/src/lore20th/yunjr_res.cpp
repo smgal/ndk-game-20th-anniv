@@ -61,7 +61,7 @@ namespace
 					{ "lore20th/lore_tile_8.tga", res_tile[0], auto_release_tile[0] },
 					{ "lore20th/lore_sprite_8.tga", res_movable[0], auto_release_movable[0] },
 					{ "lore20th/lore_waku.tga", res_ui[0], auto_release_ui[0] },
-					{ "lore20th/lore_waku.tga", res_ui[1], auto_release_ui[1] },
+					{ "lore20th/lore_waku_mask.tga", res_ui[1], auto_release_ui[1] },
 				};
 
 				for (unsigned long index = 0; index < sizeof(RES_LIST) / sizeof(RES_LIST[0]); index++)
@@ -108,6 +108,8 @@ namespace
 	const yunjr::BufferDesc* s_ref_current_buffer = 0;
 	struct yunjr::ControlWindow* s_ref_p_main_window = 0;
 	yunjr::shared_ptr<yunjr::Font> s_current_font;
+	int s_ref_current_map_pos_x = 0;
+	int s_ref_current_map_pos_y = 0;
 	yunjr::auto_ptr<yunjr::Resource> s_resource;
 }
 
@@ -180,6 +182,18 @@ yunjr::Resource::Resource()
 
 yunjr::Resource::~Resource()
 {
+}
+
+void yunjr::Resource::setCurrentMapPos(int x, int y)
+{
+	s_ref_current_map_pos_x = x;
+	s_ref_current_map_pos_y = y;
+}
+
+void yunjr::Resource::getCurrentMapPos(int& x, int& y)
+{
+	x = s_ref_current_map_pos_x;
+	y = s_ref_current_map_pos_y;
 }
 
 void yunjr::Resource::setFrameBuffer(const BufferDesc* p_buffer)
