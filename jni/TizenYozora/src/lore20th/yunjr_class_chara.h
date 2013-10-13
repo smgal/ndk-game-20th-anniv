@@ -100,24 +100,35 @@ namespace yunjr
 			{
 				virtual bool update(Visible* p_this, unsigned long tick)
 				{
+					AttributeChara& attribute = *((AttributeChara*)p_this->getAttribute());
+
 					int x1 = 0;
 					int y1 = 0;
 
 					const GameState& game_state = GameState::getInstance();
 
 					if (game_state.checkKeyPressed(target::KEY_LEFT))
-						x1 = -1;
+						x1 = (attribute.pos.y % TILE_H) ? 0 : -1;
 					if (game_state.checkKeyPressed(target::KEY_RIGHT))
-						x1 = 1;
+						x1 = (attribute.pos.y % TILE_H) ? 0 : 1;
 					if (game_state.checkKeyPressed(target::KEY_UP))
-						y1 = -1;
+						y1 = (attribute.pos.x % TILE_W) ? 0 : -1;
 					if (game_state.checkKeyPressed(target::KEY_DOWN))
-						y1 = 1;
+						y1 = (attribute.pos.x % TILE_W) ? 0 : 1;
 
+					// not allow diagonal moving
+					if (x1 != 0 && y1 != 0)
+						x1 = 0;
+
+					if (x1 == 0 && y1 == 0)
 					{
-						AttributeChara& attribute = *((AttributeChara*)p_this->getAttribute());
+						x1 = (attribute.pos.x % TILE_W) ? attribute.dir.x1 : 0;
+						y1 = (attribute.pos.y % TILE_H) ? attribute.dir.y1 : 0;
+					}
 
-						attribute.move(x1 * 4, y1 * 4);
+					if (x1 != 0 || y1 != 0)
+					{
+						attribute.move(x1 * MAP_SCROLL_IN_PIXELS, y1 * MAP_SCROLL_IN_PIXELS);
 					}
 
 					return true;

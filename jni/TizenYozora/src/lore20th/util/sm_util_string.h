@@ -45,9 +45,11 @@ public:
 	}
 };
 
-template <unsigned int MAX_STRLEN>
+template <unsigned int _MAX_STRLEN>
 class basic_string
 {
+	enum { MAX_STRLEN = _MAX_STRLEN };
+
 private:
 	char m_string[MAX_STRLEN+1];
 
