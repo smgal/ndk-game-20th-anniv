@@ -8,6 +8,7 @@
 // uses
 
 #include <cassert>
+#include <cstring>
 #include <new>
 
 #if defined(USE_STL)

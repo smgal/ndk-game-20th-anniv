@@ -1,6 +1,8 @@
 
 #include "hd_class_extern.h"
 
+#include "hd_class_game_main.h"
+
 #include "hd_class_pc_party.h"
 #include "hd_class_pc_enemy.h"
 #include "hd_class_pc_player.h"
@@ -431,20 +433,20 @@ namespace game
 
 #include "hd_base_config.h"
 #include "hd_base_gfx.h"
-//??#include "hd_base_key_buffer.h"
+#include "hd_base_key_buffer.h"
 
 #include "hd_class_game_main.h"
 #include "hd_class_pc_party.h"
 #include "hd_class_pc_enemy.h"
 #include "hd_class_pc_player.h"
 #include "hd_class_select.h"
-//??#include "hd_class_window.h"
+#include "hd_class_window.h"
 
-//??#include "hd_res_instance.h"
+#include "hd_res_instance.h"
 
 #include <stdarg.h>
 
-//??using namespace avej;
+using namespace avej;
 
 namespace hadar
 {
@@ -502,7 +504,6 @@ namespace game
 	//! 아무 키나 누를 때까지 메시지를 출력하고 대기한다.
 	void pressAnyKey(void)
 	{
-/* //??
 		//? 만약 글자가 끝까지 진행했다면 press any key를 표현하기 위해 스크롤이 되어야 한다.
 		int xRegion, yRegion, wRegion, hRegion;
 		s_p_game_main->window[GameMain::WINDOWTYPE_CONSOLE]->getRegion(&xRegion, &yRegion, &wRegion, &hRegion);
@@ -526,13 +527,11 @@ namespace game
 		console.clear();
 		console.display();
 		game::updateScreen();
-*/
 	}
 
 	//! 아무 키나 누를 때까지 메시지를 출력없이 대기한다.
 	void waitForAnyKey(void)
 	{
-/* //??
 		hadar::KeyBuffer& keyBuffer = KeyBuffer::getKeyBuffer();
 
 		while (keyBuffer.isKeyPressed())
@@ -542,23 +541,20 @@ namespace game
 			smutil::delay(20);
 
 		keyBuffer.getKey();
-*/
 	}
 
 	//! 지정한 시간만큼 대기한다.
 	void wait(unsigned long msec)
 	{
-//??		smutil::delay(msec);
+		smutil::delay(msec);
 	}
 
 	//! 백버퍼의 내용을 실제 화면에 반영한다.
 	void updateScreen(void)
 	{
-/* //??
 		p_gfx_device->endDraw();
 		p_gfx_device->flip();
 		p_gfx_device->beginDraw();
-*/
 	}
 
 	//! 명시한 스크립트 파일로부터 새로 스크립트를 시작한다.
@@ -587,9 +583,7 @@ namespace game
 	//! 명시한 스크립트 파일로부터 새로 스크립트를 시작한다.
 	bool playBGM(const char* sz_file_name)
 	{
-/* //??
 		sound::playBGM(sz_file_name);
-*/
 		return true;
 	}
 
@@ -737,32 +731,26 @@ namespace game
 
 	namespace tile
 	{
-		//?? 임시
+		//? 임시
 		const int TILE_X_SIZE = config::DEFAULT_TILE_DISPLAY_WIDTH;
 		const int TILE_Y_SIZE = config::DEFAULT_TILE_DISPLAY_HEIGHT;
 		//! 지정한 타일을 임시 타일(55번)에 복사한다.
 		void copyToDefaultTile(int ix_tile)
 		{
-/* //??
 			int y_dst = s_p_game_main->map.type * TILE_Y_SIZE;
 			p_tile_image->bitBlt(55*TILE_X_SIZE, y_dst, p_tile_image, ix_tile*TILE_X_SIZE, y_dst, TILE_X_SIZE, TILE_Y_SIZE);
-*/
 		}
 		//! 지정한 스프라이트를 임시 타일(55번)에 복사한다.
 		void copyToDefaultSprite(int ix_sprite)
 		{
-/* //??
 			int y_dst = s_p_game_main->map.type * TILE_Y_SIZE;
 			p_tile_image->bitBlt(55*TILE_X_SIZE, y_dst, p_sprite_image, ix_sprite*TILE_X_SIZE, 0, TILE_X_SIZE, TILE_Y_SIZE);
-*/
 		}
 		//! 지정한 타일을 지정한 타일에 복사한다.
 		void copyTile(int src_tile, int dst_tile)
 		{
-/* //??
 			int y_dst = s_p_game_main->map.type * TILE_Y_SIZE;
 			p_tile_image->bitBlt(dst_tile*TILE_X_SIZE, y_dst, p_tile_image, src_tile*TILE_X_SIZE, y_dst, TILE_X_SIZE, TILE_Y_SIZE);
-*/
 		}
 	}
 
@@ -771,46 +759,36 @@ namespace game
 		//! 맵을 화면에 출력한다.
 		void displayMap(void)
 		{
-/* //??
 			s_p_game_main->window[GameMain::WINDOWTYPE_MAP]->setUpdateFlag();
 			s_p_game_main->window[GameMain::WINDOWTYPE_MAP]->display((s_p_game_main->map.type == Map::TYPE_DEN) ? 1 : 0, s_p_game_main->party.ability.magic_torch);
 
 			s_p_game_main->window[GameMain::WINDOWTYPE_SUBMAP]->setUpdateFlag();
 			s_p_game_main->window[GameMain::WINDOWTYPE_SUBMAP]->display((s_p_game_main->map.type == Map::TYPE_DEN) ? 1 : 0, s_p_game_main->party.ability.magic_torch);
-*/
 		}
 		//! 콘솔 창을 화면에 출력한다.
 		void displayConsole(void)
 		{
-/* //??
 			s_p_game_main->window[GameMain::WINDOWTYPE_CONSOLE]->setUpdateFlag();
 			s_p_game_main->window[GameMain::WINDOWTYPE_CONSOLE]->display();
-*/
 		}
 		//! 상태 창을 화면에 출력한다.
 		void displayStatus(void)
 		{
-/* //??
 			s_p_game_main->window[GameMain::WINDOWTYPE_STATUS]->setUpdateFlag();
 			s_p_game_main->window[GameMain::WINDOWTYPE_STATUS]->display();
-*/
 		}
 		//! 전투 창을 화면에 출력한다.
 		void displayBattle(int param1)
 		{
-/* //??
 			s_p_game_main->window[GameMain::WINDOWTYPE_BATTLE]->setUpdateFlag();
 			s_p_game_main->window[GameMain::WINDOWTYPE_BATTLE]->display(param1);
-*/
 		}
 		//! 콘솔 창의 크기를 돌려 준다.
 		void getRegionForConsole(int* p_out_x, int* p_out_y, int* p_out_width, int* p_out_height)
 		{
-/* //??
 			LoreConsole::getConsole().getRegion(p_out_x, p_out_y, p_out_width, p_out_height);
 			// 아래처럼 하면 안됨. console window 내에 client영역을 얻어야 하기 때문임.
 			// s_p_game_main->window[WINDOWTYPE_CONSOLE]->getRegion(pX, pY, pW, pH);
-*/
 		}
 	}
 
@@ -923,7 +901,7 @@ namespace game
 
 	namespace battle
 	{
-		//?? 여기에 전투 최종 결과 값을 넣어야 한다.
+		//? 여기에 전투 최종 결과 값을 넣어야 한다.
 		static GameMain::BATTLERESULT s_result = GameMain::BATTLERESULT_EVADE;
 
 		//! 전투 상황에 돌입했음을 알려 준다.
@@ -1125,7 +1103,7 @@ namespace game
 
 	namespace select
 	{
-		//?? MenuSelection의 default parameter에 대한 변경을 하는 것이 필요할지도 모름
+		//? MenuSelection의 default parameter에 대한 변경을 하는 것이 필요할지도 모름
 		static MenuList s_menu;
 		static int s_result = 0;
 
