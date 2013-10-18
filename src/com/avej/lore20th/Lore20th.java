@@ -2,36 +2,55 @@
 package com.avej.lore20th;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Rect;
+
 
 public class Lore20th extends Activity
 {
-	/** Called when the activity is first created. */
+	MediaPlayer m_player;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
+		
 		setContentView(new YozoraView(this));
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		m_player = MediaPlayer.create(Lore20th.this, R.raw.lore_1);
+		m_player.setLooping(true);
+		m_player.start();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		
+		m_player.stop();
+		m_player.release();
 	}
 
 	@Override
@@ -85,7 +104,7 @@ class YozoraView extends View
 	private double m_scaling_factor_y;
 	private long   m_start_time;
 
-	/* implemented by libyozora.so */
+	/* implemented by liblore20th.so */
 	private static native void initYozora(String resource_path, String app_name);
 	private static native void doneYozora();
 	private static native int  renderYozora(Bitmap bitmap, long time_ms, int motion_x, int motion_y);
@@ -100,6 +119,7 @@ class YozoraView extends View
 		m_activity = context;
 
 		m_src_rect = new Rect(0, 0, BUFFER_WIDTH, BUFFER_HEIGHT);
+		m_dst_rect = new Rect();
 
 		m_bitmap = Bitmap.createBitmap(BUFFER_WIDTH, BUFFER_HEIGHT, Bitmap.Config.ARGB_8888);
 
@@ -113,22 +133,16 @@ class YozoraView extends View
 		}
 		catch (NameNotFoundException e)
 		{
-			Log.e("Doji", e.toString());
+			Log.e("[SMGAL]", e.toString());
 			return;
 		}
 
 		initYozora(info.applicationInfo.sourceDir, "lore20th");
 	}
 
-	private String  getString(int appName)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override protected void onDraw(Canvas canvas)
 	{
-		if (m_dst_rect == null)
+		if (m_dst_rect.isEmpty())
 		{
 			int canvas_width = canvas.getWidth();
 			int canvas_height = canvas.getHeight();
@@ -140,7 +154,7 @@ class YozoraView extends View
 				int dst_x = (canvas_width - dst_width) / 2;
 				int dst_y = (canvas_height - dst_height) / 2;
 				
-				m_dst_rect = new Rect(dst_x, dst_y, dst_x + dst_width, dst_y + dst_height);
+				m_dst_rect.set(dst_x, dst_y, dst_x + dst_width, dst_y + dst_height);
 			}
 			else
 			{
@@ -149,7 +163,7 @@ class YozoraView extends View
 				int dst_x = (canvas_width - dst_width) / 2;
 				int dst_y = (canvas_height - dst_height) / 2;
 
-				m_dst_rect = new Rect(dst_x, dst_y, dst_x + dst_width, dst_y + dst_height);
+				m_dst_rect.set(dst_x, dst_y, dst_x + dst_width, dst_y + dst_height);
 			}
 
 			m_scaling_factor_x = 1.0 * m_src_rect.width() / m_dst_rect.width();
@@ -173,8 +187,8 @@ class YozoraView extends View
 			
 			if (result == 0)
 			{
-				// not ((Activity)m_activity).finish();
-				System.exit(0);
+				//System.exit(0);
+				((Activity)m_activity).finish();
 				return;
 			}
 		}
