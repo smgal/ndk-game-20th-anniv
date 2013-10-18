@@ -10,18 +10,40 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
+class GameConfig
+{
+	final static int BUFFER_WIDTH = 1280;
+	final static int BUFFER_HEIGHT = 720;
+	
+	static boolean is_terminating = false;
+	
+	static int    touch_x = 0;
+	static int    touch_y = 0;
+	
+	static int    prev_canvas_w = BUFFER_WIDTH;
+	static int    prev_canvas_h = BUFFER_HEIGHT;
+	
+	static Bitmap src_bitmap;
+	static Rect   src_rect = new Rect(0, 0, GameConfig.BUFFER_WIDTH, GameConfig.BUFFER_HEIGHT);
+	static Rect   dst_rect = new Rect();
+	static double scaling_factor_x = 1.0;
+	static double scaling_factor_y = 1.0;
+	static long   start_time = 0;
+	
+	static MediaPlayer media_player;
+}
 
 public class Lore20th extends Activity
 {
-	MediaPlayer m_player;
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -33,24 +55,48 @@ public class Lore20th extends Activity
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		
-		setContentView(new YozoraView(this));
+		GameConfig.is_terminating = false;
+		
+		YozoraView yozoraView = new YozoraView(this);
+		setContentView(yozoraView);
+		
+		GameTask task = new GameTask(this, yozoraView);
+		task.execute();
 	}
 
 	@Override
-	protected void onResume() {
+	protected void onDestroy()
+	{
+		// TODO Auto-generated method stub
+		super.onDestroy();
+	}
+	
+	@Override
+	protected void onResume()
+	{
 		super.onResume();
 		
-		m_player = MediaPlayer.create(Lore20th.this, R.raw.lore_1);
-		m_player.setLooping(true);
-		m_player.start();
+		// temporary play for test
+		GameConfig.media_player = MediaPlayer.create(Lore20th.this, R.raw.lore_1);
+		GameConfig.media_player.setLooping(true);
+		GameConfig.media_player.start();
 	}
 
 	@Override
-	protected void onPause() {
+	protected void onPause()
+	{
 		super.onPause();
 		
-		m_player.stop();
-		m_player.release();
+		GameConfig.media_player.stop();
+		GameConfig.media_player.release();
+	}
+
+	@Override
+	public void onBackPressed()
+	{
+		// TODO Auto-generated method stub
+		// super.onBackPressed();
+		GameConfig.is_terminating = true;
 	}
 
 	@Override
@@ -63,27 +109,27 @@ public class Lore20th extends Activity
 			int ax = (int)event.getX();
 			int ay = (int)event.getY();
 
-			YozoraView.s_touch_x = ax;
-			YozoraView.s_touch_y = ay;
+			GameConfig.touch_x = ax;
+			GameConfig.touch_y = ay;
 		}
 		else if (motion_event == MotionEvent.ACTION_MOVE)
 		{
 			int ax = (int)event.getX();
 			int ay = (int)event.getY();
 
-			YozoraView.s_touch_x = ax;
-			YozoraView.s_touch_y = ay;
+			GameConfig.touch_x = ax;
+			GameConfig.touch_y = ay;
 		}
 		else if (motion_event == MotionEvent.ACTION_UP)
 		{
-			YozoraView.s_touch_x = -1;
-			YozoraView.s_touch_y = -1;
+			GameConfig.touch_x = -1;
+			GameConfig.touch_y = -1;
 		}
 
 		return true;
 	}
 
-    /* load our native library */
+    /* load native library */
 	static
 	{
 		System.loadLibrary("lore20th");
@@ -92,110 +138,143 @@ public class Lore20th extends Activity
 
 class YozoraView extends View
 {
-	static int s_touch_x;
-	static int s_touch_y;
-
-	private Context m_activity;
-
-	private Bitmap m_bitmap;
-	private Rect   m_src_rect;
-	private Rect   m_dst_rect;
-	private double m_scaling_factor_x;
-	private double m_scaling_factor_y;
-	private long   m_start_time;
-
 	/* implemented by liblore20th.so */
-	private static native void initYozora(String resource_path, String app_name);
-	private static native void doneYozora();
-	private static native int  renderYozora(Bitmap bitmap, long time_ms, int motion_x, int motion_y);
+	public static native void initYozora(String resource_path, String app_name);
+	public static native void doneYozora();
+	public static native int  renderYozora(Bitmap bitmap, long time_ms, int motion_x, int motion_y);
 
 	public YozoraView(Context context)
 	{
 		super(context);
 		
-		int BUFFER_WIDTH = 1280;
-		int BUFFER_HEIGHT = 720;
-		
-		m_activity = context;
+		GameConfig.src_bitmap = Bitmap.createBitmap(GameConfig.BUFFER_WIDTH, GameConfig.BUFFER_HEIGHT, Bitmap.Config.ARGB_8888);
 
-		m_src_rect = new Rect(0, 0, BUFFER_WIDTH, BUFFER_HEIGHT);
-		m_dst_rect = new Rect();
-
-		m_bitmap = Bitmap.createBitmap(BUFFER_WIDTH, BUFFER_HEIGHT, Bitmap.Config.ARGB_8888);
-
-		m_start_time = System.currentTimeMillis();
-
-		PackageInfo info = null;
-
-		try
-		{
-			info = getContext().getPackageManager().getPackageInfo("com.avej.lore20th", 0);
-		}
-		catch (NameNotFoundException e)
-		{
-			Log.e("[SMGAL]", e.toString());
-			return;
-		}
-
-		initYozora(info.applicationInfo.sourceDir, "lore20th");
+		GameConfig.start_time = System.currentTimeMillis();
 	}
 
 	@Override protected void onDraw(Canvas canvas)
 	{
-		if (m_dst_rect.isEmpty())
-		{
-			int canvas_width = canvas.getWidth();
-			int canvas_height = canvas.getHeight();
-
-			if (m_src_rect.width() * canvas_height > m_src_rect.height() * canvas_width)
-			{
-				int dst_width = canvas_width;
-				int dst_height = m_src_rect.height() * canvas_width / m_src_rect.width();
-				int dst_x = (canvas_width - dst_width) / 2;
-				int dst_y = (canvas_height - dst_height) / 2;
-				
-				m_dst_rect.set(dst_x, dst_y, dst_x + dst_width, dst_y + dst_height);
-			}
-			else
-			{
-				int dst_width = m_src_rect.width() * canvas_height / m_src_rect.height();
-				int dst_height = canvas_height;
-				int dst_x = (canvas_width - dst_width) / 2;
-				int dst_y = (canvas_height - dst_height) / 2;
-
-				m_dst_rect.set(dst_x, dst_y, dst_x + dst_width, dst_y + dst_height);
-			}
-
-			m_scaling_factor_x = 1.0 * m_src_rect.width() / m_dst_rect.width();
-			m_scaling_factor_y = 1.0 * m_src_rect.height() / m_dst_rect.height();
-		}
-
-		{
-			int revised_touch_x = s_touch_x;
-			int revised_touch_y = s_touch_y;
-
-			if (revised_touch_x >= 0 && revised_touch_y >= 0 )
-			{
-				revised_touch_x -= m_dst_rect.left;
-				revised_touch_y -= m_dst_rect.top;
-				
-				revised_touch_x = (int)((double)revised_touch_x * m_scaling_factor_x);
-				revised_touch_y = (int)((double)revised_touch_y * m_scaling_factor_y);
-			}
-
-			int result = renderYozora(m_bitmap, System.currentTimeMillis() - m_start_time, revised_touch_x, revised_touch_y);
-			
-			if (result == 0)
-			{
-				//System.exit(0);
-				((Activity)m_activity).finish();
-				return;
-			}
-		}
-
-		canvas.drawBitmap(m_bitmap, m_src_rect, m_dst_rect, null);
-
-		// force a redraw, with a different time-based pattern.
-		invalidate();
+		GameConfig.prev_canvas_w = canvas.getWidth();
+		GameConfig.prev_canvas_h = canvas.getHeight();
+		
+		//?? lock bitmap
+		canvas.drawBitmap(GameConfig.src_bitmap, GameConfig.src_rect, GameConfig.dst_rect, null);
+		//?? unlock bitmap
 	}
+}
+
+class GameTask extends AsyncTask<Void, Void, Void>
+{
+	private Activity activity;
+	private View view;
+	
+	private int saved_canvas_w = 0;
+	private int saved_canvas_h = 0;
+	
+	GameTask(Activity activity, View view)
+	{
+		this.activity = activity;
+		this.view = view;
+	}
+	
+	@Override
+	protected Void doInBackground(Void... params)
+	{
+		PackageInfo info = null;
+
+		try
+		{
+			info = view.getContext().getPackageManager().getPackageInfo("com.avej.lore20th", 0);
+		}
+		catch (NameNotFoundException e)
+		{
+			Log.e("[SMGAL]", e.toString());
+			return null;
+		}
+		
+		YozoraView.initYozora(info.applicationInfo.sourceDir, "lore20th");
+		
+		while (!GameConfig.is_terminating)
+		{
+			if (saved_canvas_w != GameConfig.prev_canvas_w || saved_canvas_h != GameConfig.prev_canvas_h)
+			{
+				saved_canvas_w = GameConfig.prev_canvas_w;
+				saved_canvas_h = GameConfig.prev_canvas_h;
+
+				if (GameConfig.src_rect.width() * saved_canvas_h > GameConfig.src_rect.height() * saved_canvas_w)
+				{
+					int dst_width = saved_canvas_w;
+					int dst_height = GameConfig.src_rect.height() * saved_canvas_w / GameConfig.src_rect.width();
+					int dst_x = (saved_canvas_w - dst_width) / 2;
+					int dst_y = (saved_canvas_h - dst_height) / 2;
+					
+					GameConfig.dst_rect.set(dst_x, dst_y, dst_x + dst_width, dst_y + dst_height);
+				}
+				else
+				{
+					int dst_width = GameConfig.src_rect.width() * saved_canvas_h / GameConfig.src_rect.height();
+					int dst_height = saved_canvas_h;
+					int dst_x = (saved_canvas_w - dst_width) / 2;
+					int dst_y = (saved_canvas_h - dst_height) / 2;
+
+					GameConfig.dst_rect.set(dst_x, dst_y, dst_x + dst_width, dst_y + dst_height);
+				}
+
+				GameConfig.scaling_factor_x = 1.0 * GameConfig.src_rect.width() / GameConfig.dst_rect.width();
+				GameConfig.scaling_factor_y = 1.0 * GameConfig.src_rect.height() / GameConfig.dst_rect.height();
+			}
+
+			{
+				int revised_touch_x = GameConfig.touch_x;
+				int revised_touch_y = GameConfig.touch_y;
+
+				if (revised_touch_x >= 0 && revised_touch_y >= 0 )
+				{
+					revised_touch_x -= GameConfig.dst_rect.left;
+					revised_touch_y -= GameConfig.dst_rect.top;
+					
+					revised_touch_x = (int)((double)revised_touch_x * GameConfig.scaling_factor_x);
+					revised_touch_y = (int)((double)revised_touch_y * GameConfig.scaling_factor_y);
+				}
+				
+				//?? lock bitmap
+				int result = YozoraView.renderYozora(GameConfig.src_bitmap, System.currentTimeMillis() - GameConfig.start_time, revised_touch_x, revised_touch_y);
+				//?? unlock bitmap
+		
+				if (result == 0)
+					break;
+			}
+
+			this.publishProgress();
+			
+			try
+			{
+				Thread.sleep(20);
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+
+			android.util.Log.i("[SMGAL]", "loop");
+		}
+		
+		YozoraView.doneYozora();
+		
+		return null;
+	}
+
+	@Override
+	protected void onProgressUpdate(Void... values)
+	{
+		view.invalidate();
+	}
+
+	@Override
+	protected void onPostExecute(Void result)
+	{
+		this.activity.finish();
+		//??System.exit(0);
+	}
+	
 }
