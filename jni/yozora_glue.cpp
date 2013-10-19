@@ -1,14 +1,10 @@
 
-//#define main_app dokyu
-//#define main_app kano
-#define main_app yozora
-
 namespace target
 {
 	void setTouchPos(int x, int y);
 }
 
-namespace main_app
+namespace yozora
 {
 	struct BufferDesc
 	{
@@ -26,19 +22,24 @@ namespace main_app
 
 extern "C" void yozora_glue_init(const char* sz_id)
 {
-	main_app::init(sz_id);
+	yozora::init(sz_id);
 }
 
 extern "C" void yozora_glue_done(void)
 {
-	main_app::done();
+	yozora::done();
 }
 
-extern "C" int yozora_glue_process(void* p_start_address, int width, int height, int bytes_per_line, int bits_per_pixel, int touch_x, int touch_y)
+extern "C" int yozora_glue_process(int touch_x, int touch_y)
 {
 	target::setTouchPos(touch_x, touch_y);
 
-	main_app::BufferDesc buffer_desc;
+	return 1;
+}
+
+extern "C" int yozora_glue_render(void* p_start_address, int width, int height, int bytes_per_line, int bits_per_pixel)
+{
+	yozora::BufferDesc buffer_desc;
 
 	buffer_desc.p_start_address = p_start_address;
 	buffer_desc.width = width;
@@ -46,7 +47,7 @@ extern "C" int yozora_glue_process(void* p_start_address, int width, int height,
 	buffer_desc.bytes_per_line = bytes_per_line;
 	buffer_desc.bits_per_pixel = bits_per_pixel;
 
-	return (main_app::loop(buffer_desc)) ? 1 : 0;
+	return (yozora::loop(buffer_desc)) ? 1 : 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

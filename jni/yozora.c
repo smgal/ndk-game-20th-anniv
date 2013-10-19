@@ -114,7 +114,8 @@ void g_createBufferFromCompressedFile(const char* sz_file_name, unsigned char** 
 
 extern void yozora_glue_init(const char* sz_id);
 extern void yozora_glue_done(void);
-extern int  yozora_glue_process(void* p_start_address, int width, int height, int bytes_per_line, int bits_per_pixel, int touch_x, int touch_y);
+extern int  yozora_glue_process(int touch_x, int touch_y);
+extern int  yozora_glue_render(void* p_start_address, int width, int height, int bytes_per_line, int bits_per_pixel);
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -151,7 +152,14 @@ JNIEXPORT void JNICALL Java_com_avej_lore20th_YozoraView_doneYozora(JNIEnv* p_en
 	yozora_glue_done();
 }
 
-JNIEXPORT int JNICALL Java_com_avej_lore20th_YozoraView_renderYozora(JNIEnv* p_env, jobject obj, jobject bitmap, jlong time_ms, jint motion_x, jint motion_y)
+JNIEXPORT int JNICALL Java_com_avej_lore20th_YozoraView_processYozora(JNIEnv* p_env, jobject obj, jlong time_ms, jint motion_x, jint motion_y)
+{
+	int result = yozora_glue_process(motion_x, motion_y);
+
+	return result;
+}
+
+JNIEXPORT int JNICALL Java_com_avej_lore20th_YozoraView_renderYozora(JNIEnv* p_env, jobject obj, jobject bitmap)
 {
     AndroidBitmapInfo  info;
     void*              pixels;
@@ -181,7 +189,7 @@ JNIEXPORT int JNICALL Java_com_avej_lore20th_YozoraView_renderYozora(JNIEnv* p_e
         return;
     }
 
-	int result = yozora_glue_process(pixels, info.width, info.height, info.stride, 32, motion_x, motion_y);
+	int result = yozora_glue_render(pixels, info.width, info.height, info.stride, 32);
 
     AndroidBitmap_unlockPixels(p_env, bitmap);
 
