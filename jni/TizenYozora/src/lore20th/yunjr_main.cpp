@@ -80,6 +80,8 @@ void yunjr::init(const char* sz_id)
 	{
 		delete s_p_main_window;
 		deleteVector(res_collection::getCharaList());
+
+		yunjr::GameState::getMutableInstance().reset();
 	}
 
 	Resource& resrouce = Resource::getMutableInstance();
@@ -116,6 +118,7 @@ void yunjr::init(const char* sz_id)
 void yunjr::done()
 {
 	delete s_p_main_window;
+	s_p_main_window = 0;
 
 	deleteVector(res_collection::getCharaList());
 }

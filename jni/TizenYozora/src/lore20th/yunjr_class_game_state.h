@@ -18,6 +18,11 @@ namespace yunjr
 		{
 		}
 
+		void reset(void)
+		{
+			is_terminating = false;
+		}
+
 		void update(unsigned long tick)
 		{
 			target::InputDevice* p_input_device = target::getInputDevice();
