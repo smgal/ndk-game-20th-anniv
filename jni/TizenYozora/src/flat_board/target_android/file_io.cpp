@@ -211,9 +211,11 @@ namespace target
 
 			if (p_impl->m_p_buffer)
 			{
-				char sz_log[256];
-				sprintf(sz_log, "[DOJI] %s found!", file_name);
-				g_printLog(sz_log);
+				// suppress non-error logs
+				//
+				// char sz_log[256];
+				// sprintf(sz_log, "[DOJI] %s found!", file_name);
+				// g_printLog(sz_log);
 			}
 			else
 			{
