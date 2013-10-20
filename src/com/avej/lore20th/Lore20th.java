@@ -12,12 +12,12 @@ import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 class GameConfig
 {
@@ -25,10 +25,13 @@ class GameConfig
 	final static boolean USE_LOG_LIFE_CICLE = false;
 	final static boolean USE_BGM = false;
 
+	// 1280x720 and 6400x360 will be supported finally 
 	final static int BUFFER_WIDTH = 1280;
 	final static int BUFFER_HEIGHT = 720;
 	
 	static boolean is_terminating = false;
+	// Atomic operation is guaranteed.
+	static boolean is_rendering_queue_empty = true;
 	
 	static int    touch_x = 0;
 	static int    touch_y = 0;
@@ -103,7 +106,6 @@ public class Lore20th extends Activity
 	@Override
 	protected void onDestroy()
 	{
-		// TODO Auto-generated method stub
 		super.onDestroy();
 		
 		if (GameConfig.USE_LOG_LIFE_CICLE)
@@ -162,8 +164,6 @@ public class Lore20th extends Activity
 
 			GameConfig.touch_x = ax;
 			GameConfig.touch_y = ay;
-			
-			GameConfig.processTouchEvent();
 		}
 		else if (motion_event == MotionEvent.ACTION_MOVE)
 		{
@@ -172,15 +172,11 @@ public class Lore20th extends Activity
 
 			GameConfig.touch_x = ax;
 			GameConfig.touch_y = ay;
-			
-			GameConfig.processTouchEvent();
 		}
 		else if (motion_event == MotionEvent.ACTION_UP)
 		{
 			GameConfig.touch_x = -1;
 			GameConfig.touch_y = -1;
-			
-			GameConfig.processTouchEvent();
 		}
 
 		return true;
@@ -195,7 +191,7 @@ public class Lore20th extends Activity
 
 class YozoraView extends View
 {
-	/* implemented by liblore20th.so */
+	// These functions are implemented in liblore20th.so
 	public static native void initYozora(String resource_path, String app_name);
 	public static native void doneYozora();
 	public static native int  processYozora(long time_ms, int motion_x, int motion_y);
@@ -205,6 +201,13 @@ class YozoraView extends View
 	{
 		super(context);
 		
+		{
+			DisplayMetrics metrics = new DisplayMetrics();
+			((Lore20th)context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+			android.util.Log.i("[SMGAL]", "[MAIN] Screen size (" + metrics.widthPixels + "x" + metrics.heightPixels + ")");
+		}
+
 		GameConfig.src_bitmap = Bitmap.createBitmap(GameConfig.BUFFER_WIDTH, GameConfig.BUFFER_HEIGHT, Bitmap.Config.ARGB_8888);
 
 		GameConfig.start_time = System.currentTimeMillis();
@@ -246,9 +249,12 @@ class YozoraView extends View
 		GameConfig.prev_canvas_w = canvas.getWidth();
 		GameConfig.prev_canvas_h = canvas.getHeight();
 		
-		//?? lock bitmap
-		canvas.drawBitmap(GameConfig.src_bitmap, GameConfig.src_rect, GameConfig.dst_rect, null);
-		//?? unlock bitmap
+		// [LOCK] GameConfig.src_bitmap
+		{
+			canvas.drawBitmap(GameConfig.src_bitmap, GameConfig.src_rect, GameConfig.dst_rect, null);
+			GameConfig.is_rendering_queue_empty = true;
+		}
+		// [UNLOCK] GameConfig.src_bitmap
 	}
 }
 
@@ -282,9 +288,21 @@ class GameTask extends AsyncTask<Void, Void, Void>
 		
 		while (!GameConfig.is_terminating)
 		{
-			//?? lock bitmap
+			while (!GameConfig.is_rendering_queue_empty)
+			{
+				try
+				{
+					Thread.sleep(0);
+				}
+				catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+			}
+			
+			// [LOCK] GameConfig.src_bitmap
 			int result = YozoraView.renderYozora(GameConfig.src_bitmap); 
-			//?? unlock bitmap
+			// [UNLOCK] GameConfig.src_bitmap
 	
 			if (result == 0)
 				break;
@@ -312,9 +330,14 @@ class GameTask extends AsyncTask<Void, Void, Void>
 	@Override
 	protected void onProgressUpdate(Void... values)
 	{
+		assert(GameConfig.is_rendering_queue_empty);
+		
 		if (GameConfig.USE_LOG_LOOP)
 			android.util.Log.i("[SMGAL]", "[MAIN] screen update");
 
+		GameConfig.processTouchEvent();
+		
+		GameConfig.is_rendering_queue_empty = false;
 		view.invalidate();
 	}
 
