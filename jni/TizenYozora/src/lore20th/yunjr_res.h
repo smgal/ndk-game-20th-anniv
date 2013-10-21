@@ -254,7 +254,7 @@ namespace yunjr
 
 	namespace res_collection
 	{
-		std::vector<Chara*>& getCharaList(void);
+		extern std::vector<Chara*>& getCharaList(void);
 	}
 }
 

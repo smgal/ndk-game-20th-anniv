@@ -147,6 +147,7 @@ SRC_AKIYU       := \
                    $(SRC_ROOT)/lore20th/yunjr_class_control_lv1.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_class_control_lv2.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_res.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_res_game.cpp \
                    $(SRC_ROOT)/lore20th/hd_base_config.cpp \
                    $(SRC_ROOT)/lore20th/hd_base_gfx.cpp \
                    $(SRC_ROOT)/lore20th/hd_base_key_buffer.cpp \

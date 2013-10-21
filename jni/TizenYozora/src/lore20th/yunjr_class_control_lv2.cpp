@@ -1,12 +1,12 @@
 
-#include "hd_class_map.h"
-
 #include "yunjr_base.h"
 #include "yunjr_base_gfx.h"
 
 #include "yunjr_class.h"
 #include "yunjr_class_control_lv2.h"
 #include "yunjr_class_chara.h"
+
+#include "yunjr_res_game.h"
 
 #include <algorithm>
 #include <string.h>
@@ -127,56 +127,10 @@ yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int h
 
 			auto_buffer.bind(new FlatBoard32::Pixel[buffer_w * buffer_h]);
 			new (&map_board) FlatBoard32(auto_buffer.get(), buffer_w, buffer_h, buffer_w);
-
-			map.bind(new hadar::Map());
-
-			{
-				target::file_io::StreamReadFile file("lore20th/K_DEN2.MAP");
-
-				int buffer_size = file.getSize();
-
-				if (buffer_size > 0)
-				{
-					map->clearData();
-
-					/*
-						TYPE_TOWN:   'DEN*.MAP', 'K_DEN1.MAP', 'PYRAMID1.MAP', 'K_DEN2.MAP (last)'
-						TYPE_KEEP:   'KEEP*.MAP'
-						TYPE_GROUND: 'GROUND*.MAP'
-						TYPE_DEN:    'DEN*.MAP', 'K_DEN2.MAP'
-					*/
-					map->setType(hadar::Map::TYPE_DEN);
-
-					unsigned char byte;
-
-					file.read(&byte, 1);
-					map->width  = byte;
-
-					file.read(&byte, 1);
-					map->height = byte;
-
-					for (int y = 0; y < map->height; y++)
-					{
-						file.read(&map->data[y][0], map->width);
-					}
-				}
-/*
-				map->act_func[hadar::Map::ACT_BLOCK] = &MapCallback::actBlock;
-				map->act_func[hadar::Map::ACT_MOVE]  = &MapCallback::actMove;
-				map->act_func[hadar::Map::ACT_EVENT] = &MapCallback::actEvent;
-				map->act_func[hadar::Map::ACT_ENTER] = &MapCallback::actEnter;
-				map->act_func[hadar::Map::ACT_SIGN]  = &MapCallback::actSign;
-				map->act_func[hadar::Map::ACT_WATER] = &MapCallback::actWater;
-				map->act_func[hadar::Map::ACT_SWAMP] = &MapCallback::actSwamp;
-				map->act_func[hadar::Map::ACT_LAVA]  = &MapCallback::actLava;
-				map->act_func[hadar::Map::ACT_TALK]  = &MapCallback::actTalk;
-*/
-			}
 		}
 
 		auto_ptr<FlatBoard32::Pixel[]> auto_buffer;
 		FlatBoard32 map_board;
-		auto_ptr<hadar::Map> map;
 	};
 
 	struct ShapeMap: public Visible::Shape
@@ -216,8 +170,8 @@ yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int h
 					int x_pos = x * TILE_W + 0;
 					int y_pos = y * TILE_H + 0;
 
-					int ix_map = attribute.map->operator()(x + map_offset_x, y + map_offset_y);
-					ix_map += NUM_TILE_ID_GROUND_W * attribute.map->type;
+					int ix_map = res::game::map(x + map_offset_x, y + map_offset_y);
+					ix_map += NUM_TILE_ID_GROUND_W * res::game::map.type;
 
 					gfx::drawTile(attribute.map_board, x_pos + display_offset_x, y_pos + display_offset_y, TILE_ID_GROUND, ix_map);
 				}

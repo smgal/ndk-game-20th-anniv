@@ -9,6 +9,7 @@
 #include "yunjr_class_game_state.h"
 
 #include "yunjr_res.h"
+#include "yunjr_res_game.h"
 
 #include <vector>
 
@@ -128,7 +129,24 @@ namespace yunjr
 
 					if (x1 != 0 || y1 != 0)
 					{
-						attribute.move(x1 * MAP_SCROLL_IN_PIXELS, y1 * MAP_SCROLL_IN_PIXELS);
+						bool auto_move = (attribute.pos.x % TILE_W) != 0 || (attribute.pos.y % TILE_H) != 0;
+						bool movable = true;
+
+						if (!auto_move)
+						{
+							int map_offset_x;
+							int map_offset_y;
+
+							Resource::getCurrentMapPos(map_offset_x, map_offset_y);
+
+							int map_x = map_offset_x / TILE_W;
+							int map_y = map_offset_y / TILE_H;
+
+							movable = (yunjr::res::game::map.isJumpable(map_x + x1, map_y + y1));
+						}
+
+						if (movable)
+							attribute.move(x1 * MAP_SCROLL_IN_PIXELS, y1 * MAP_SCROLL_IN_PIXELS);
 					}
 
 					return true;
@@ -141,7 +159,7 @@ namespace yunjr
 				AttributeChara* p_attribute = new AttributeChara();
 
 				p_attribute->pos.x  = 19 * yunjr::TILE_W;
-				p_attribute->pos.y  = 30 * yunjr::TILE_H;
+				p_attribute->pos.y  = 31 * yunjr::TILE_H;
 				p_attribute->dir.x1 = 0;
 				p_attribute->dir.y1 = -1;
 

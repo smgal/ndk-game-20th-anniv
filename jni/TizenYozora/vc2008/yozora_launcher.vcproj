@@ -471,6 +471,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\lore20th\yunjr_res_game.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_res_game.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\lore20th\yunjr_res_string.h"
 					>
 				</File>
