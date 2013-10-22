@@ -407,6 +407,22 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\lore20th\yunjr_base_serialized.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_base_serialized.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_base_sound.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_base_sound.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\lore20th\yunjr_base_text.cpp"
 					>
 				</File>
@@ -451,11 +467,67 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\lore20th\yunjr_class_extern.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_class_extern.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_class_game_option.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_class_game_option.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\lore20th\yunjr_class_game_state.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\src\lore20th\yunjr_class_game_state.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_class_map.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_class_map.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_class_pc_enemy.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_class_pc_enemy.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_class_pc_name_base.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_class_pc_name_base.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_class_pc_party.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_class_pc_party.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_class_pc_player.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_class_pc_player.h"
 					>
 				</File>
 				<File
@@ -471,15 +543,23 @@
 					>
 				</File>
 				<File
-					RelativePath="..\src\lore20th\yunjr_res_game.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\yunjr_res_game.h"
+					RelativePath="..\src\lore20th\yunjr_res_string.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\src\lore20th\yunjr_res_string.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_script.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_script_def.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_script_map_vesper.cpp"
 					>
 				</File>
 				<File

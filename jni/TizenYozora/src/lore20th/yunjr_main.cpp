@@ -11,7 +11,6 @@
 #include "yunjr_class_game_state.h"
 
 #include "yunjr_res.h"
-#include "yunjr_res_game.h"
 #include "yunjr_res_string.h"
 
 #include <new>
@@ -111,11 +110,11 @@ void yunjr::init(const char* sz_id)
 
 		if (p_console)
 		{
-			p_console->setText(yunjr::res::TEST_STRING1, yunjr::res::TEST_STRING2, yunjr::res::TEST_STRING3);
+//??			p_console->setText(yunjr::res::TEST_STRING1, yunjr::res::TEST_STRING2, yunjr::res::TEST_STRING3);
 		}
 	}
 
-	res::game::loadMap("lore20th/K_DEN2.MAP");
+	game::map::loadFromFile("lore20th/K_DEN2.MAP");
 }
 
 void yunjr::done()

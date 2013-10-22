@@ -7,9 +7,10 @@
 
 #include "yunjr_class.h"
 #include "yunjr_class_game_state.h"
+#include "yunjr_class_extern.h"
+#include "yunjr_class_map.h"
 
 #include "yunjr_res.h"
-#include "yunjr_res_game.h"
 
 #include <vector>
 
@@ -142,7 +143,7 @@ namespace yunjr
 							int map_x = map_offset_x / TILE_W;
 							int map_y = map_offset_y / TILE_H;
 
-							movable = (yunjr::res::game::map.isJumpable(map_x + x1, map_y + y1));
+							movable = (yunjr::game::object::getMap().isJumpable(map_x + x1, map_y + y1));
 						}
 
 						if (movable)

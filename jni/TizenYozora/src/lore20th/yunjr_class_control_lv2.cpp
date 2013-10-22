@@ -6,8 +6,6 @@
 #include "yunjr_class_control_lv2.h"
 #include "yunjr_class_chara.h"
 
-#include "yunjr_res_game.h"
-
 #include <algorithm>
 #include <string.h>
 
@@ -170,8 +168,8 @@ yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int h
 					int x_pos = x * TILE_W + 0;
 					int y_pos = y * TILE_H + 0;
 
-					int ix_map = res::game::map(x + map_offset_x, y + map_offset_y);
-					ix_map += NUM_TILE_ID_GROUND_W * res::game::map.type;
+					int ix_map = game::object::getMap()(x + map_offset_x, y + map_offset_y);
+					ix_map += NUM_TILE_ID_GROUND_W * game::object::getMap().type;
 
 					gfx::drawTile(attribute.map_board, x_pos + display_offset_x, y_pos + display_offset_y, TILE_ID_GROUND, ix_map);
 				}
