@@ -85,7 +85,7 @@
 #define _Map_SetRow(s)              map_template.setRow(s);
 #define _Map_ChangeTile(p1, p2, p3) game::map::change(p1, p2, p3);
 #define _Map_LoadFromFile(s)        game::map::loadFromFile(s);
-#define _Map_SetTileAsDefault(ts)    SetTileAsDefault(ts, map_template);
+#define _Map_SetTileAsDefault(ts)   setTileAsDefault(ts, map_template);
 
 // »ó¼ö
 enum TILE_SET
@@ -178,6 +178,6 @@ struct MapTemplate
 
 ////////////
 
-void SetTileAsDefault(TILE_SET tile_set, MapTemplate& map_template);
+void setTileAsDefault(TILE_SET tile_set, MapTemplate& map_template);
 
 #endif // #ifndef __YUNJR_SCRIPT_DEF_H__

@@ -15,19 +15,13 @@
 #include "yunjr_class_map.h"
 #include "yunjr_class_pc_party.h"
 #include "yunjr_class_pc_enemy.h"
-//??
-#include "hd_class_console.h"
-#include "hd_class_select.h"
+#include "yunjr_class_console.h"
+#include "yunjr_class_select.h"
 
 #include "yunjr_res_string.h"
 
 #include <map>
 
-//??
-using hadar::LoreConsole;
-using hadar::MenuList;
-using hadar::MenuSelection;
-using hadar::MenuSelectionUpDown;
 
 #define DETECT_NOT_ENOUGH_SP(consumption) \
 	if (sp < consumption) \

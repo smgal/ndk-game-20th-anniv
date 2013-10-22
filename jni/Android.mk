@@ -144,6 +144,7 @@ SRC_LORE20TH    := \
                    $(SRC_ROOT)/lore20th/yunjr_base_sound.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_base_text.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_base_text_impl.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_class_console.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_class_control_lv1.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_class_control_lv2.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_class_extern.cpp \
@@ -154,32 +155,12 @@ SRC_LORE20TH    := \
                    $(SRC_ROOT)/lore20th/yunjr_class_pc_name_base.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_class_pc_party.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_class_pc_player.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_class_select.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_main.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_res.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_res_string.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_script_def.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_script_map_vesper.cpp \
-                   $(SRC_ROOT)/lore20th/hd_base_config.cpp \
-                   $(SRC_ROOT)/lore20th/hd_base_gfx.cpp \
-                   $(SRC_ROOT)/lore20th/hd_base_key_buffer.cpp \
-                   $(SRC_ROOT)/lore20th/hd_base_serialized.cpp \
-                   $(SRC_ROOT)/lore20th/hd_base_sound.cpp \
-                   $(SRC_ROOT)/lore20th/hd_class_console.cpp \
-                   $(SRC_ROOT)/lore20th/hd_class_extern.cpp \
-                   $(SRC_ROOT)/lore20th/hd_class_game_main.cpp \
-                   $(SRC_ROOT)/lore20th/hd_class_game_option.cpp \
-                   $(SRC_ROOT)/lore20th/hd_class_map.cpp \
-                   $(SRC_ROOT)/lore20th/hd_class_map_event.cpp \
-                   $(SRC_ROOT)/lore20th/hd_class_pc_enemy.cpp \
-                   $(SRC_ROOT)/lore20th/hd_class_pc_name_base.cpp \
-                   $(SRC_ROOT)/lore20th/hd_class_pc_party.cpp \
-                   $(SRC_ROOT)/lore20th/hd_class_pc_player.cpp \
-                   $(SRC_ROOT)/lore20th/hd_class_select.cpp \
-                   $(SRC_ROOT)/lore20th/hd_res_string.cpp \
-                   $(SRC_ROOT)/lore20th/hd_script_def.cpp \
-                   $(SRC_ROOT)/lore20th/hd_script_map_a_dummy.cpp \
-                   $(SRC_ROOT)/lore20th/hd_script_map_a_sample.cpp \
-                   $(SRC_ROOT)/lore20th/hd_script_map_lore.cpp \
-                   $(SRC_ROOT)/lore20th/hd_script_map_vesper.cpp \
                    $(SRC_ROOT)/lore20th/util/sm_util_random.cpp \
                    $(SRC_ROOT)/lore20th/util/sm_util_set.cpp \
                    $(SRC_ROOT)/lore20th/util/sm_util_stream.cpp \

@@ -215,178 +215,6 @@
 				Name="lore20th"
 				>
 				<File
-					RelativePath="..\src\lore20th\hd_base_config.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_base_config.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_base_gfx.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_base_gfx.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_base_key_buffer.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_base_serialized.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_base_serialized.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_base_sound.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_base_sound.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_base_state.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_console.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_console.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_extern.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_extern.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_game_main.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_game_main.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_game_option.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_game_option.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_map.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_map.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_map_event.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_map_event.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_pc_enemy.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_pc_enemy.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_pc_functor.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_pc_name_base.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_pc_name_base.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_pc_party.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_pc_party.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_pc_player.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_pc_player.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_select.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_class_select.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_res_string.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_res_string.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_script.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_script_def.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_script_def.h"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_script_map_a_dummy.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_script_map_a_sample.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_script_map_lore.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_script_map_vesper.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\src\lore20th\hd_z_config.h"
-					>
-				</File>
-				<File
 					RelativePath="..\src\lore20th\yunjr_base.h"
 					>
 				</File>
@@ -444,6 +272,14 @@
 				</File>
 				<File
 					RelativePath="..\src\lore20th\yunjr_class_chara.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_class_console.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_class_console.h"
 					>
 				</File>
 				<File
@@ -531,6 +367,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\lore20th\yunjr_class_select.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_class_select.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\lore20th\yunjr_main.cpp"
 					>
 				</File>
@@ -552,6 +396,10 @@
 				</File>
 				<File
 					RelativePath="..\src\lore20th\yunjr_script.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_script_def.cpp"
 					>
 				</File>
 				<File
