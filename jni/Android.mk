@@ -96,7 +96,7 @@ SRC_FLAT_BOARD  := \
 SRC_YOZORA      := \
                    $(SRC_ROOT)/yozora.cpp
 
-SRC_AKIYU_FT    := \
+SRC_LORE20TH_FT := \
                    $(SRC_ROOT)/lore20th/freetype2/src/autofit/autofit.c \
                    $(SRC_ROOT)/lore20th/freetype2/src/bdf/bdf.c \
                    $(SRC_ROOT)/lore20th/freetype2/src/cff/cff.c \
@@ -137,17 +137,27 @@ SRC_AKIYU_FT    := \
                    $(SRC_ROOT)/lore20th/freetype2/src/type42/type42.c \
                    $(SRC_ROOT)/lore20th/freetype2/src/winfonts/winfnt.c
                    
-SRC_AKIYU       := \
-                   $(SRC_ROOT)/lore20th/yunjr_main.cpp \
+SRC_LORE20TH    := \
                    $(SRC_ROOT)/lore20th/yunjr_base_font.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_base_gfx.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_base_serialized.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_base_sound.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_base_text.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_base_text_impl.cpp \
-                   $(SRC_ROOT)/lore20th/yunjr_class_game_state.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_class_control_lv1.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_class_control_lv2.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_class_extern.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_class_game_option.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_class_game_state.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_class_map.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_class_pc_enemy.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_class_pc_name_base.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_class_pc_party.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_class_pc_player.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_main.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_res.cpp \
-                   $(SRC_ROOT)/lore20th/yunjr_res_game.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_res_string.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_script_map_vesper.cpp \
                    $(SRC_ROOT)/lore20th/hd_base_config.cpp \
                    $(SRC_ROOT)/lore20th/hd_base_gfx.cpp \
                    $(SRC_ROOT)/lore20th/hd_base_key_buffer.cpp \
@@ -173,11 +183,11 @@ SRC_AKIYU       := \
                    $(SRC_ROOT)/lore20th/util/sm_util_random.cpp \
                    $(SRC_ROOT)/lore20th/util/sm_util_set.cpp \
                    $(SRC_ROOT)/lore20th/util/sm_util_stream.cpp \
-                   $(SRC_AKIYU_FT)
+                   $(SRC_LORE20TH_FT)
 
 LOCAL_MODULE    := lore20th
 
-LOCAL_SRC_FILES := $(SRC_LIBZIP) $(SRC_LIBPNG) $(SRC_FLAT_BOARD) $(SRC_YOZORA) $(SRC_AKIYU)
+LOCAL_SRC_FILES := $(SRC_LIBZIP) $(SRC_LIBPNG) $(SRC_FLAT_BOARD) $(SRC_YOZORA) $(SRC_LORE20TH)
 LOCAL_SRC_FILES += yozora.c yozora_glue.cpp
 
 LOCAL_CFLAGS    += -DPIXELFORMAT_ABGR
