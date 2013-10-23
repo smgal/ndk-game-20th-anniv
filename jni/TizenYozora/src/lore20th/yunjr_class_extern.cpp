@@ -6,6 +6,7 @@
 #include "yunjr_class_pc_player.h"
 #include "yunjr_class_pc_enemy.h"
 #include "yunjr_class_game_option.h"
+#include "yunjr_class_map_event.h"
 
 #include "../flat_board/target_dep.h"
 
@@ -202,17 +203,7 @@ namespace yunjr
 				{
 					file.read(&s_map.data[y][0], s_map.width);
 				}
-				/*
-				s_map.act_func[hadar::Map::ACT_BLOCK] = &MapCallback::actBlock;
-				s_map.act_func[hadar::Map::ACT_MOVE]  = &MapCallback::actMove;
-				s_map.act_func[hadar::Map::ACT_EVENT] = &MapCallback::actEvent;
-				s_map.act_func[hadar::Map::ACT_ENTER] = &MapCallback::actEnter;
-				s_map.act_func[hadar::Map::ACT_SIGN]  = &MapCallback::actSign;
-				s_map.act_func[hadar::Map::ACT_WATER] = &MapCallback::actWater;
-				s_map.act_func[hadar::Map::ACT_SWAMP] = &MapCallback::actSwamp;
-				s_map.act_func[hadar::Map::ACT_LAVA]  = &MapCallback::actLava;
-				s_map.act_func[hadar::Map::ACT_TALK]  = &MapCallback::actTalk;
-				*/
+
 				return true;
 			}
 		}

@@ -73,37 +73,6 @@ yunjr::ControlMap::ControlMap()
 {
 }
 
-struct MapCallback
-{
-	static void actBlock(int x1, int y1, bool bUseless)
-	{
-	}
-	static void actMove(int x1, int y1, bool bEncounter)
-	{
-	}
-	static void actEvent(int x1, int y1, bool bUseless)
-	{
-	}
-	static void actEnter(int x1, int y1, bool bUseless)
-	{
-	}
-	static void actSign(int x1, int y1, bool bUseless)
-	{
-	}
-	static void actWater(int x1, int y1, bool bUseless)
-	{
-	}
-	static void actSwamp(int x1, int y1, bool bUseless)
-	{
-	}
-	static void actLava(int x1, int y1, bool bUseless)
-	{
-	}
-	static void actTalk(int x1, int y1, bool bUseless)
-	{
-	}
-};
-
 yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int height)
 {
 	enum { SCALE = MAP_SCALE_RATIO };

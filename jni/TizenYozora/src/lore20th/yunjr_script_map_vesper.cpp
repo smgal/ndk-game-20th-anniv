@@ -19,7 +19,7 @@ DEF_v(vesper, Load)
 
 	_Map_Init(50, 50)
 	//_Map_SetEncounter(1, 10)
-	_Map_SetStartPos(15, 15)
+	_Map_SetStartPos(26, 16)
 
 	_Map_SetTileAsDefault(TILE_SET_TOWN)
 
@@ -91,7 +91,7 @@ DEF_ii(vesper, Talk)
 		HALT
 	END
 
-	IF ON(18,12) THEN
+	IF ON(11,10) THEN
 		_Talk("Talk script 2-1")
 		_Talk("Talk script 2-2")
 		_Talk("Talk script 2-3")

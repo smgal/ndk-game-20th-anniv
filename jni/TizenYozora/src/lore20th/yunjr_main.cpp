@@ -9,6 +9,9 @@
 #include "yunjr_class_control_lv1.h"
 #include "yunjr_class_control_lv2.h"
 #include "yunjr_class_game_state.h"
+#include "yunjr_class_map.h"
+#include "yunjr_class_map_event.h"
+#include "yunjr_class_pc_party.h"
 
 #include "yunjr_res.h"
 #include "yunjr_res_string.h"
@@ -72,6 +75,52 @@ namespace yunjr
 namespace
 {
 	yunjr::ControlWindow* s_p_main_window = 0;
+
+	struct MapCallback
+	{
+		static void actBlock(int x1, int y1, bool bUseless)
+		{
+		}
+		static void actMove(int x1, int y1, bool bEncounter)
+		{
+			yunjr::PcParty& party = yunjr::game::object::getParty();
+
+			party.move(x1, y1);
+		}
+		static void actEvent(int x1, int y1, bool bUseless)
+		{
+		}
+		static void actEnter(int x1, int y1, bool bUseless)
+		{
+		}
+		static void actSign(int x1, int y1, bool bUseless)
+		{
+		}
+		static void actWater(int x1, int y1, bool bUseless)
+		{
+		}
+		static void actSwamp(int x1, int y1, bool bUseless)
+		{
+		}
+		static void actLava(int x1, int y1, bool bUseless)
+		{
+		}
+		static void actTalk(int x1, int y1, bool bUseless)
+		{
+			/*
+			party.face(x1, y1);
+
+			window[WINDOWTYPE_MAP]->setUpdateFlag();
+			window[WINDOWTYPE_MAP]->display();
+			window[WINDOWTYPE_SUBMAP]->display();
+
+			LoreConsole::getConsole().clear();
+			*/
+			yunjr::PcParty& party = yunjr::game::object::getParty();
+
+			yunjr::map_event::occur(yunjr::map_event::TYPE_TALK, 0, party.x + x1, party.y + y1);
+		}
+	};
 }
 
 void yunjr::init(const char* sz_id)
@@ -85,12 +134,6 @@ void yunjr::init(const char* sz_id)
 	}
 
 	Resource& resrouce = Resource::getMutableInstance();
-
-	{
-		std::vector< ::yunjr::Chara*>& chara_list = yunjr::res_collection::getCharaList();
-
-		chara_list.push_back(Playable::newInstance());
-	}
 
 	{
 		s_p_main_window = ControlWindow::newInstance(720, 1280);
@@ -114,7 +157,31 @@ void yunjr::init(const char* sz_id)
 		}
 	}
 
-	game::map::loadFromFile("lore20th/K_DEN2.MAP");
+	{
+		Map& map = game::object::getMap();
+
+		map.act_func[Map::ACT_BLOCK] = &MapCallback::actBlock;
+		map.act_func[Map::ACT_MOVE]  = &MapCallback::actMove;
+		map.act_func[Map::ACT_EVENT] = &MapCallback::actEvent;
+		map.act_func[Map::ACT_ENTER] = &MapCallback::actEnter;
+		map.act_func[Map::ACT_SIGN]  = &MapCallback::actSign;
+		map.act_func[Map::ACT_WATER] = &MapCallback::actWater;
+		map.act_func[Map::ACT_SWAMP] = &MapCallback::actSwamp;
+		map.act_func[Map::ACT_LAVA]  = &MapCallback::actLava;
+		map.act_func[Map::ACT_TALK]  = &MapCallback::actTalk;
+	}
+
+	{
+		//game::map::loadFromFile("lore20th/K_DEN2.MAP");
+		yunjr::map_event::load("vesper");
+	}
+
+	{
+		std::vector< ::yunjr::Chara*>& chara_list = yunjr::res_collection::getCharaList();
+
+		chara_list.push_back(Playable::newInstance());
+	}
+
 }
 
 void yunjr::done()

@@ -335,6 +335,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\lore20th\yunjr_class_map_event.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_class_map_event.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\lore20th\yunjr_class_pc_enemy.cpp"
 					>
 				</File>
@@ -404,6 +412,10 @@
 				</File>
 				<File
 					RelativePath="..\src\lore20th\yunjr_script_def.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_script_map_a_dummy.cpp"
 					>
 				</File>
 				<File
@@ -744,6 +756,10 @@
 				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath="..\..\Android.mk"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

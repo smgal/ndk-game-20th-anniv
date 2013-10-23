@@ -151,6 +151,7 @@ SRC_LORE20TH    := \
                    $(SRC_ROOT)/lore20th/yunjr_class_game_option.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_class_game_state.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_class_map.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_class_map_event.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_class_pc_enemy.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_class_pc_name_base.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_class_pc_party.cpp \
@@ -160,6 +161,7 @@ SRC_LORE20TH    := \
                    $(SRC_ROOT)/lore20th/yunjr_res.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_res_string.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_script_def.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_script_map_a_dummy.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_script_map_vesper.cpp \
                    $(SRC_ROOT)/lore20th/util/sm_util_random.cpp \
                    $(SRC_ROOT)/lore20th/util/sm_util_set.cpp \

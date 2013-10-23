@@ -4,11 +4,13 @@
 
 #include "yunjr_base.h"
 #include "yunjr_base_gfx.h"
+#include "yunjr_base_sound.h"
 
 #include "yunjr_class.h"
 #include "yunjr_class_game_state.h"
 #include "yunjr_class_extern.h"
 #include "yunjr_class_map.h"
+#include "yunjr_class_pc_party.h"
 
 #include "yunjr_res.h"
 
@@ -130,24 +132,35 @@ namespace yunjr
 
 					if (x1 != 0 || y1 != 0)
 					{
-						bool auto_move = (attribute.pos.x % TILE_W) != 0 || (attribute.pos.y % TILE_H) != 0;
-						bool movable = true;
+						PcParty& party = game::object::getParty();
+						Map& map = game::object::getMap();
 
-						if (!auto_move)
+						bool auto_move = (attribute.pos.x % TILE_W) != 0 || (attribute.pos.y % TILE_H) != 0;
+
+						if (auto_move)
+						{
+							attribute.move(x1 * MAP_SCROLL_IN_PIXELS, y1 * MAP_SCROLL_IN_PIXELS);
+						}
+						else
 						{
 							int map_offset_x;
 							int map_offset_y;
 
 							Resource::getCurrentMapPos(map_offset_x, map_offset_y);
 
-							int map_x = map_offset_x / TILE_W;
-							int map_y = map_offset_y / TILE_H;
+							int party_x = party.x = map_offset_x / TILE_W;
+							int party_y = party.y = map_offset_y / TILE_H;
 
-							movable = (yunjr::game::object::getMap().isJumpable(map_x + x1, map_y + y1));
+							unsigned char tile = map(party_x + x1, party_y + y1);
+
+							(*map.act_list[tile])(x1, y1, true);
+
+							if (party_x != party.x || party_y != party.y)
+							{
+								attribute.move(x1 * MAP_SCROLL_IN_PIXELS, y1 * MAP_SCROLL_IN_PIXELS);
+								yunjr::sound::playFx(yunjr::sound::SOUND_WALK);
+							}
 						}
-
-						if (movable)
-							attribute.move(x1 * MAP_SCROLL_IN_PIXELS, y1 * MAP_SCROLL_IN_PIXELS);
 					}
 
 					return true;
@@ -159,10 +172,33 @@ namespace yunjr
 			{
 				AttributeChara* p_attribute = new AttributeChara();
 
-				p_attribute->pos.x  = 19 * yunjr::TILE_W;
-				p_attribute->pos.y  = 31 * yunjr::TILE_H;
-				p_attribute->dir.x1 = 0;
-				p_attribute->dir.y1 = -1;
+				{
+					PcParty& party = game::object::getParty();
+
+					p_attribute->pos.x  = party.x * yunjr::TILE_W;
+					p_attribute->pos.y  = party.y * yunjr::TILE_H;
+
+					switch (party.faced)
+					{
+					case 1:
+						p_attribute->dir.x1 = 0;
+						p_attribute->dir.y1 = -1;
+						break;
+					case 2:
+						p_attribute->dir.x1 = 1;
+						p_attribute->dir.y1 = 0;
+						break;
+					case 3:
+						p_attribute->dir.x1 = -1;
+						p_attribute->dir.y1 = 0;
+						break;
+					case 0:
+					default:
+						p_attribute->dir.x1 = 0;
+						p_attribute->dir.y1 = 1;
+						break;
+					}
+				}
 
 				*p_playable << p_attribute;
 			}

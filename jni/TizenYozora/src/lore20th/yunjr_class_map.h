@@ -8,8 +8,6 @@
 
 namespace yunjr
 {
-	class GameMain;
-
 	struct Map: public Serialized
 	{
 		enum
@@ -32,7 +30,7 @@ namespace yunjr
 			ACT_DWORD = 0x7FFFFFFF
 		};
 
-		typedef void (GameMain::*FnAct)(int x1, int y1, bool);
+		typedef void (*FnAct)(int x1, int y1, bool);
 
 		enum TYPE
 		{
