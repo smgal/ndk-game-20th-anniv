@@ -71,6 +71,11 @@ namespace yunjr
 	// 원본 게임에서 적 데이터를 뽑아 오는 함수 1~75사이가 유효 값
 	const EnemyData& getEnemyDataFromEnemyTable(int index);
 
+	namespace shared
+	{
+		typedef sena::shared_ptr<yunjr::PcEnemy> PcEnemy;
+	}
+
 } // namespace yunjr
 
 #endif // #ifndef __YUNJR_CLASS_PC_ENEMY_H__

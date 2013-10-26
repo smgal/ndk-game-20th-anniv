@@ -337,6 +337,92 @@ yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int widt
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// class ControlStatus
+
+yunjr::ControlStatus::ControlStatus()
+{
+}
+
+yunjr::ControlStatus::~ControlStatus()
+{
+}
+
+yunjr::ControlStatus* yunjr::ControlStatus::newInstance(int x, int y, int width, int height)
+{
+	struct AttributeConsole: public Visible::Attribute
+	{
+		struct { int x, y; } pos;
+		struct { int width, height; } size;
+
+		AttributeConsole(int x, int y, int width, int height)
+		{
+			pos.x = x;
+			pos.y = y;
+			size.width = width;
+			size.height = height;
+		}
+	};
+
+	struct ShapeConsole: public Visible::Shape
+	{
+		virtual void render(Visible* p_this, FlatBoard32& dest_board) const
+		{
+			AttributeConsole& attribute = *((AttributeConsole*)p_this->getAttribute());
+
+			dest_board.fillRect(attribute.pos.x, attribute.pos.y, attribute.size.width, attribute.size.height, 0xFF545454);
+
+			const int DIALOG_WINDOW_X = attribute.pos.x;
+			const int DIALOG_WINDOW_Y = attribute.pos.y;
+			const int DIALOG_WINDOW_W = attribute.size.width;
+			const int DIALOG_WINDOW_H = attribute.size.height;
+
+			{
+				const Resource& resource = Resource::getInstance();
+				const BufferDesc* p_buffer_desc = resource.getFrameBuffer();
+
+				unsigned long* p = (unsigned long*)p_buffer_desc->p_start_address;
+				int ppl = (p_buffer_desc->bytes_per_line << 3) / p_buffer_desc->bits_per_pixel;
+
+				p += (ppl * DIALOG_WINDOW_Y);
+				p += DIALOG_WINDOW_X;
+
+				yunjr::gfx::TextBoard text_board(p, DIALOG_WINDOW_W, DIALOG_WINDOW_H, ppl);
+
+				int text_x = 35;
+				int text_y = 26;
+				int text_y_gap = 15 * 2;
+
+				//?? Font size must be reduced
+				Text text(L"Name");
+
+				for (int i = 0; i < 6; i++)
+				{
+					text_board.renderTextFx(text_x, text_y, text, 0xFFFFFFFF, 0xFFFFFFFF);
+
+					text_y += text_y_gap;
+				}
+			}
+		}
+	};
+
+	struct UpdateConsole: public Visible::Update
+	{
+		virtual bool update(Visible* p_this, unsigned long tick)
+		{
+			AttributeConsole& attribute = *((AttributeConsole*)p_this->getAttribute());
+
+			return false;
+		}
+	};
+
+	ControlStatus* p_status = new ControlStatus();
+
+	*p_status << new AttributeConsole(x, y, width, height) << new ShapeConsole() << new UpdateConsole();
+
+	return p_status;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // class ControlPanel
 
 yunjr::ControlPanel::ControlPanel()
@@ -415,7 +501,7 @@ yunjr::ControlPanel* yunjr::ControlPanel::newInstance(void)
 							{
 								const Resource& resource = Resource::getInstance();
 
-								ControlConsole* p_console = (ControlConsole*)resource.getMainWindow()->findControl("CON-01");
+								ControlConsole* p_console = (ControlConsole*)resource.getMainWindow()->findControl("CONSOL");
 
 								if (p_console)
 								{
@@ -427,7 +513,7 @@ yunjr::ControlPanel* yunjr::ControlPanel::newInstance(void)
 							{
 								const Resource& resource = Resource::getInstance();
 
-								ControlConsole* p_console = (ControlConsole*)resource.getMainWindow()->findControl("CON-01");
+								ControlConsole* p_console = (ControlConsole*)resource.getMainWindow()->findControl("CONSOL");
 
 								if (p_console)
 								{

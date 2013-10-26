@@ -473,13 +473,13 @@ void yunjr::PcPlayer::castCureSpell(void)
 	PcPlayer* table[10];
 	int max_table = 0;
 
-	sena::vector<PcPlayer*>& player = game::object::getPlayerList();
+	sena::vector<shared::PcPlayer>& player = game::object::getPlayerList();
 
-	for (sena::vector<PcPlayer*>::iterator obj = player.begin(); obj != player.end(); ++obj)
+	for (sena::vector<shared::PcPlayer>::iterator obj = player.begin(); obj != player.end(); ++obj)
 	{
 		if ((*obj)->isValid())
 		{
-			table[max_table++] = (*obj);
+			table[max_table++] = (*obj).get();
 			menu.push_back((*obj)->getName());
 		}
 	}
@@ -927,9 +927,9 @@ void yunjr::PcPlayer::castPhenominaSpell(void)
 				return;
 			}
 
-			sena::vector<PcPlayer*>& player = game::object::getPlayerList();
+			sena::vector<shared::PcPlayer>& player = game::object::getPlayerList();
 
-			int num_player = sena::for_each(player.begin(), player.end(), FnNumOfRegistered<PcPlayer*>()).Result();
+			int num_player = sena::for_each(player.begin(), player.end(), FnNumOfRegistered<shared::PcPlayer>()).Result();
 			assert(num_player > 0);
 
 			party.food += num_player;
@@ -982,7 +982,7 @@ void yunjr::PcPlayer::attackWithWeapon(int ix_object, int ix_enemy)
 	if (num_enemy_alive == 0)
 		return;
 
-	sena::vector<PcEnemy*>& enemy = game::object::getEnemyList();
+	sena::vector<shared::PcEnemy>& enemy = game::object::getEnemyList();
 
 	while (enemy[ix_enemy]->dead > 0)
 	{
@@ -990,10 +990,10 @@ void yunjr::PcPlayer::attackWithWeapon(int ix_object, int ix_enemy)
 			return;
 	}
 
-	PcEnemy* p_enemy = enemy[ix_enemy];
+	shared::PcEnemy p_enemy = enemy[ix_enemy];
 
 	assert(p_player != NULL);
-	assert(p_enemy  != NULL);
+	assert(p_enemy.get()  != NULL);
 
 	LoreConsole& console = LoreConsole::getConsole();
 
@@ -1022,7 +1022,7 @@ void yunjr::PcPlayer::attackWithWeapon(int ix_object, int ix_enemy)
 
 		sound::playFx(sound::SOUND_SCREAM2);
 
-		p_player->m_plusExperience(p_enemy);
+		p_player->m_plusExperience(p_enemy.get());
 
 		p_enemy->hp   = 0;
 		p_enemy->dead = 1;
@@ -1065,7 +1065,7 @@ void yunjr::PcPlayer::attackWithWeapon(int ix_object, int ix_enemy)
 
 		sound::playFx(sound::SOUND_HIT);
 
-		p_player->m_plusExperience(p_enemy);
+		p_player->m_plusExperience(p_enemy.get());
 
 		p_enemy->unconscious = 1;
 	}
@@ -1081,7 +1081,7 @@ void yunjr::PcPlayer::attackWithWeapon(int ix_object, int ix_enemy)
 
 void yunjr::PcPlayer::castSpellToAll(int ix_object)
 {
-	sena::vector<PcEnemy*>& enemy = game::object::getEnemyList();
+	sena::vector<shared::PcEnemy>& enemy = game::object::getEnemyList();
 
 	for (int ix_enemy = 0; ix_enemy < int(enemy.size()); ++ix_enemy)
 	{
@@ -1099,18 +1099,18 @@ void yunjr::PcPlayer::castSpellToOne(int ix_object, int ix_enemy)
 	if (num_enemy_alive == 0)
 		return;
 
-	sena::vector<PcEnemy*>& enemy = game::object::getEnemyList();
+	sena::vector<shared::PcEnemy>& enemy = game::object::getEnemyList();
 
-	while ((enemy[ix_enemy] == NULL) || (enemy[ix_enemy]->dead > 0))
+	while ((enemy[ix_enemy].get() == NULL) || (enemy[ix_enemy]->dead > 0))
 	{
 		if (++ix_enemy > int(enemy.size()))
 			return;
 	}
 
-	PcEnemy* p_enemy = enemy[ix_enemy];
+	shared::PcEnemy p_enemy = enemy[ix_enemy];
 
 	assert(p_player != NULL);
-	assert(p_enemy  != NULL);
+	assert(p_enemy.get()  != NULL);
 
 	LoreConsole& console = LoreConsole::getConsole();
 
@@ -1125,7 +1125,7 @@ void yunjr::PcPlayer::castSpellToOne(int ix_object, int ix_enemy)
 
 		sound::playFx(sound::SOUND_SCREAM1);
 
-		p_player->m_plusExperience(p_enemy);
+		p_player->m_plusExperience(p_enemy.get());
 
 		p_enemy->hp   = 0;
 		p_enemy->dead = 1;
@@ -1176,7 +1176,7 @@ void yunjr::PcPlayer::castSpellToOne(int ix_object, int ix_enemy)
 
 		sound::playFx(sound::SOUND_HIT);
 
-		p_player->m_plusExperience(p_enemy);
+		p_player->m_plusExperience(p_enemy.get());
 
 		p_enemy->unconscious = 1;
 	}
@@ -1432,14 +1432,14 @@ void yunjr::PcPlayer::useESPForBattle(int ix_object, int ix_enemy)
 		return;
 	}
 
-	sena::vector<PcPlayer*>& player = game::object::getPlayerList();
-	sena::vector<PcEnemy*>& enemy = game::object::getEnemyList();
+	sena::vector<shared::PcPlayer>& player = game::object::getPlayerList();
+	sena::vector<shared::PcEnemy>& enemy = game::object::getEnemyList();
 
-	PcEnemy* p_enemy = enemy[ix_enemy];
+	shared::PcEnemy p_enemy = enemy[ix_enemy];
 
-	assert(p_enemy  != NULL);
+	assert(p_enemy.get()  != NULL);
 
-	if (p_enemy == NULL)
+	if (p_enemy.get() == NULL)
 		return;
 
 	if ((ix_object == 1) || (ix_object == 2) || (ix_object == 4))
@@ -1538,13 +1538,13 @@ void yunjr::PcPlayer::useESPForBattle(int ix_object, int ix_enemy)
 				if ((p_enemy->unconscious > 0) && (p_enemy->dead == 0))
 				{
 					p_enemy->dead = 1;
-					p_player->m_plusExperience(p_enemy);
+					p_player->m_plusExperience(p_enemy.get());
 				}
 
 				if ((p_enemy->hp <= 0) && (p_enemy->unconscious == 0))
 				{
 					p_enemy->unconscious = 1;
-					p_player->m_plusExperience(p_enemy);
+					p_player->m_plusExperience(p_enemy.get());
 				}
 			}
 			break;
@@ -1565,7 +1565,7 @@ void yunjr::PcPlayer::useESPForBattle(int ix_object, int ix_enemy)
 					break;
 				}
 
-				for (sena::vector<PcEnemy*>::iterator obj = enemy.begin(); obj != enemy.end(); ++obj)
+				for (sena::vector<shared::PcEnemy>::iterator obj = enemy.begin(); obj != enemy.end(); ++obj)
 				{
 					p_enemy = (*obj);
 
@@ -1579,13 +1579,13 @@ void yunjr::PcPlayer::useESPForBattle(int ix_object, int ix_enemy)
 					if ((p_enemy->unconscious > 0) && (p_enemy->dead == 0))
 					{
 						p_enemy->dead = 1;
-						p_player->m_plusExperience(p_enemy);
+						p_player->m_plusExperience(p_enemy.get());
 					}
 
 					if ((p_enemy->hp <= 0) && (p_enemy->unconscious == 0))
 					{
 						p_enemy->unconscious = 1;
-						p_player->m_plusExperience(p_enemy);
+						p_player->m_plusExperience(p_enemy.get());
 					}
 				}
 			}
@@ -1702,14 +1702,14 @@ void yunjr::PcPlayer::castSpellWithSpecialAbility(int ix_object, int ix_enemy)
 		return;
 	}
 
-	sena::vector<PcEnemy*>& enemy = game::object::getEnemyList();
+	sena::vector<shared::PcEnemy>& enemy = game::object::getEnemyList();
 
-	PcEnemy* p_enemy = enemy[ix_enemy];
+	shared::PcEnemy p_enemy = enemy[ix_enemy];
 
 	assert(p_player != NULL);
-	assert(p_enemy  != NULL);
+	assert(p_enemy.get()  != NULL);
 
-	if (p_enemy == NULL)
+	if (p_enemy.get() == NULL)
 		return;
 
 	switch (ix_object)
@@ -2073,45 +2073,45 @@ void yunjr::PcPlayer::m_revitalizeOne(PcPlayer* p_target)
 
 void yunjr::PcPlayer::m_healAll(void)
 {
-	sena::vector<PcPlayer*>& player = game::object::getPlayerList();
+	sena::vector<shared::PcPlayer>& player = game::object::getPlayerList();
 
-	for (sena::vector<PcPlayer*>::iterator obj = player.begin(); obj != player.end(); ++obj)
+	for (sena::vector<shared::PcPlayer>::iterator obj = player.begin(); obj != player.end(); ++obj)
 	{
 		if ((*obj)->isValid())
-			m_healOne(*obj);
+			m_healOne((*obj).get());
 	}
 }
 
 void yunjr::PcPlayer::m_antidoteAll(void)
 {
-	sena::vector<PcPlayer*>& player = game::object::getPlayerList();
+	sena::vector<shared::PcPlayer>& player = game::object::getPlayerList();
 
-	for (sena::vector<PcPlayer*>::iterator obj = player.begin(); obj != player.end(); ++obj)
+	for (sena::vector<shared::PcPlayer>::iterator obj = player.begin(); obj != player.end(); ++obj)
 	{
 		if ((*obj)->isValid())
-			m_antidoteOne(*obj);
+			m_antidoteOne((*obj).get());
 	}
 }
 
 void yunjr::PcPlayer::m_recoverConsciousnessAll(void)
 {
-	sena::vector<PcPlayer*>& player = game::object::getPlayerList();
+	sena::vector<shared::PcPlayer>& player = game::object::getPlayerList();
 
-	for (sena::vector<PcPlayer*>::iterator obj = player.begin(); obj != player.end(); ++obj)
+	for (sena::vector<shared::PcPlayer>::iterator obj = player.begin(); obj != player.end(); ++obj)
 	{
 		if ((*obj)->isValid())
-			m_recoverConsciousnessOne(*obj);
+			m_recoverConsciousnessOne((*obj).get());
 	}
 }
 
 void yunjr::PcPlayer::m_revitalizeAll(void)
 {
-	sena::vector<PcPlayer*>& player = game::object::getPlayerList();
+	sena::vector<shared::PcPlayer>& player = game::object::getPlayerList();
 
-	for (sena::vector<PcPlayer*>::iterator obj = player.begin(); obj != player.end(); ++obj)
+	for (sena::vector<shared::PcPlayer>::iterator obj = player.begin(); obj != player.end(); ++obj)
 	{
 		if ((*obj)->isValid())
-			m_revitalizeOne(*obj);
+			m_revitalizeOne((*obj).get());
 	}
 }
 
@@ -2162,8 +2162,8 @@ void yunjr::PcPlayer::m_plusExperience(PcEnemy* p_enemy)
 	}
 	else
 	{
-		sena::vector<PcPlayer*>& player = game::object::getPlayerList();
-		ForEachParam1(player.begin(), player.end(), FnPlusExp<PcPlayer*>(), plus);
+		sena::vector<shared::PcPlayer>& player = game::object::getPlayerList();
+		ForEachParam1(player.begin(), player.end(), FnPlusExp<shared::PcPlayer>(), plus);
 	}
 }
 

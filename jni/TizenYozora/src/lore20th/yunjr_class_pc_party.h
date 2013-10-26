@@ -22,6 +22,7 @@ namespace yunjr
 				long x, y;
 				long x_prev, y_prev;
 				long faced;
+				long faced_x1, faced_y1;
 				long encounter;
 				long max_enemy;
 

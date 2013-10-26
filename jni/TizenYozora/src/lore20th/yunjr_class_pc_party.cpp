@@ -36,6 +36,9 @@ void yunjr::PcParty::face(int x1, int y1)
 		this->faced = (y1 < 0) ? 1 : 0;
 	else
 		this->faced = (x1 < 0) ? 3 : 2;
+
+	this->faced_x1 = x1;
+	this->faced_y1 = y1;
 }
 
 void yunjr::PcParty::move(int x1, int y1)

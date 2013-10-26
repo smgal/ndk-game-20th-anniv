@@ -106,6 +106,13 @@ namespace yunjr
 				{
 					AttributeChara& attribute = *((AttributeChara*)p_this->getAttribute());
 
+					{
+						PcParty& party = game::object::getParty();
+
+						attribute.dir.x1 = party.faced_x1;
+						attribute.dir.y1 = party.faced_y1;
+					}
+
 					int x1 = 0;
 					int y1 = 0;
 

@@ -16,11 +16,11 @@
 
 namespace
 {
-	yunjr::Map                     s_map;
-	yunjr::PcParty                 s_party;
-	sena::vector<yunjr::PcPlayer*> s_player;
-	sena::vector<yunjr::PcEnemy*>  s_enemy;
-	yunjr::GameOption              s_game_option;
+	yunjr::Map                            s_map;
+	yunjr::PcParty                        s_party;
+	sena::vector<yunjr::shared::PcPlayer> s_player;
+	sena::vector<yunjr::shared::PcEnemy>  s_enemy;
+	yunjr::GameOption                     s_game_option;
 
 	template <typename Dst, typename Src>
 	Dst convert(Src);
@@ -51,12 +51,12 @@ namespace yunjr
 {
 	namespace data
 	{
-		const sena::vector<PcPlayer*>& getPlayerList(void)
+		const sena::vector<shared::PcPlayer>& getPlayerList(void)
 		{
 			return s_player;
 		}
 
-		const sena::vector<PcEnemy* >& getEnemyList(void)
+		const sena::vector<shared::PcEnemy>& getEnemyList(void)
 		{
 			return s_enemy;
 		}
@@ -233,12 +233,12 @@ namespace yunjr
 		namespace object
 		{
 			//! 아군 리스트를 vector 형식으로 돌려 준다.
-			sena::vector<PcPlayer*>& getPlayerList(void)
+			sena::vector<shared::PcPlayer>& getPlayerList(void)
 			{
 				return s_player;
 			}
 			//! 적의 리스트를 vector 형식으로 돌려 준다.
-			sena::vector<PcEnemy*>&  getEnemyList(void)
+			sena::vector<shared::PcEnemy>&  getEnemyList(void)
 			{
 				return s_enemy;
 			}

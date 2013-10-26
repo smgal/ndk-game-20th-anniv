@@ -13,8 +13,7 @@ namespace yunjr
 		{
 			extern Callback callback;
 		}
-
-		namespace vesper
+		namespace sample
 		{
 			extern Callback callback;
 		}
@@ -27,7 +26,7 @@ namespace
 {
 	const yunjr::script::Callback* g_scipt_callback_list[] =
 	{
-		&yunjr::script::vesper::callback
+		&yunjr::script::sample::callback
 	};
 
 	const yunjr::script::Callback* const g_p_null_script = &yunjr::script::dummy::callback;

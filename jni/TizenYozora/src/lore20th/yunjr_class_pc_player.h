@@ -202,6 +202,11 @@ namespace yunjr
 
 	smutil::string getBattleMessage(const PcPlayer& who, int how, int what, const PcEnemy& whom);
 
+	namespace shared
+	{
+		typedef sena::shared_ptr<yunjr::PcPlayer> PcPlayer;
+	}
+
 } // namespace yunjr
 
 #endif // #ifndef __YUNJR_CLASS_PC_PLAYER_H__

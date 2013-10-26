@@ -55,6 +55,18 @@ namespace yunjr
 
 	};
 
+	struct ControlStatus: public Control
+	{
+	public:
+		virtual ~ControlStatus();
+
+		static   ControlStatus* newInstance(int x, int y, int width, int height);
+
+	private:
+		ControlStatus();
+
+	};
+
 	struct ControlPanel: public Control
 	{
 	public:

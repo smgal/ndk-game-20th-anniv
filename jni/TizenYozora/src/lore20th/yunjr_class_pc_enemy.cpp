@@ -21,14 +21,14 @@ namespace
 		PLAYERSTATUS_ALL,       // 유효한 모든 상태
 	};
 
-	PcPlayer* getRandomPlayer(PLAYERSTATUS status)
+	yunjr::shared::PcPlayer getRandomPlayer(PLAYERSTATUS status)
 	{
-		PcPlayer* p_player = NULL;
+		yunjr::shared::PcPlayer p_player;
 		int num_player = 0;
 
-		sena::vector<PcPlayer*>& player = yunjr::game::object::getPlayerList();
+		sena::vector<yunjr::shared::PcPlayer>& player = yunjr::game::object::getPlayerList();
 
-		for (sena::vector<PcPlayer*>::iterator obj = player.begin(); obj != player.end(); ++obj)
+		for (sena::vector<yunjr::shared::PcPlayer>::iterator obj = player.begin(); obj != player.end(); ++obj)
 		{
 			if (!(*obj)->isValid())
 				continue;
@@ -48,7 +48,7 @@ namespace
 		{
 			int order = smutil::random(num_player);
 
-			for (sena::vector<PcPlayer*>::iterator obj = player.begin(); obj != player.end(); ++obj)
+			for (sena::vector<yunjr::shared::PcPlayer>::iterator obj = player.begin(); obj != player.end(); ++obj)
 			{
 				if (!(*obj)->isValid())
 					continue;
@@ -74,7 +74,7 @@ namespace
 			p_player = player[smutil::random(player.size())];
 
 			if (!p_player->isValid())
-				p_player = NULL;
+				p_player.setNull();
 		}
 
 		return p_player;
@@ -308,9 +308,9 @@ namespace
 			return;
 		}
 
-		PcPlayer* p_player = getRandomPlayer(PLAYERSTATUS_CONSCIOUS);
+		yunjr::shared::PcPlayer p_player = getRandomPlayer(PLAYERSTATUS_CONSCIOUS);
 
-		if (p_player == NULL)
+		if (p_player.isNull())
 			return;
 
 		int damage = p_enemy->strength * p_enemy->level * (smutil::random(10)+1) / 10;
@@ -346,10 +346,10 @@ namespace
 
 	void enemyCastSpell(PcEnemy* p_enemy)
 	{
-		PcPlayer* p_player = NULL;
+		yunjr::shared::PcPlayer p_player;
 
-		sena::vector<PcEnemy*>& enemy = yunjr::game::object::getEnemyList();
-		sena::vector<PcPlayer*>& player = yunjr::game::object::getPlayerList();
+		sena::vector<yunjr::shared::PcEnemy>& enemy = yunjr::game::object::getEnemyList();
+		sena::vector<yunjr::shared::PcPlayer>& player = yunjr::game::object::getPlayerList();
 
 		switch (p_enemy->cast_level)
 		{
@@ -361,18 +361,18 @@ namespace
 				if (!p_player->isConscious())
 					p_player = player[smutil::random(player.size())];
 
-				enemyCastAttackSpellToOne(p_enemy, p_player);
+				enemyCastAttackSpellToOne(p_enemy, p_player.get());
 			}
 			break;
 		case 2:
 			{
-				enemyCastAttackSpellToOne(p_enemy, getRandomPlayer(PLAYERSTATUS_CONSCIOUS));
+				enemyCastAttackSpellToOne(p_enemy, getRandomPlayer(PLAYERSTATUS_CONSCIOUS).get());
 			}
 			break;
 		case 3:
 			{
 				if (smutil::random(yunjr::game::player::getNumOfConsciousPlayer()) < 2)
-					enemyCastAttackSpellToOne(p_enemy, getRandomPlayer(PLAYERSTATUS_CONSCIOUS));
+					enemyCastAttackSpellToOne(p_enemy, getRandomPlayer(PLAYERSTATUS_CONSCIOUS).get());
 				else
 					enemyCastAttackSpellToAll(p_enemy);
 			}
@@ -386,7 +386,7 @@ namespace
 				else
 				{
 					if (smutil::random(yunjr::game::player::getNumOfConsciousPlayer()) < 2)
-						enemyCastAttackSpellToOne(p_enemy, getRandomPlayer(PLAYERSTATUS_CONSCIOUS));
+						enemyCastAttackSpellToOne(p_enemy, getRandomPlayer(PLAYERSTATUS_CONSCIOUS).get());
 					else
 						enemyCastAttackSpellToAll(p_enemy);
 				}
@@ -405,7 +405,7 @@ namespace
 						int total_hp = 0;
 						int total_max_hp = 0;
 
-						for (sena::vector<PcEnemy*>::iterator obj = enemy.begin(); obj != enemy.end(); ++obj)
+						for (sena::vector<yunjr::shared::PcEnemy>::iterator obj = enemy.begin(); obj != enemy.end(); ++obj)
 						{
 							if ((*obj)->isValid())
 							{
@@ -416,17 +416,17 @@ namespace
 
 						if ((enemy.size() > 2) && (total_hp*3 < total_max_hp) && (smutil::random(2) == 0))
 						{
-							for (sena::vector<PcEnemy*>::iterator obj = enemy.begin(); obj != enemy.end(); ++obj)
+							for (sena::vector<yunjr::shared::PcEnemy>::iterator obj = enemy.begin(); obj != enemy.end(); ++obj)
 							{
 								if ((*obj)->isValid())
-									enemyCastCureSpell(p_enemy, (*obj), p_enemy->level * p_enemy->mentality / 6);
+									enemyCastCureSpell(p_enemy, (*obj).get(), p_enemy->level * p_enemy->mentality / 6);
 							}
 						}
 						else
 						{
 							// party에서 의식이 있는 사람 중에 가장 hp가 낮은 사람을 공격
 							p_player = *player.begin();
-							for (sena::vector<PcPlayer*>::iterator obj = player.begin()+1; obj != player.end(); ++obj)
+							for (sena::vector<yunjr::shared::PcPlayer>::iterator obj = player.begin()+1; obj != player.end(); ++obj)
 							{
 								if ((*obj)->isValid())
 								{
@@ -436,7 +436,7 @@ namespace
 							}
 
 							if (p_player->isValid())
-								enemyCastAttackSpellToOne(p_enemy, p_player);
+								enemyCastAttackSpellToOne(p_enemy, p_player.get());
 						}
 					}
 					else
@@ -459,9 +459,9 @@ namespace
 				{
 					int accum_ac = 0;
 					int num_player = 0;;
-					for (sena::vector<PcPlayer*>::iterator obj = player.begin(); obj != player.end(); ++obj)
+					for (sena::vector<yunjr::shared::PcPlayer>::iterator obj = player.begin(); obj != player.end(); ++obj)
 					{
-						if ((*obj) && ((*obj)->isValid()))
+						if ((*obj).get() && ((*obj)->isValid()))
 						{
 							++num_player;
 							accum_ac += p_enemy->ac;
@@ -472,7 +472,7 @@ namespace
 
 				if ((average_ac > 4) && (smutil::random(5) == 0))
 				{
-					for (sena::vector<PcPlayer*>::iterator obj = player.begin()+1; obj != player.end(); ++obj)
+					for (sena::vector<yunjr::shared::PcPlayer>::iterator obj = player.begin()+1; obj != player.end(); ++obj)
 					{
 						if ((*obj)->isValid())
 						{
@@ -497,7 +497,7 @@ namespace
 					int total_hp = 0;
 					int total_max_hp = 0;
 
-					for (sena::vector<PcEnemy*>::iterator obj = enemy.begin(); obj != enemy.end(); ++obj)
+					for (sena::vector<yunjr::shared::PcEnemy>::iterator obj = enemy.begin(); obj != enemy.end(); ++obj)
 					{
 						if ((*obj)->isValid())
 						{
@@ -508,10 +508,10 @@ namespace
 
 					if ((enemy.size() > 2) && (total_hp*3 < total_max_hp) && (smutil::random(3) == 0))
 					{
-						for (sena::vector<PcEnemy*>::iterator obj = enemy.begin(); obj != enemy.end(); ++obj)
+						for (sena::vector<yunjr::shared::PcEnemy>::iterator obj = enemy.begin(); obj != enemy.end(); ++obj)
 						{
 							if ((*obj)->isValid())
-								enemyCastCureSpell(p_enemy, (*obj), p_enemy->level * p_enemy->mentality / 6);
+								enemyCastCureSpell(p_enemy, (*obj).get(), p_enemy->level * p_enemy->mentality / 6);
 						}
 					}
 					else
@@ -521,7 +521,7 @@ namespace
 							// party에서 의식이 있는 사람 중에 가장 hp가 낮은 사람을 공격
 							p_player = *player.begin();
 							int hp = (p_player->isConscious()) ? p_player->hp : 0x7FFFFFFFL;
-							for (sena::vector<PcPlayer*>::iterator obj = player.begin()+1; obj != player.end(); ++obj)
+							for (sena::vector<yunjr::shared::PcPlayer>::iterator obj = player.begin()+1; obj != player.end(); ++obj)
 							{
 								if ((*obj)->isValid())
 								{
@@ -537,7 +537,7 @@ namespace
 							}
 
 							if (p_player->isValid())
-								enemyCastAttackSpellToOne(p_enemy, p_player);
+								enemyCastAttackSpellToOne(p_enemy, p_player.get());
 						}
 						else
 						{
@@ -554,7 +554,7 @@ namespace
 
 	void enemyAttackWithSpecialAbility(PcEnemy* p_enemy)
 	{
-		PcPlayer* p_player = NULL;
+		yunjr::shared::PcPlayer p_player;
 
 		switch (p_enemy->special)
 		{
@@ -563,11 +563,11 @@ namespace
 				for (int i = 0; i < 5; i++)
 				{
 					p_player = getRandomPlayer(PLAYERSTATUS_CONSCIOUS);
-					if ((p_player != NULL) && (p_player->poison == 0))
+					if ((p_player.get() != NULL) && (p_player->poison == 0))
 						break;
 				}
 
-				if (p_player == NULL)
+				if (p_player.get() == NULL)
 					return;
 
 				yunjr::game::console::writeConsole(13, 4, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), " ", p_player->getName(yunjr::PcEnemy::JOSA_NONE), "에게 독 공격을 시도했다");
@@ -593,7 +593,7 @@ namespace
 			{
 				p_player = getRandomPlayer(PLAYERSTATUS_CONSCIOUS);
 
-				if (p_player == NULL)
+				if (p_player.get() == NULL)
 					return;
 
 				yunjr::game::console::writeConsole(13, 4, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), " ", p_player->getName(yunjr::PcEnemy::JOSA_NONE), "에게 치명적 공격을 시도했다");
@@ -624,7 +624,7 @@ namespace
 			{
 				p_player = getRandomPlayer(PLAYERSTATUS_NOT_DEAD);
 
-				if (p_player == NULL)
+				if (p_player.get() == NULL)
 					return;
 
 				yunjr::game::console::writeConsole(13, 4, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), " ", p_player->getName(yunjr::PcEnemy::JOSA_NONE), "에게 죽음의 공격을 시도했다");
@@ -664,8 +664,8 @@ namespace
 		if (p_enemy->ed_number <= 1)
 			return;
 
-		sena::vector<PcEnemy*>& enemy = yunjr::game::object::getEnemyList();
-		sena::vector<PcPlayer*>& player = yunjr::game::object::getPlayerList();
+		sena::vector<yunjr::shared::PcEnemy>& enemy = yunjr::game::object::getEnemyList();
+		sena::vector<yunjr::shared::PcPlayer>& player = yunjr::game::object::getPlayerList();
 
 		int num_enemy = enemy.size();
 
@@ -704,7 +704,7 @@ namespace
 
 			if (p_enemy->special_cast_level > 1)
 			{
-				PcPlayer* p_last_player = *(player.end() - 1);
+				yunjr::shared::PcPlayer p_last_player = *(player.end() - 1);
 				if ((p_last_player->isValid()) && (num_not_dead < 7) && (smutil::random(5) == 0))
 				{
 					if (num_enemy < int(enemy.capacity()))
@@ -792,10 +792,10 @@ namespace
 
 		yunjr::game::console::writeConsole(13, 4, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), " 일행 모두에게 '", magic.sz_magic_name, "'마법을 사용했다");
 
-		sena::vector<PcPlayer*>& player = yunjr::game::object::getPlayerList();
+		sena::vector<yunjr::shared::PcPlayer>& player = yunjr::game::object::getPlayerList();
 
-		for (sena::vector<PcPlayer*>::iterator obj = player.begin(); obj != player.end(); ++obj)
-			enemyCastAttackSpellSub(p_enemy, *obj, magic.damage * p_enemy->level);
+		for (sena::vector<yunjr::shared::PcPlayer>::iterator obj = player.begin(); obj != player.end(); ++obj)
+			enemyCastAttackSpellSub(p_enemy, (*obj).get(), magic.damage * p_enemy->level);
 	}
 
 	void enemyCastAttackSpellToOne(PcEnemy* p_enemy, PcPlayer* p_player)

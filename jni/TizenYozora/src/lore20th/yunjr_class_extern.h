@@ -2,6 +2,9 @@
 #ifndef __YUNJR_BASE_EXTERN_H__
 #define __YUNJR_BASE_EXTERN_H__
 
+#include "yunjr_class_pc_player.h"
+#include "yunjr_class_pc_enemy.h"
+
 #include "util/sm_util_sena.h"
 #include "util/sm_util_string.h"
 
@@ -9,8 +12,6 @@ namespace yunjr
 {
 	struct Map;
 	struct PcParty;
-	struct PcPlayer;
-	struct PcEnemy;
 
 	namespace data
 	{
@@ -90,8 +91,8 @@ namespace yunjr
 
 		namespace object
 		{
-			sena::vector<PcPlayer*>& getPlayerList(void);
-			sena::vector<PcEnemy*>& getEnemyList(void);
+			sena::vector<shared::PcPlayer>& getPlayerList(void);
+			sena::vector<shared::PcEnemy>& getEnemyList(void);
 			PcParty& getParty(void);
 			Map& getMap(void);
 		}
