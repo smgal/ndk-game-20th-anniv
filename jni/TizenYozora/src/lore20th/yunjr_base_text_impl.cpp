@@ -15,9 +15,7 @@ yunjr::Text::Impl::Impl(const wchar_t* sz_text, size_t length)
 	memcpy(p_text.get(), sz_text, sizeof(wchar_t) * length);
 	p_text[length] = 0;
 
-	const Resource& resource = Resource::getInstance();
-
-	shared_ptr<yunjr::Font> p_font = resource.getCurrentFont();
+	shared_ptr<yunjr::Font> p_font = resource::getCurrentFont();
 
 	p_font->load(p_text.get(), length, glyph_info);
 
@@ -105,9 +103,7 @@ yunjr::Text::Impl::Impl(const wchar_t* sz_text, size_t length)
 
 yunjr::Text::Impl::~Impl()
 {
-	const Resource& resource = Resource::getInstance();
-
-	shared_ptr<yunjr::Font> p_font = resource.getCurrentFont();
+	shared_ptr<yunjr::Font> p_font = resource::getCurrentFont();
 
 	// 'p_font' may not a proper font instance to call unload(). A current font can be changed.
 	p_font->unload(glyph_shadow);

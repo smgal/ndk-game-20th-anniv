@@ -110,12 +110,13 @@ namespace
 	yunjr::shared_ptr<yunjr::Font> s_current_font;
 	int s_ref_current_map_pos_x = 0;
 	int s_ref_current_map_pos_y = 0;
-	yunjr::auto_ptr<yunjr::Resource> s_resource;
+
+	std::vector<yunjr::Chara*> s_chara_list;
 }
 
 #define MAKE_TILE_ID(tile_id, offset) yunjr::TileId(int(tile_id) + offset)
 
-yunjr::Resource::Resource()
+void yunjr::resource::init(void)
 {
 	if (s_res_image.get() == 0)
 	{
@@ -175,63 +176,59 @@ yunjr::Resource::Resource()
 				p_font->set(font_attrib);
 			}
 
-			this->setCurrentFont(p_font);
+			resource::setCurrentFont(p_font);
 		}
 	}
 }
 
-yunjr::Resource::~Resource()
-{
-}
-
-void yunjr::Resource::setCurrentMapPos(int x, int y)
+void yunjr::resource::setCurrentMapPos(int x, int y)
 {
 	s_ref_current_map_pos_x = x;
 	s_ref_current_map_pos_y = y;
 }
 
-void yunjr::Resource::getCurrentMapPos(int& x, int& y)
+void yunjr::resource::getCurrentMapPos(int& x, int& y)
 {
 	x = s_ref_current_map_pos_x;
 	y = s_ref_current_map_pos_y;
 }
 
-void yunjr::Resource::setCurrentFont(shared_ptr<yunjr::Font> p_font)
+void yunjr::resource::setCurrentFont(shared_ptr<yunjr::Font> p_font)
 {
 	s_current_font = p_font;
 }
 
-yunjr::shared_ptr<yunjr::Font> yunjr::Resource::getCurrentFont(void)
+yunjr::shared_ptr<yunjr::Font> yunjr::resource::getCurrentFont(void)
 {
 	return s_current_font;
 }
 
-void yunjr::Resource::setFrameBuffer(const BufferDesc* p_buffer)
-{
-	s_ref_current_buffer = p_buffer;
-}
-
-void yunjr::Resource::setMainWindow(yunjr::ControlWindow* p_main_window)
+void yunjr::resource::setMainWindow(yunjr::ControlWindow* p_main_window)
 {
 	s_ref_p_main_window = p_main_window; 
 }
 
-const yunjr::BufferDesc* yunjr::Resource::getFrameBuffer(void) const
-{
-	return s_ref_current_buffer;
-}
-
-yunjr::ControlWindow* yunjr::Resource::getMainWindow(void) const
+yunjr::ControlWindow* yunjr::resource::getMainWindow(void)
 {
 	return s_ref_p_main_window; 
 }
 
-const yunjr::Tile& yunjr::Resource::getTile(yunjr::TileId tile_id, int id_offset) const
+void yunjr::resource::setFrameBuffer(const BufferDesc* p_buffer)
+{
+	s_ref_current_buffer = p_buffer;
+}
+
+const yunjr::BufferDesc* yunjr::resource::getFrameBuffer(void)
+{
+	return s_ref_current_buffer;
+}
+
+const yunjr::Tile& yunjr::resource::getTile(yunjr::TileId tile_id, int id_offset)
 {
 	return s_tiles[MAKE_TILE_ID(tile_id, id_offset)];
 }
 
-const FlatBoard32& yunjr::Resource::getResimage(ResId res_id) const
+const FlatBoard32& yunjr::resource::getResimage(ResId res_id)
 {
 	assert(res_id.getType() == ResId::TAG_TYPE_IMAGE);
 	
@@ -247,15 +244,7 @@ const FlatBoard32& yunjr::Resource::getResimage(ResId res_id) const
 	}
 }
 
-const yunjr::Resource& yunjr::Resource::getInstance(void)
+std::vector<yunjr::Chara*>& yunjr::resource::getCharaList(void)
 {
-	return yunjr::Resource::getMutableInstance();
-}
-
-yunjr::Resource& yunjr::Resource::getMutableInstance(void)
-{
-	if (s_resource.get() == 0)
-		s_resource.bind(new Resource());
-
-	return *(s_resource.get());
+	return s_chara_list;
 }

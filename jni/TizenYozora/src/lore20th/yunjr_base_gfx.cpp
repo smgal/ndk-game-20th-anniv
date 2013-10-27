@@ -77,8 +77,8 @@ void yunjr::gfx::bitBlt(unsigned long* p_dest_32, int w, int h, int dest_pitch, 
 
 void yunjr::gfx::drawTile(FlatBoard32& dest_board, int x, int y, TileId tile_id, int id_offset)
 {
-	const Tile& tile = Resource::getInstance().getTile(tile_id, id_offset);
-	const FlatBoard32& src_board = Resource::getInstance().getResimage(tile.id_res);
+	const Tile& tile = resource::getTile(tile_id, id_offset);
+	const FlatBoard32& src_board = resource::getResimage(tile.id_res);
 
 	dest_board.bitBlt(x, y, const_cast<FlatBoard32*>(&src_board), tile.bounds.x1, tile.bounds.y1, tile.bounds.x2 - tile.bounds.x1, tile.bounds.y2 - tile.bounds.y1);
 }

@@ -225,37 +225,26 @@ namespace yunjr
 	struct ControlWindow;
 	struct Chara;
 
-	class Resource
+	namespace resource
 	{
-	public:
-		Resource();
-		~Resource();
+		void init();
 
-		static void setCurrentMapPos(int x, int y);
-		static void getCurrentMapPos(int& x, int& y);
+		void setCurrentMapPos(int x, int y);
+		void getCurrentMapPos(int& x, int& y);
 
-		static void setCurrentFont(shared_ptr<yunjr::Font> p_font);
-		static shared_ptr<yunjr::Font> getCurrentFont(void);
+		void setCurrentFont(shared_ptr<yunjr::Font> p_font);
+		shared_ptr<yunjr::Font> getCurrentFont(void);
+
+		void setMainWindow(yunjr::ControlWindow* p_window);
+		yunjr::ControlWindow* getMainWindow(void);
 
 		void setFrameBuffer(const BufferDesc* p_buffer);
-		void setMainWindow(yunjr::ControlWindow* p_window);
+		const BufferDesc* getFrameBuffer(void);
 
-		const BufferDesc* getFrameBuffer(void) const;
-		yunjr::ControlWindow* getMainWindow(void) const;
+		const Tile& getTile(TileId tile_id, int id_offset = 0);
+		const FlatBoard32& getResimage(ResId res_id);
 
-		const Tile& getTile(TileId tile_id, int id_offset = 0) const;
-		const FlatBoard32& getResimage(ResId res_id) const;
-		Control* getControl(ResId res_id) const;
-
-		static const Resource& getInstance(void);
-		static Resource& getMutableInstance(void);
-	};
-
-	///////////////////////////////////////////////////////////////////////////////
-
-	namespace res_collection
-	{
-		extern std::vector<Chara*>& getCharaList(void);
+		std::vector<Chara*>& getCharaList(void);
 	}
 }
 

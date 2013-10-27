@@ -87,7 +87,7 @@ namespace yunjr
 						int map_offset_x;
 						int map_offset_y;
 						
-						Resource::getCurrentMapPos(map_offset_x, map_offset_y);
+						resource::getCurrentMapPos(map_offset_x, map_offset_y);
 
 						display_offset_x -= map_offset_x;
 						display_offset_y -= map_offset_y;
@@ -153,7 +153,7 @@ namespace yunjr
 							int map_offset_x;
 							int map_offset_y;
 
-							Resource::getCurrentMapPos(map_offset_x, map_offset_y);
+							resource::getCurrentMapPos(map_offset_x, map_offset_y);
 
 							int party_x = party.x = map_offset_x / TILE_W;
 							int party_y = party.y = map_offset_y / TILE_H;

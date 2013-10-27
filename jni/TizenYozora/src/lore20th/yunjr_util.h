@@ -18,7 +18,7 @@ namespace yunjr
 	public:
 		FontSizeTemporarily()
 		{
-			m_font = Resource::getCurrentFont();
+			m_font = resource::getCurrentFont();
 			m_old_size = m_setFontSize(temporary_font_size);
 		}
 

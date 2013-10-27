@@ -123,7 +123,7 @@ yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int h
 				int map_offset_x;
 				int map_offset_y;
 
-				Resource::getCurrentMapPos(map_offset_x, map_offset_y);
+				resource::getCurrentMapPos(map_offset_x, map_offset_y);
 
 				int display_offset_x = - map_offset_x % TILE_W;
 				int display_offset_y = - map_offset_y % TILE_H;
@@ -144,11 +144,11 @@ yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int h
 				}
 
 				// playable
-				std::vector<Chara*>& chara_list = yunjr::res_collection::getCharaList();
+				std::vector<Chara*>& chara_list = yunjr::resource::getCharaList();
 				std::for_each(chara_list.begin(), chara_list.end(), Operator<Chara*, FlatBoard32*>(&attribute.map_board));
 			}
 
-			const BufferDesc* p_buffer_desc = Resource::getInstance().getFrameBuffer();
+			const BufferDesc* p_buffer_desc = resource::getFrameBuffer();
 
 			if (p_buffer_desc)
 			{
@@ -197,12 +197,12 @@ yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int h
 	{
 		virtual bool update(Visible* p_this, unsigned long tick)
 		{
-			std::vector<Chara*>& chara_list = yunjr::res_collection::getCharaList();
+			std::vector<Chara*>& chara_list = yunjr::resource::getCharaList();
 			std::for_each(chara_list.begin(), chara_list.end(), Operator<Chara*, unsigned long>(tick));
 
 			Playable* p_chara = (Playable*)chara_list[0];
 			assert(p_chara);
-			Resource::setCurrentMapPos(p_chara->getPosX(), p_chara->getPosY());
+			resource::setCurrentMapPos(p_chara->getPosX(), p_chara->getPosY());
 
 			return true;
 		}

@@ -217,9 +217,7 @@ namespace yunjr
 
 			void writeLine(const char* sz_text, unsigned long color) //??
 			{
-				const Resource& resource = Resource::getInstance();
-
-				ControlConsole* p_console = (ControlConsole*)resource.getMainWindow()->findControl("CONSOL");
+				ControlConsole* p_console = (ControlConsole*)resource::getMainWindow()->findControl("CONSOL");
 
 				if (p_console)
 				{
@@ -233,9 +231,7 @@ namespace yunjr
 			} 
 			void writeLine(const wchar_t* sz_text, unsigned long color) //??
 			{
-				const Resource& resource = Resource::getInstance();
-
-				ControlConsole* p_console = (ControlConsole*)resource.getMainWindow()->findControl("CONSOL");
+				ControlConsole* p_console = (ControlConsole*)resource::getMainWindow()->findControl("CONSOL");
 
 				if (p_console)
 				{

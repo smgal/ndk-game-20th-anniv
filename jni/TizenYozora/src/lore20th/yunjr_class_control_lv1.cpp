@@ -145,7 +145,7 @@ yunjr::ControlWaku* yunjr::ControlWaku::newInstance(void)
 		const FlatBoard32& src_ui;
 
 		AttributeWaku()
-			: src_ui(Resource::getInstance().getResimage(ResId(ResId::TAG_TYPE_IMAGE, ResId::TAG_TYPE_IMAGE_UI, 0)))
+			: src_ui(resource::getResimage(ResId(ResId::TAG_TYPE_IMAGE, ResId::TAG_TYPE_IMAGE_UI, 0)))
 		{
 			pos.x = 0;
 			pos.y = 0;
@@ -159,7 +159,7 @@ yunjr::ControlWaku* yunjr::ControlWaku::newInstance(void)
 			AttributeWaku& attribute = *((AttributeWaku*)p_this->getAttribute());
 			//dest_board.bitBlt(attribute.pos.x, attribute.pos.y, const_cast<FlatBoard32*>(&attribute.src_ui), 0, 0, attribute.src_ui.getBufferDesc().width, attribute.src_ui.getBufferDesc().height);
 
-			const BufferDesc* p_buffer_desc = Resource::getInstance().getFrameBuffer();
+			const BufferDesc* p_buffer_desc = resource::getFrameBuffer();
 
 			if (p_buffer_desc)
 			{
@@ -275,8 +275,7 @@ yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int widt
 			const int DIALOG_WINDOW_H = attribute.size.height;
 
 			{
-				const Resource& resource = Resource::getInstance();
-				const BufferDesc* p_buffer_desc = resource.getFrameBuffer();
+				const BufferDesc* p_buffer_desc = resource::getFrameBuffer();
 
 				unsigned long* p = (unsigned long*)p_buffer_desc->p_start_address;
 				int ppl = (p_buffer_desc->bytes_per_line << 3) / p_buffer_desc->bits_per_pixel;
@@ -361,8 +360,7 @@ yunjr::ControlStatus* yunjr::ControlStatus::newInstance(int x, int y, int width,
 			const int DIALOG_WINDOW_H = attribute.size.height;
 
 			{
-				const Resource& resource = Resource::getInstance();
-				const BufferDesc* p_buffer_desc = resource.getFrameBuffer();
+				const BufferDesc* p_buffer_desc = resource::getFrameBuffer();
 
 				unsigned long* p = (unsigned long*)p_buffer_desc->p_start_address;
 				int ppl = (p_buffer_desc->bytes_per_line << 3) / p_buffer_desc->bits_per_pixel;
@@ -447,8 +445,8 @@ yunjr::ControlPanel* yunjr::ControlPanel::newInstance(void)
 		const FlatBoard32& src_ui_mask;
 
 		AttributePanel()
-			: src_ui(Resource::getInstance().getResimage(ResId(ResId::TAG_TYPE_IMAGE, ResId::TAG_TYPE_IMAGE_UI, 0)))
-			, src_ui_mask(Resource::getInstance().getResimage(ResId(ResId::TAG_TYPE_IMAGE, ResId::TAG_TYPE_IMAGE_UI, 1)))
+			: src_ui(resource::getResimage(ResId(ResId::TAG_TYPE_IMAGE, ResId::TAG_TYPE_IMAGE_UI, 0)))
+			, src_ui_mask(resource::getResimage(ResId(ResId::TAG_TYPE_IMAGE, ResId::TAG_TYPE_IMAGE_UI, 1)))
 		{
 			pos.x = 0;
 			pos.y = 0;

@@ -41,19 +41,6 @@ namespace yunjr
 
 namespace yunjr
 {
-	namespace res_collection
-	{
-		namespace
-		{
-			std::vector<Chara*> chara_list;
-		}
-
-		std::vector<Chara*>& getCharaList(void)
-		{
-			return chara_list;
-		}
-	}
-
 	// for updating
 	template <>
 	void yunjr::Operator<ControlId, unsigned long>::operator()(ControlId obj)
@@ -244,8 +231,9 @@ namespace
 				console.display();
 
 				//?? static? and by using MACRO
-				yunjr::Resource& resource = yunjr::Resource::getMutableInstance();
-				yunjr::ControlStatus* p_status = (yunjr::ControlStatus*)resource.getMainWindow()->findControl("STATUS");
+//				STATUS_INVALIDATE;
+//#define STATUS_INVALIDATE
+				yunjr::ControlStatus* p_status = (yunjr::ControlStatus*)yunjr::resource::getMainWindow()->findControl("STATUS");
 				p_status->invalidate();
 				//?? window[WINDOWTYPE_STATUS]->setUpdateFlag();
 			}
@@ -274,12 +262,12 @@ void yunjr::init(const char* sz_id)
 	// for Android (regarding the life cycle of Activity)
 	{
 		delete s_p_main_window;
-		deleteVector(res_collection::getCharaList());
+		deleteVector(resource::getCharaList());
 
 		yunjr::GameState::getMutableInstance().reset();
 	}
 
-	Resource& resrouce = Resource::getMutableInstance();
+	resource::init();
 
 	{
 		s_p_main_window = ControlWindow::newInstance(720, 1280);
@@ -290,13 +278,11 @@ void yunjr::init(const char* sz_id)
 		s_p_main_window->addChild(std::make_pair("STATUS", ControlStatus::newInstance(21*2, 251*2, 596*2, 90*2)));
 		s_p_main_window->addChild(std::make_pair("PANEL",  ControlPanel::newInstance()));
 
-		resrouce.setMainWindow(s_p_main_window);
+		resource::setMainWindow(s_p_main_window);
 	}
 
 	{
-		const Resource& resource = Resource::getInstance();
-
-		ControlConsole* p_console = (ControlConsole*)resource.getMainWindow()->findControl("CONSOL");
+		ControlConsole* p_console = (ControlConsole*)resource::getMainWindow()->findControl("CONSOL");
 
 		if (p_console)
 		{
@@ -329,7 +315,7 @@ void yunjr::init(const char* sz_id)
 	}
 
 	{
-		std::vector< ::yunjr::Chara*>& chara_list = yunjr::res_collection::getCharaList();
+		std::vector<yunjr::Chara*>& chara_list = resource::getCharaList();
 
 		chara_list.push_back(Playable::newInstance());
 	}
@@ -357,10 +343,11 @@ void yunjr::init(const char* sz_id)
 
 			p_player->setName("SMgal");
 			p_player->class_ = 8;
-			p_player->level[0] = 1;
+			p_player->level[0] = 19;
 			p_player->level[1] = 1;
 			p_player->level[2] = 1;
-			p_player->reviseAttribute();
+			p_player->hp = 190;
+			p_player->level[0] = 19;
 
 			player_list.push_back(p_player);
 		}
@@ -414,7 +401,7 @@ void yunjr::done()
 	delete s_p_main_window;
 	s_p_main_window = 0;
 
-	deleteVector(res_collection::getCharaList());
+	deleteVector(resource::getCharaList());
 }
 
 bool yunjr::loop(const BufferDesc& buffer_desc)
@@ -427,7 +414,7 @@ bool yunjr::loop(const BufferDesc& buffer_desc)
 	if (buffer_desc.bits_per_pixel != 32)
 		return false;
 
-	Resource::getMutableInstance().setFrameBuffer(&buffer_desc);
+	resource::setFrameBuffer(&buffer_desc);
 
 	int dest_buffer_pitch = (buffer_desc.bytes_per_line << 3) / buffer_desc.bits_per_pixel;
 	FlatBoard32 dest_board((FlatBoard32::Pixel*)buffer_desc.p_start_address, buffer_desc.width, buffer_desc.height, dest_buffer_pitch);
@@ -457,7 +444,7 @@ bool yunjr::loop(const BufferDesc& buffer_desc)
 		s_p_main_window->render(dest_board);
 	}
 
-	Resource::getMutableInstance().setFrameBuffer(0);
+	resource::setFrameBuffer(0);
 
 	return true;
 }
