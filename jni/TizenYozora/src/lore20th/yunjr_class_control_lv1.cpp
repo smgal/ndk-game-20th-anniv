@@ -12,6 +12,7 @@
 
 #include <algorithm>
 #include <string.h>
+#include <stdio.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // local
@@ -387,6 +388,15 @@ yunjr::ControlStatus* yunjr::ControlStatus::newInstance(int x, int y, int width,
 							Text text(player_list[i]->getName());
 
 							text_board.renderTextFx(text_x, text_y, text, 0xFFFFFFFF, 0xFFFFFFFF);
+
+							char s[256];
+							sprintf(s, "%d,  %d,  %d,  %d,  %d,  %s"
+								, player_list[i]->hp, player_list[i]->sp
+								, player_list[i]->esp, player_list[i]->ac
+								, player_list[i]->level[0], player_list[i]->getConditionString());
+
+							Text text_aux(s);
+							text_board.renderTextFx(text_x+150, text_y, text_aux, 0xFFFFFFFF, 0xFFFFFFFF);
 
 							text_y += text_y_gap;
 						}

@@ -243,6 +243,10 @@ namespace
 
 				console.display();
 
+				//?? static? and by using MACRO
+				yunjr::Resource& resource = yunjr::Resource::getMutableInstance();
+				yunjr::ControlStatus* p_status = (yunjr::ControlStatus*)resource.getMainWindow()->findControl("STATUS");
+				p_status->invalidate();
 				//?? window[WINDOWTYPE_STATUS]->setUpdateFlag();
 			}
 
