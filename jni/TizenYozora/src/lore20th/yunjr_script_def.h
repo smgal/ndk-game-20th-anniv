@@ -112,7 +112,7 @@ struct MapTemplate
 	int height;
 	int row;
 
-	typedef std::map<unsigned short, unsigned char> Convert;
+	typedef std::map<wchar_t, unsigned char> Convert;
 	Convert convert;
 
 	MapTemplate()
@@ -132,24 +132,25 @@ struct MapTemplate
 		yunjr::game::map::init(this->width, this->height);
 	}
 
-	void setTile(const char emoji[], int assigned_index)
+	void setTile(const wchar_t emoji[], int assigned_index)
 	{
-		unsigned short temp = emoji[0];
-		temp <<= 8;
-		temp  |= (unsigned short)emoji[1] & 0xFF;
-
-		this->setTile(temp, assigned_index);
+		this->setTile(emoji[0], assigned_index);
 	}
 
-	void setTile(unsigned short emoji, int assigned_index)
+	void setTile(wchar_t emoji, int assigned_index)
 	{
 		this->convert[emoji] = assigned_index;
 	}
 
-	void setRow(const char* p_row_data)
+	void setRow(const wchar_t* p_row_data)
 	{
-		int len = strlen(p_row_data) / 2;
-		unsigned char* p_char = (unsigned char*)p_row_data;
+		const wchar_t* p = p_row_data;
+
+		while (*p)
+			++p;
+
+		int len = p - p_row_data;
+		wchar_t* p_char = (wchar_t*)p_row_data;
 
 		std::vector<unsigned char> row;
 		row.reserve(len);
@@ -157,11 +158,7 @@ struct MapTemplate
 		int loop = len;
 		while (--loop >= 0)
 		{
-			unsigned short temp = *p_char++;
-			temp <<= 8;
-			temp  |= (unsigned short)*p_char++ & 0xFF;
-
-			MapTemplate::Convert::iterator i = this->convert.find(temp);
+			MapTemplate::Convert::iterator i = this->convert.find(*p_char++);
 
 			if (i != this->convert.end())
 			{

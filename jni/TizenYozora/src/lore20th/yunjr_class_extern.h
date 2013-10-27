@@ -45,7 +45,7 @@ namespace yunjr
 			void setHandicap(int handicap);
 			void setEncounter(int offset, int range);
 			void setStartPos(int x, int y);
-			void push(int row, unsigned char* p_data, int num_data);
+			void push(int row, const unsigned char* p_data, int num_data);
 			void change(int x, int y, int tile);
 			void setLight(int x, int y);
 			void resetLight(int x, int y);

@@ -34,7 +34,7 @@ yunjr::Text::Text(const char* sz_text_utf8, size_t length)
 	wchar_t*    p_dst     = wchar_buffer.get();
 	wchar_t*    p_dst_end = p_dst + length;
 
-	while (*p_dst && p_dst < p_dst_end)
+	while (*p_src && p_dst < p_dst_end)
 		*p_dst++ = wchar_t(*p_src++);
 
 	*p_dst = 0;

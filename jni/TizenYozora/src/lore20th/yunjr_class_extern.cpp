@@ -141,7 +141,7 @@ namespace yunjr
 			}
 
 			//! 맵 데이터를 행 단위로 입력한다.
-			void push(int row, unsigned char* pData, int num_data)
+			void push(int row, const unsigned char* p_data, int num_data)
 			{
 				if (row >= 0 && row < s_map.height)
 				{
@@ -150,7 +150,7 @@ namespace yunjr
 					if (num_data > s_map.width)
 						num_data = s_map.width;
 
-					sena::memcpy(&s_map.data[row][0], pData, num_data);
+					sena::memcpy(&s_map.data[row][0], p_data, num_data);
 				}
 			}
 			//! 맵의 (x,y) 지점의 타일 값을 변경한다.

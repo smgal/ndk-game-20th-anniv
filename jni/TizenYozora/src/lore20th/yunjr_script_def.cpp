@@ -1,4 +1,4 @@
-
+Ôªø
 #include "yunjr_script_def.h"
 
 // TOWN
@@ -62,130 +62,130 @@ namespace
 {
 	void SetTownEmoji(MapTemplate& map_template)
 	{
-		_Map_SetTile("°ÿ", 0)
+		_Map_SetTile(L"‚Äª", 0)
 
 		// 47 floor - earthen floor
-		_Map_SetTile("°°", 47)
+		_Map_SetTile(L"„ÄÄ", 47)
 		// 45 floor - earthen floor with grass
-		_Map_SetTile("£Æ", 45)
+		_Map_SetTile(L"Ôºé", 45)
 		// 28 floor - grass with flowers 1
-		_Map_SetTile("£∫", 28)
+		_Map_SetTile(L"Ôºö", 28)
 		// 29 floor - grass with flowers 2
-		_Map_SetTile("£ª", 29)
+		_Map_SetTile(L"Ôºõ", 29)
 		// 46 floor - grass with flowers 3 (solid grass)
-		_Map_SetTile("°≈", 46)
+		_Map_SetTile(L"‚à¥", 46)
 
 		// 44 floor - stone
-		_Map_SetTile("°ø", 44)
+		_Map_SetTile(L"√ó", 44)
 		// 27 floor - stone floor with grass
-		_Map_SetTile("°¿", 27)
+		_Map_SetTile(L"√∑", 27)
 			
 		// 30 floor - wood 1-1
-		_Map_SetTile("++", 30)
+		_Map_SetTile(L"++", 30)
 		// 31 floor - wood 1-2
-		_Map_SetTile("-+", 31)
+		_Map_SetTile(L"-+", 31)
 		// 32 floor - wood 2
-		_Map_SetTile("£´", 32)
+		_Map_SetTile(L"Ôºã", 32)
 
 		// 35 floor - brick floor
-		_Map_SetTile("¶´", 35)
+		_Map_SetTile(L"‚îº", 35)
 		// 33 floor - brick floor top-right
-		_Map_SetTile("¶§", 33)
+		_Map_SetTile(L"‚îê", 33)
 		// 34 floor - brick floor top-left
-		_Map_SetTile("¶£", 34)
+		_Map_SetTile(L"‚îå", 34)
 		// 36 floor - brick floor top
-		_Map_SetTile("¶®", 36)
+		_Map_SetTile(L"‚î¨", 36)
 		// 37 floor - brick floor right
-		_Map_SetTile("¶©", 37)
+		_Map_SetTile(L"‚î§", 37)
 		// 38 floor - brick floor left
-		_Map_SetTile("¶ß", 38)
+		_Map_SetTile(L"‚îú", 38)
 		// 39 floor - brick floor left-bottom
-		_Map_SetTile("¶¶", 39)
+		_Map_SetTile(L"‚îî", 39)
 		// 40 floor - brick floor right-bottom
-		_Map_SetTile("¶•", 40)
+		_Map_SetTile(L"‚îò", 40)
 		// 41 floor - brick floor bottom
-		_Map_SetTile("¶™", 41)
+		_Map_SetTile(L"‚î¥", 41)
 
 		// 42 floor - red carpet
-		_Map_SetTile("¢’", 42)
+		_Map_SetTile(L"‚Üï", 42)
 		// 43 floor - red carpet with deco
-		_Map_SetTile("°Û", 43)
+		_Map_SetTile(L"‚à¨", 43)
 
 		// 24 floor - water
-		_Map_SetTile("Ùπ", 24)
+		_Map_SetTile(L"Â∑ù", 24)
 		// 25 floor - swamp
-		_Map_SetTile("‘∏", 25)
+		_Map_SetTile(L"ÊØí", 25)
 		// 26 floor - lava
-		_Map_SetTile("¢Õ", 26)
+		_Map_SetTile(L"‚ô®", 26)
 
 		// 01 object - pillar - on stone floor
-		_Map_SetTile("¢“", 1)
+		_Map_SetTile(L"¬∂", 1)
 		// 02 object - tree - on grass
-		_Map_SetTile("¢ø", 2)
+		_Map_SetTile(L"‚ôß", 2)
 		// 03 object - bed left - on stone floor
-		_Map_SetTile("°º", 3)
+		_Map_SetTile(L"„Äê", 3)
 		// 04 object - bed right - on stone floor
-		_Map_SetTile("°Ω", 4)
+		_Map_SetTile(L"„Äë", 4)
 		// 12 object - sack - on stone floor
-		_Map_SetTile("°ﬁ", 12)
+		_Map_SetTile(L"‚óá", 12)
 		// 13 object - pot - on stone floor
-		_Map_SetTile("°‚", 13)
+		_Map_SetTile(L"‚ñ≥", 13)
 		// 14 object - steel case - on wood floor
-		_Map_SetTile("°„", 14)
+		_Map_SetTile(L"‚ñ≤", 14)
 		// 15 object - flowerpot - on wood floor
-		_Map_SetTile("ÕØ", 15)
+		_Map_SetTile(L"Âè§", 15)
 		// 17 object - well - on earthen floor
-		_Map_SetTile("§±", 17)
+		_Map_SetTile(L"„ÖÅ", 17)
 		// 18 object - stone - on earthen floor
-		_Map_SetTile("¢√", 18)
+		_Map_SetTile(L"‚ñ£", 18)
 		// 20 object - sword - on brick floor
-		_Map_SetTile("¢”", 20)
+		_Map_SetTile(L"‚Ä†", 20)
 		// 21 object - armor - on brick floor
-		_Map_SetTile("¢¡", 21)
+		_Map_SetTile(L"‚äô", 21)
 
 		// 05 wall - horiz
-		_Map_SetTile("¢«", 5)
+		_Map_SetTile(L"‚ñ§", 5)
 		// 06 wall - verti
-		_Map_SetTile("¢»", 6)
+		_Map_SetTile(L"‚ñ•", 6)
 		// 07 wall - by brick
-		_Map_SetTile("°·", 7)
+		_Map_SetTile(L"‚ñ†", 7)
 		// 16 wall - gradation
-		_Map_SetTile("¢À", 16)
+		_Map_SetTile(L"‚ñ¶", 16)
 		// 19 wall - wood(?)
-		_Map_SetTile("°‡", 19)
+		_Map_SetTile(L"‚ñ°", 19)
 
 		// 08 storefront sign - FOOD
-		_Map_SetTile("®“", 8)
+		_Map_SetTile(L"‚ìï", 8)
 		// 09 storefront sign - CURE
-		_Map_SetTile("®œ", 9)
+		_Map_SetTile(L"‚ìí", 9)
 		// 10 storefront sign - ARMS
-		_Map_SetTile("®Õ", 10)
+		_Map_SetTile(L"‚ìê", 10)
 		// 11 storefront sign - EXP
-		_Map_SetTile("®—", 11)
+		_Map_SetTile(L"‚ìî", 11)
 
 		// 22 entrance - dungeon
-		_Map_SetTile("Â˜", 22)
+		_Map_SetTile(L"ÂÜÜ", 22)
 
 		// 23 sign - on earthen floor
-		_Map_SetTile("ƒ", 23)
+		_Map_SetTile(L"Êó©", 23)
 
 		// 48 character - skeleton - on brick floor
-		_Map_SetTile("ÕÈ", 48)
+		_Map_SetTile(L"È™®", 48)
 		// 49 character - man - on earthen floor
-		_Map_SetTile("—˚", 49)
+		_Map_SetTile(L"Áî∑", 49)
 		// 50 character - woman - on earthen floor
-		_Map_SetTile("Â¸", 50)
+		_Map_SetTile(L"Ô¶Å", 50)
 		// 51 character - merchant - on wood floor
-		_Map_SetTile("ﬂ¬", 51)
+		_Map_SetTile(L"ÂïÜ", 51)
 		// 52 character - mage - on stone floor
-		_Map_SetTile("€ˆ", 52)
+		_Map_SetTile(L"Ê≥ï", 52)
 		// 53 character - knight - on stone floor
-		_Map_SetTile("ŸÎ", 53)
+		_Map_SetTile(L"Ê≠¶", 53)
 		// 54 character - LordAhn - on red carpet
-		_Map_SetTile("Ë›", 54)
+		_Map_SetTile(L"Áéã", 54)
 
 		// 55 temporary
-		_Map_SetTile("£ø", 55)
+		_Map_SetTile(L"Ôºü", 55)
 	}
 }
 
