@@ -204,7 +204,9 @@ namespace
 		{
 			if (obj->isValid())
 			{
-				if (yunjr::s_p_game_main->party.food <= 0)
+				yunjr::PcParty& party = yunjr::game::object::getParty();
+
+				if (party.food <= 0)
 				{
 					yunjr::game::console::writeConsole(4, 1, "일행은 식량이 바닥났다");
 				}
@@ -223,7 +225,7 @@ namespace
 						if (obj->hp <= 0)
 							obj->hp = 1;
 
-						--yunjr::s_p_game_main->party.food;
+						--party.food;
 					}
 					else
 					{
@@ -243,8 +245,8 @@ namespace
 					int i = (obj->level[0] + obj->level[1] + obj->level[2]) * 2;
 					if (obj->hp >= obj->endurance * obj->level[0])
 					{
-						if (yunjr::s_p_game_main->party.food < 255)
-							++yunjr::s_p_game_main->party.food;
+						if (party.food < 255)
+							++party.food;
 					}
 
 					obj->hp += i;
@@ -257,7 +259,7 @@ namespace
 					{
 						yunjr::game::console::writeConsole(15, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " 치료되었다");
 					}
-					--yunjr::s_p_game_main->party.food;
+					--party.food;
 				}
 
 				obj->sp  = obj->mentality * obj->level[1];

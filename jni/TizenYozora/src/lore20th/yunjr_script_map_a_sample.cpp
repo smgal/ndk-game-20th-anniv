@@ -1,4 +1,4 @@
-
+ï»¿
 #include "yunjr_script_def.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -23,36 +23,36 @@ DEF_v(sample, Load)
 
 	_Map_SetTileAsDefault(TILE_SET_TOWN)
 
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡áå÷¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡ðÄ¡¡¡¡¡¡¡¡¡¡¡¡¡¡¢Í¢Í¡¡¡¡¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡á¡¡¡¡¢Í¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡Ø¡¡¡á¡¡¡¡¡¡¢Í¡¡¡¡¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡Ô¸Ô¸Ô¸Ô¸¡¡¡¡Ñû¡á¡¡¡¡¢Í¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡Ô¸Ô¸¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡Ñû¡¡¡á¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡Ô¸Ô¸¡¡¡¡¡¡£®¡¡¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡£®¡¡¡¡¡¡¡¡¡á¡á¡á¡á¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡¡¡¡¡ðÄ¡¡¡¡¡¡¡¡¡¡¡¡++++++++¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡Ñû¡Ø¡¡£«£«£«£«¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡ô¹¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡á¡¡¡¡¡¡ô¹ô¹ô¹¡¡¡á¡¡¡¡ðÄ¡¡¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡ô¹ô¹¡¡¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡¡á¡á¡¡¡¡ô¹¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡£®¡¡¡¡¦£¦¨¦¨¦¤¡¡¡¿¡¿¡À¡¿¡¿¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡£®¡¡¡¡¡¡¡¡¡¡¦§¦«¦«¦©¡¡¡¿¡¿¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¦§¦«¦«¦©¡¡¡¿¡À¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¦¦¦ª¦ª¦¥¡¡¡¿¡¿¡¡¡¡¡¡¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡á¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡")
-	_Map_SetRow("¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡¡")
+	_Map_SetRow("ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€â– å††â– ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€æ—©ã€€ã€€ã€€ã€€ã€€ã€€ã€€â™¨â™¨ã€€ã€€ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€â– ã€€ã€€â™¨ã€€ã€€ã€€ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€ã€€ã€€ã€€â€»ã€€â– ã€€ã€€ã€€â™¨ã€€ã€€ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€æ¯’æ¯’æ¯’æ¯’ã€€ã€€ç”·â– ã€€ã€€â™¨ã€€ã€€ã€€ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€æ¯’æ¯’ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ç”·ã€€â– ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€æ¯’æ¯’ã€€ã€€ã€€ï¼Žã€€ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼Žã€€ã€€ã€€ã€€â– â– â– â– ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€ã€€ã€€æ—©ã€€ã€€ã€€ã€€ã€€ã€€++++++++ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ç”·â€»ã€€ï¼‹ï¼‹ï¼‹ï¼‹ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€å·ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€â– ã€€ã€€ã€€å·å·å·ã€€â– ã€€ã€€æ—©ã€€ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€å·å·ã€€â– ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€â– â– ã€€ã€€å·ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€ã€€ã€€ã€€ï¼Žã€€ã€€â”Œâ”¬â”¬â”ã€€Ã—Ã—Ã·Ã—Ã—â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€ï¼Žã€€ã€€ã€€ã€€ã€€â”œâ”¼â”¼â”¤ã€€Ã—Ã—ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€â”œâ”¼â”¼â”¤ã€€Ã—Ã·ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€â””â”´â”´â”˜ã€€Ã—Ã—ã€€ã€€ã€€â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– â– ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€")
+	_Map_SetRow("ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€ã€€")
 
 ENDDEF
 
@@ -67,7 +67,7 @@ ENDDEF
 DEF_ii(sample, Talk)
 
 	IF ON(15,16) THEN
-		_Talk(L"¾ß¸Þ·Î ÀÌ·± ½Î¿òÀº ¸ð ¾ß¸Þ·î´Ù")
+		_Talk(L"ì•¼ë©”ë¡œ ì´ëŸ° ì‹¸ì›€ì€ ëª¨ ì•¼ë©”ë£½ë‹¤")
 		HALT
 	END
 
@@ -122,7 +122,7 @@ DEF_ii(sample, Occur)
 			_Battle_RegisterEnemy(1)
 			_Battle_ShowEnemy()
 
-			_Talk("¿©±â´Â Necromancer¸¦ ¸¸³¯ ¼ö ÀÖ´Â ÀÌº¥Æ®´Ù")
+			_Talk("ì—¬ê¸°ëŠ” Necromancerë¥¼ ë§Œë‚  ìˆ˜ ìžˆëŠ” ì´ë²¤íŠ¸ë‹¤")
 			_PressAnyKey()
 
 			_Battle_Start(true)
@@ -131,9 +131,9 @@ DEF_ii(sample, Occur)
 			ASSIGN(temp, _Battle_Result())
 
 			IF EQUAL(temp, 1) THEN
-				_Talk("Á¤»óÀûÀÎ ÀüÅõ Á¾·á")
+				_Talk("ì •ìƒì ì¸ ì „íˆ¬ ì¢…ë£Œ")
 			ELSE
-				_Talk("µµ¸Á")
+				_Talk("ë„ë§")
 			END
 */
 		ELSE
@@ -152,9 +152,9 @@ DEF_ii(sample, Enter)
 /*
 	IF ON(14,5) THEN
 		_Select_Init()
-		_Select_Add("»õ·Î¿î ½ºÅ©¸³Æ®¸¦ ·ÎµåÇÏ½Ã°Ú½À´Ï±î?")
-		_Select_Add("¿¹")
-		_Select_Add("¾Æ´Ï¿À")
+		_Select_Add("ìƒˆë¡œìš´ ìŠ¤í¬ë¦½íŠ¸ë¥¼ ë¡œë“œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?")
+		_Select_Add("ì˜ˆ")
+		_Select_Add("ì•„ë‹ˆì˜¤")
 		_Select_Run()
 
 		DECLARE(temp)
