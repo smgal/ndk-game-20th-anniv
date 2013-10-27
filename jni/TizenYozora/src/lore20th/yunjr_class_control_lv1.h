@@ -45,10 +45,28 @@ namespace yunjr
 	public:
 		virtual ~ControlConsole();
 
-		void     setTitle(const wchar_t* sz_text);
-		void     setText(const wchar_t* sz_text1, const wchar_t* sz_text2, const wchar_t* sz_text3);
+		template<typename CharCode>
+		void setTitle(const CharCode* sz_text)
+		{
+			delete title;
+			title = new Text(sz_text);
+		}
 
-		static   ControlConsole* newInstance(int x, int y, int width, int height, int margin_left, int margin_right, int margin_top, int margin_bottom);
+		template<typename CharCode>
+		void setText(const CharCode* sz_text1, const CharCode* sz_text2, const CharCode* sz_text3)
+		{
+			delete text[0];
+			delete text[1];
+			delete text[2];
+
+			text[0] = new Text(sz_text1);
+			text[1] = new Text(sz_text2);
+			text[2] = new Text(sz_text3);
+
+			this->invalidate();
+		}
+
+		static ControlConsole* newInstance(int x, int y, int width, int height, int margin_left, int margin_right, int margin_top, int margin_bottom);
 
 	private:
 		ControlConsole();

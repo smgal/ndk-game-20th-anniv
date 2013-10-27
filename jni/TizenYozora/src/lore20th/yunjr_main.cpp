@@ -14,6 +14,7 @@
 #include "yunjr_class_map_event.h"
 #include "yunjr_class_pc_party.h"
 #include "yunjr_class_pc_player.h"
+#include "yunjr_class_pc_functor.h"
 
 #include "yunjr_res.h"
 #include "yunjr_res_string.h"
@@ -77,6 +78,21 @@ namespace yunjr
 namespace
 {
 	yunjr::ControlWindow* s_p_main_window = 0;
+
+	void detectGameOver(void)
+	{
+		sena::vector<yunjr::shared::PcPlayer>& player_list = yunjr::game::object::getPlayerList();
+
+		// 전처리
+		sena::for_each(player_list.begin(), player_list.end(), FnCheckCondition<yunjr::shared::PcPlayer>());
+/*??
+		// 실제 생존해 있는 숫자를 확인
+		int num_alive = NUM_OF_CONSCIOUS_PLAYER(player_list);
+
+		if (num_alive == 0)
+			proccessGameOver(EXITCODE_BY_ACCIDENT);
+*/
+	}
 
 	struct MapCallback
 	{
@@ -176,8 +192,8 @@ namespace
 		static void actSwamp(int x1, int y1, bool bUseless)
 		{
 			yunjr::PcParty& party = yunjr::game::object::getParty();
-/* //??
-			m_actMove(x1, y1, false);
+
+			actMove(x1, y1, false);
 
 			// walkOnSwamp에 대한 처리
 			if (party.ability.walk_on_swamp > 0)
@@ -186,28 +202,28 @@ namespace
 			}
 			else
 			{
-				LoreConsole& console = LoreConsole::getConsole();
+				yunjr::LoreConsole& console = yunjr::LoreConsole::getConsole();
 				console.clear();
 				console.setTextColorIndex(13);
 				console.write("일행은 독이 있는 늪에 들어갔다 !!!");
 				console.write("");
 
-				int num_updated;
+				sena::vector<yunjr::shared::PcPlayer>& player_list = yunjr::game::object::getPlayerList();
 
-				num_updated = sena::for_each(player.begin(), player.end(), FnEnterSwamp<PcPlayer*>()).Result();
+				int num_updated = sena::for_each(player_list.begin(), player_list.end(), FnEnterSwamp<yunjr::shared::PcPlayer>()).Result();
 
 				console.display();
 
 				// player의 디스플레이 된 수치에 변화가 생겼다면
 				if (num_updated > 0)
 				{
-					window[WINDOWTYPE_STATUS]->setUpdateFlag();
+					//?? window[WINDOWTYPE_STATUS]->setUpdateFlag();
 				}
 			}
 
 			detectGameOver();
-*/
 		}
+
 		static void actLava(int x1, int y1, bool bUseless)
 		{
 			yunjr::PcParty& party = yunjr::game::object::getParty();
@@ -220,18 +236,17 @@ namespace
 				console.setTextColorIndex(12);
 				console.write("일행은 용암지대로 들어섰다 !!!");
 				console.write("");
-/*
-				int num_updated;
 
-				num_updated = sena::for_each(player.begin(), player.end(), FnEnterLava<PcPlayer*>()).Result();
+				sena::vector<yunjr::shared::PcPlayer>& player_list = yunjr::game::object::getPlayerList();
+
+				int num_updated = sena::for_each(player_list.begin(), player_list.end(), FnEnterLava<yunjr::shared::PcPlayer>()).Result();
 
 				console.display();
 
-				window[WINDOWTYPE_STATUS]->setUpdateFlag();
-*/
+				//?? window[WINDOWTYPE_STATUS]->setUpdateFlag();
 			}
 
-//			detectGameOver();
+			detectGameOver();
 		}
 		static void actTalk(int x1, int y1, bool bUseless)
 		{
@@ -242,9 +257,9 @@ namespace
 			window[WINDOWTYPE_MAP]->setUpdateFlag();
 			window[WINDOWTYPE_MAP]->display();
 			window[WINDOWTYPE_SUBMAP]->display();
-
-			LoreConsole::getConsole().clear();
 */
+			yunjr::LoreConsole::getConsole().clear();
+
 			yunjr::map_event::occur(yunjr::map_event::TYPE_TALK, 0, party.x + x1, party.y + y1);
 		}
 	};
@@ -281,7 +296,12 @@ void yunjr::init(const char* sz_id)
 
 		if (p_console)
 		{
-//??			p_console->setText(yunjr::res::TEST_STRING1, yunjr::res::TEST_STRING2, yunjr::res::TEST_STRING3);
+			p_console->setText
+			(
+				L"April is the cruelest month, breeding",
+				L"Lilacs out of the dead land, mixing",
+				L"Memory and desire, sirring"
+			);
 		}
 	}
 
@@ -331,7 +351,7 @@ void yunjr::init(const char* sz_id)
 
 			p_player->setDefault(0);
 
-			p_player->setName("슴갈");
+			p_player->setName("SMgal");
 			p_player->class_ = 8;
 			p_player->level[0] = 1;
 			p_player->level[1] = 1;
@@ -347,7 +367,7 @@ void yunjr::init(const char* sz_id)
 
 			p_player->setDefault(0);
 
-			p_player->setName("허큘리스");
+			p_player->setName("Hercules");
 			p_player->hp = 17;
 			p_player->sp = 5;
 			p_player->esp = 5;
@@ -360,7 +380,7 @@ void yunjr::init(const char* sz_id)
 
 			p_player->setDefault(0);
 
-			p_player->setName("베텔규스");
+			p_player->setName("Betelgeuse");
 			p_player->gender = PcPlayer::GENDER_FEMALE;
 			p_player->hp = 7;
 			p_player->sp = 17;
@@ -374,7 +394,7 @@ void yunjr::init(const char* sz_id)
 
 			p_player->setDefault(0);
 
-			p_player->setName("카미너스");
+			p_player->setName("Cominus");
 			p_player->hp = 10;
 			p_player->sp = 11;
 			p_player->esp = 3;

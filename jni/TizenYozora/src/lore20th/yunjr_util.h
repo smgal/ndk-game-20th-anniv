@@ -1,0 +1,52 @@
+﻿
+#ifndef __YUNJR_UTIL_H__
+#define __YUNJR_UTIL_H__
+
+#include "yunjr_res.h"
+
+
+#define SET_FONT_SIZE(size) ::yunjr::FontSizeTemporarily<size> _
+
+
+namespace yunjr
+{
+	template <int font_size>
+	class FontSizeTemporarily
+	{
+		enum { temporary_font_size = font_size };
+
+	public:
+		FontSizeTemporarily()
+		{
+			m_font = Resource::getCurrentFont();
+			m_old_size = m_setFontSize(temporary_font_size);
+		}
+
+		~FontSizeTemporarily()
+		{
+			m_setFontSize(m_old_size);
+		}
+
+	private:
+		shared_ptr<Font> m_font;
+		int m_old_size;
+
+		int m_setFontSize(int new_size)
+		{
+			FontAttrib font_attrib;
+
+			m_font->get(font_attrib);
+
+			int old_size = font_attrib.size;
+			font_attrib.size = new_size;
+
+			m_font->set(font_attrib);
+
+			return old_size;
+		}
+	};
+
+} // namespace yunjr
+
+
+#endif // #ifndef __YUNJR_UTIL_H__

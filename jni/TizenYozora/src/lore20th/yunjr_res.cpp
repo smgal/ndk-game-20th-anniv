@@ -196,14 +196,19 @@ void yunjr::Resource::getCurrentMapPos(int& x, int& y)
 	y = s_ref_current_map_pos_y;
 }
 
-void yunjr::Resource::setFrameBuffer(const BufferDesc* p_buffer)
-{
-	s_ref_current_buffer = p_buffer;
-}
-
 void yunjr::Resource::setCurrentFont(shared_ptr<yunjr::Font> p_font)
 {
 	s_current_font = p_font;
+}
+
+yunjr::shared_ptr<yunjr::Font> yunjr::Resource::getCurrentFont(void)
+{
+	return s_current_font;
+}
+
+void yunjr::Resource::setFrameBuffer(const BufferDesc* p_buffer)
+{
+	s_ref_current_buffer = p_buffer;
 }
 
 void yunjr::Resource::setMainWindow(yunjr::ControlWindow* p_main_window)
@@ -214,11 +219,6 @@ void yunjr::Resource::setMainWindow(yunjr::ControlWindow* p_main_window)
 const yunjr::BufferDesc* yunjr::Resource::getFrameBuffer(void) const
 {
 	return s_ref_current_buffer;
-}
-
-yunjr::shared_ptr<yunjr::Font> yunjr::Resource::getCurrentFont(void) const
-{
-	return s_current_font;
 }
 
 yunjr::ControlWindow* yunjr::Resource::getMainWindow(void) const

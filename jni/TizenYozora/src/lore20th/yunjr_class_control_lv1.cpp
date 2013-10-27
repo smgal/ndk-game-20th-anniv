@@ -5,8 +5,8 @@
 #include "yunjr_class.h"
 #include "yunjr_class_chara.h"
 #include "yunjr_class_control_lv1.h"
-
 #include "yunjr_class_game_state.h"
+#include "yunjr_util.h"
 
 //#include "yunjr_res_string.h"
 
@@ -31,6 +31,7 @@ namespace yunjr
 	{
 		(p_obj) ? p_obj->render(*param) : (void)0;
 	}
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -237,24 +238,6 @@ yunjr::ControlConsole::~ControlConsole()
 	delete text[2];
 }
 
-void yunjr::ControlConsole::setTitle(const wchar_t* sz_text)
-{
-	delete title;
-
-	title = new Text(sz_text);
-}
-
-void yunjr::ControlConsole::setText(const wchar_t* sz_text1, const wchar_t* sz_text2, const wchar_t* sz_text3)
-{
-	delete text[0];
-	delete text[1];
-	delete text[2];
-
-	text[0] = new Text(sz_text1);
-	text[1] = new Text(sz_text2);
-	text[2] = new Text(sz_text3);
-}
-
 yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int width, int height, int margin_left, int margin_right, int margin_top, int margin_bottom)
 {
 	struct AttributeConsole: public Visible::Attribute
@@ -389,17 +372,33 @@ yunjr::ControlStatus* yunjr::ControlStatus::newInstance(int x, int y, int width,
 				yunjr::gfx::TextBoard text_board(p, DIALOG_WINDOW_W, DIALOG_WINDOW_H, ppl);
 
 				int text_x = 35;
-				int text_y = 26;
+				int text_y = 22;
 				int text_y_gap = 15 * 2;
 
-				//?? Font size must be reduced
-				Text text(L"Name");
+				sena::vector<shared::PcPlayer>& player_list = game::object::getPlayerList();
 
-				for (int i = 0; i < 6; i++)
 				{
-					text_board.renderTextFx(text_x, text_y, text, 0xFFFFFFFF, 0xFFFFFFFF);
+					SET_FONT_SIZE(18);
 
-					text_y += text_y_gap;
+					for (int i = 0; i < 6; i++)
+					{
+						if (i < player_list.size())
+						{
+							Text text(player_list[i]->getName());
+
+							text_board.renderTextFx(text_x, text_y, text, 0xFFFFFFFF, 0xFFFFFFFF);
+
+							text_y += text_y_gap;
+						}
+						else
+						{
+							Text text(L"reserved");
+
+							text_board.renderTextFx(text_x, text_y, text, 0xFF804020, 0xFF804020);
+
+							text_y += text_y_gap;
+						}
+					}
 				}
 			}
 		}

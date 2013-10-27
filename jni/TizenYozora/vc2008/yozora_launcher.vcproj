@@ -351,6 +351,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\lore20th\yunjr_class_pc_functor.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\lore20th\yunjr_class_pc_name_base.cpp"
 					>
 				</File>
@@ -420,6 +424,10 @@
 				</File>
 				<File
 					RelativePath="..\src\lore20th\yunjr_script_map_a_sample.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_util.h"
 					>
 				</File>
 				<File

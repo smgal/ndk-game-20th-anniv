@@ -7,6 +7,8 @@
 #include "yunjr_class_pc_enemy.h"
 #include "yunjr_class_game_option.h"
 #include "yunjr_class_map_event.h"
+#include "yunjr_class_control_lv1.h"
+#include "yunjr_res.h"
 
 #include "../flat_board/target_dep.h"
 
@@ -212,7 +214,39 @@ namespace yunjr
 		{
 			void writeConsole(unsigned long index, int num_arg, ...) {} //??
 			void showMessage(unsigned long index, const char* sz_message) {} //??
-			void writeLine(const char* sz_text, unsigned long color) {} //??
+
+			void writeLine(const char* sz_text, unsigned long color) //??
+			{
+				const Resource& resource = Resource::getInstance();
+
+				ControlConsole* p_console = (ControlConsole*)resource.getMainWindow()->findControl("CONSOL");
+
+				if (p_console)
+				{
+					p_console->setText
+					(
+						sz_text,
+						"",
+						""
+					);
+				}
+			} 
+			void writeLine(const wchar_t* sz_text, unsigned long color) //??
+			{
+				const Resource& resource = Resource::getInstance();
+
+				ControlConsole* p_console = (ControlConsole*)resource.getMainWindow()->findControl("CONSOL");
+
+				if (p_console)
+				{
+					p_console->setText
+					(
+						sz_text,
+						L"",
+						L""
+					);
+				}
+			} 
 		}
 
 		// namespace tile

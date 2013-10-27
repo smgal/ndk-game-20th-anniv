@@ -234,12 +234,13 @@ namespace yunjr
 		static void setCurrentMapPos(int x, int y);
 		static void getCurrentMapPos(int& x, int& y);
 
+		static void setCurrentFont(shared_ptr<yunjr::Font> p_font);
+		static shared_ptr<yunjr::Font> getCurrentFont(void);
+
 		void setFrameBuffer(const BufferDesc* p_buffer);
-		void setCurrentFont(shared_ptr<yunjr::Font> p_font);
 		void setMainWindow(yunjr::ControlWindow* p_window);
 
 		const BufferDesc* getFrameBuffer(void) const;
-		shared_ptr<yunjr::Font> getCurrentFont(void) const;
 		yunjr::ControlWindow* getMainWindow(void) const;
 
 		const Tile& getTile(TileId tile_id, int id_offset = 0) const;
