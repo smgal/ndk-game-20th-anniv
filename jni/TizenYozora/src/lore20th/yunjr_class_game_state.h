@@ -21,6 +21,10 @@ namespace yunjr
 		void reset(void)
 		{
 			is_terminating = false;
+
+			current_input_info.is_touched = false;
+			current_input_info.key_down_flag = 0;
+			current_input_info.key_pressed_flag = 0;
 		}
 
 		void update(unsigned long tick)
