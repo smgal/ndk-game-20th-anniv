@@ -62,6 +62,7 @@ namespace yunjr
 				TEXTALIGN_RIGHT
 			};
 
+			void clear(void);
 			void writeConsole(unsigned long index, int num_arg, ...);
 			void writeLine(const char* sz_text, unsigned long color = 0xFFFFFFFF);
 			void writeLine(const wchar_t* sz_text, unsigned long color = 0xFFFFFFFF);

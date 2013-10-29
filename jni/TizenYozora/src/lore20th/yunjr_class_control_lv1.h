@@ -39,29 +39,33 @@ namespace yunjr
 
 	struct ControlConsole: public Control
 	{
-		Text* title;
-		Text* text[3];
+		std::vector<shared_ptr<Text> > text_line;
 
 	public:
 		virtual ~ControlConsole();
 
-		template<typename CharCode>
-		void setTitle(const CharCode* sz_text)
+		void clear(void)
 		{
-			delete title;
-			title = new Text(sz_text);
+			text_line.clear();
+
+			this->invalidate();
 		}
 
-		template<typename CharCode>
-		void setText(const CharCode* sz_text1, const CharCode* sz_text2, const CharCode* sz_text3)
+		void add(Text& text)
 		{
-			delete text[0];
-			delete text[1];
-			delete text[2];
+			Text remaining;
 
-			text[0] = new Text(sz_text1);
-			text[1] = new Text(sz_text2);
-			text[2] = new Text(sz_text3);
+			//?? 700 is a temporary constant
+			text.split(620, remaining);
+
+			{
+				shared_ptr<Text> p_text(new Text());
+				text.split(0, *p_text);
+				text_line.push_back(p_text);
+			}
+
+			if (!remaining.isEmpty())
+				add(remaining);
 
 			this->invalidate();
 		}

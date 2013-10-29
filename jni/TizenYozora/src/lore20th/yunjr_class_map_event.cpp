@@ -70,6 +70,8 @@ void yunjr::map_event::occur(yunjr::map_event::TYPE type, int position, int x, i
 	{
 	case TYPE_TALK:
 		{
+			game::console::clear();
+
 			if (!g_p_current_script->talk(x, y))
 			{
 				//??Script script(Script::MODE_TALK, 0, x, y);

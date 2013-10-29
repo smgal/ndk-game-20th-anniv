@@ -1,5 +1,6 @@
 
 #include "yunjr_base.h"
+#include "yunjr_base_font.h"
 #include "yunjr_base_gfx.h"
 
 #include "yunjr_class.h"
@@ -224,19 +225,11 @@ yunjr::ControlWaku* yunjr::ControlWaku::newInstance(void)
 // class ControlConsole
 
 yunjr::ControlConsole::ControlConsole()
-	: title(0)
 {
-	text[0] = 0;
-	text[1] = 0;
-	text[2] = 0;
 }
 
 yunjr::ControlConsole::~ControlConsole()
 {
-	delete title;
-	delete text[0];
-	delete text[1];
-	delete text[2];
 }
 
 yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int width, int height, int margin_left, int margin_right, int margin_top, int margin_bottom)
@@ -291,6 +284,16 @@ yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int widt
 
 				ControlConsole* _p_this = (ControlConsole*)p_this;
 
+				std::vector<shared_ptr<Text> >::iterator p_text = _p_this->text_line.begin();
+
+				for ( ; p_text != _p_this->text_line.end(); ++p_text)
+				{
+					text_board.renderTextFx(text_x, text_y, **p_text, 0xFFFFFFFF, 0xFFFFFFFF);
+
+					text_y += text_line_gap;
+
+				}
+/*
 				for (int i = 0; i < 3; i++)
 				{
 					if (_p_this->text[i])
@@ -298,6 +301,7 @@ yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int widt
 
 					text_y += text_line_gap;
 				}
+*/
 			}
 		}
 	};
@@ -377,13 +381,18 @@ yunjr::ControlStatus* yunjr::ControlStatus::newInstance(int x, int y, int width,
 				sena::vector<shared::PcPlayer>& player_list = game::object::getPlayerList();
 
 				{
-					SET_FONT_SIZE(18);
+					//SET_FONT_SIZE(18);
+					//shared_ptr<Font> font = GET_RESIZED_FONT;
+					Typeface typeface;
+					typeface.attribute.size = 18;
+					typeface.attribute.is_italic = false;
+					typeface.attribute.is_bold = false;
 
 					for (int i = 0; i < 6; i++)
 					{
 						if (i < player_list.size())
 						{
-							Text text(player_list[i]->getName());
+							Text text(typeface, player_list[i]->getName());
 
 							text_board.renderTextFx(text_x, text_y, text, 0xFFFFFFFF, 0xFFFFFFFF);
 
@@ -393,14 +402,14 @@ yunjr::ControlStatus* yunjr::ControlStatus::newInstance(int x, int y, int width,
 								, player_list[i]->esp, player_list[i]->ac
 								, player_list[i]->level[0], player_list[i]->getConditionString());
 
-							Text text_aux(s);
+							Text text_aux(typeface, s);
 							text_board.renderTextFx(text_x+150, text_y, text_aux, 0xFFFFFFFF, 0xFFFFFFFF);
 
 							text_y += text_y_gap;
 						}
 						else
 						{
-							Text text(L"reserved");
+							Text text(typeface, L"reserved");
 
 							text_board.renderTextFx(text_x, text_y, text, 0xFF804020, 0xFF804020);
 
@@ -408,6 +417,38 @@ yunjr::ControlStatus* yunjr::ControlStatus::newInstance(int x, int y, int width,
 						}
 					}
 				}
+/* ?? test case
+				{
+					Typeface typeface(30);
+
+					Text text1(typeface, L"April is the cruelest month, breeding Lilacs out of the dead land, mixing Memory and desire, sirring");
+					Text text2(typeface, L"");
+					Text text3(typeface, L"");
+					Text text4(typeface, L"");
+					Text text5(typeface, L"");
+
+					int guide = 250;
+					text1.split(guide, text2);
+					if (!text2.isEmpty())
+					{
+						text2.split(guide, text3);
+						if (!text3.isEmpty())
+						{
+							text3.split(guide, text4);
+							if (!text4.isEmpty())
+							{
+								text4.split(guide, text5);
+							}
+						}
+					}
+
+					text_board.renderTextFx(300,  25, text1, 0xFFFF0000, 0xFFFFFFFF);
+					text_board.renderTextFx(300,  50, text2, 0xFFFF0000, 0xFFFFFFFF);
+					text_board.renderTextFx(300,  75, text3, 0xFFFF0000, 0xFFFFFFFF);
+					text_board.renderTextFx(300, 100, text4, 0xFFFF0000, 0xFFFFFFFF);
+					text_board.renderTextFx(300, 125, text5, 0xFFFF0000, 0xFFFFFFFF);
+				}
+*/
 			}
 		}
 	};

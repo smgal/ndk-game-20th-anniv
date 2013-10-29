@@ -172,7 +172,7 @@ void yunjr::resource::init(void)
 				FontAttrib font_attrib;
 				p_font->get(font_attrib);
 
-				font_attrib.size = 28;
+				font_attrib.size = DEFAULT_FONT_SIZE;
 				p_font->set(font_attrib);
 			}
 

@@ -12,7 +12,8 @@ namespace yunjr
 {
 	struct yunjr::Text::Impl
 	{
-		Impl(const wchar_t* sz_text, size_t length);
+		Impl();
+		Impl(const Typeface& typeface, const wchar_t* sz_text, size_t length);
 		~Impl();
 
 		static const Impl* getImpl(const Text& text)
@@ -25,7 +26,11 @@ namespace yunjr
 			return text.p_impl;
 		}
 
+		void reset(void);
+
+		Typeface typeface;
 		yunjr::auto_ptr<wchar_t[]> p_text;
+		int text_length;
 		std::vector<GlyphInfo*> glyph_info;
 		std::vector<GlyphInfo*> glyph_shadow;
 	};

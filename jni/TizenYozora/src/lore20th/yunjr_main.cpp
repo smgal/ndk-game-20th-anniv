@@ -190,6 +190,7 @@ namespace
 			else
 			{
 				yunjr::LoreConsole& console = yunjr::LoreConsole::getConsole();
+
 				console.clear();
 				console.setTextColorIndex(13);
 				console.write("일행은 독이 있는 늪에 들어갔다 !!!");
@@ -286,12 +287,12 @@ void yunjr::init(const char* sz_id)
 
 		if (p_console)
 		{
-			p_console->setText
-			(
-				L"April is the cruelest month, breeding",
-				L"Lilacs out of the dead land, mixing",
-				L"Memory and desire, sirring"
-			);
+			Typeface typeface;
+
+			p_console->clear();
+			p_console->add(Text(typeface, L"April is the cruelest month, breeding"));
+			p_console->add(Text(typeface, L"Lilacs out of the dead land, mixing"));
+			p_console->add(Text(typeface, L"Memory and desire, sirring"));
 		}
 	}
 

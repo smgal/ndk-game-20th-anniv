@@ -215,18 +215,22 @@ namespace yunjr
 			void writeConsole(unsigned long index, int num_arg, ...) {} //??
 			void showMessage(unsigned long index, const char* sz_message) {} //??
 
+			void clear(void)
+			{
+				ControlConsole* p_console = (ControlConsole*)resource::getMainWindow()->findControl("CONSOL");
+
+				if (p_console)
+					p_console->clear();
+			}
+
 			void writeLine(const char* sz_text, unsigned long color) //??
 			{
 				ControlConsole* p_console = (ControlConsole*)resource::getMainWindow()->findControl("CONSOL");
 
 				if (p_console)
 				{
-					p_console->setText
-					(
-						sz_text,
-						"",
-						""
-					);
+					Typeface typeface;
+					p_console->add(Text(typeface, sz_text));
 				}
 			} 
 			void writeLine(const wchar_t* sz_text, unsigned long color) //??
@@ -235,12 +239,8 @@ namespace yunjr
 
 				if (p_console)
 				{
-					p_console->setText
-					(
-						sz_text,
-						L"",
-						L""
-					);
+					Typeface typeface;
+					p_console->add(Text(typeface, sz_text));
 				}
 			} 
 		}

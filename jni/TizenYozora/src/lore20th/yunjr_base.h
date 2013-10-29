@@ -99,6 +99,14 @@ namespace yunjr
 			m_owns = (ptr != 0);
 			m_ptr  = (BaseType*)ptr;
 		}
+		void reset(BaseType* ptr = 0)
+		{
+			if (m_owns)
+				delete[] (BaseType*)m_ptr;
+
+			m_owns = (ptr != 0);
+			m_ptr  = (BaseType*)ptr;
+		}
 		BaseType* get() const
 		{
 			return m_ptr;

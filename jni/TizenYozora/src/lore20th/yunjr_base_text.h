@@ -4,16 +4,32 @@
 
 namespace yunjr
 {
+	struct Typeface;
+
 	struct Text
 	{
 	public:
-		Text(const char* sz_text_utf8);
-		Text(const char* sz_text_utf8, size_t length);
+		enum ALIGNMETHOD
+		{
+			ALIGNMETHOD_LEFT,
+			ALIGNMETHOD_RIGHT,
+			ALIGNMETHOD_CENTER,
+			ALIGNMETHOD_FIT
+		};
 
-		Text(const wchar_t* sz_text);
-		Text(const wchar_t* sz_text, size_t length);
+		Text();
+
+		Text(const Typeface& typeface, const char* sz_text_utf8);
+		Text(const Typeface& typeface, const char* sz_text_utf8, size_t length);
+
+		Text(const Typeface& typeface, const wchar_t* sz_text);
+		Text(const Typeface& typeface, const wchar_t* sz_text, size_t length);
 
 		~Text();
+
+		bool isEmpty(void);
+
+		void split(int width, Text& remaining_text, ALIGNMETHOD align = ALIGNMETHOD_LEFT);
 
 		struct Impl;
 
@@ -23,4 +39,4 @@ namespace yunjr
 
 }
 
-#endif // #ifndef __YUNJR_BASE_FONT_H__
+#endif // #ifndef __YUNJR_BASE_TEXT_H__

@@ -5,6 +5,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 // uses
 
+#include "yunjr_base.h"
+
 #include <vector>
 
 namespace yunjr
@@ -15,6 +17,8 @@ namespace yunjr
 		int top;
 		int x_advance;
 		int y_advance;
+
+		unsigned long user_data;
 
 		struct
 		{
@@ -61,6 +65,36 @@ namespace yunjr
 	private:
 		struct Impl;
 		Impl* p_impl;
+	};
+
+	namespace shared
+	{
+		typedef shared_ptr<yunjr::Font> Font;
+	}
+
+	struct Typeface
+	{
+		shared::Font font;
+		FontAttrib   attribute;
+
+		inline void apply(void)
+		{
+			font->set(attribute);
+		}
+
+		Typeface()
+		{
+			attribute.size = DEFAULT_FONT_SIZE;
+			attribute.is_bold = false;
+			attribute.is_italic = false;
+		}
+
+		Typeface(int font_size)
+		{
+			attribute.size = (font_size >= 0) ? font_size : DEFAULT_FONT_SIZE;
+			attribute.is_bold = false;
+			attribute.is_italic = false;
+		}
 	};
 
 } // namespace sm2d

@@ -6,6 +6,7 @@
 
 
 #define SET_FONT_SIZE(size) ::yunjr::FontSizeTemporarily<size> _
+#define GET_RESIZED_FONT _()
 
 
 namespace yunjr
@@ -25,6 +26,11 @@ namespace yunjr
 		~FontSizeTemporarily()
 		{
 			m_setFontSize(m_old_size);
+		}
+
+		shared_ptr<Font> operator()(void) const
+		{
+			return m_font;
 		}
 
 	private:

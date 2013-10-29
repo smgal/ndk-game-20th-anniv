@@ -135,13 +135,15 @@ private:
 			GlyphInfo* p_glyph_info = (GlyphInfo*)new char[sizeof(GlyphInfo) + buffer_size];
 			p_glyph_info->glyph.p_buffer = (unsigned char*)(p_glyph_info + 1);
 
-			p_glyph_info->left = pSlot->bitmap_left;
-			p_glyph_info->top = - pSlot->bitmap_top;
+			p_glyph_info->left      = pSlot->bitmap_left;
+			p_glyph_info->top       = - pSlot->bitmap_top;
 			p_glyph_info->x_advance = from26d6(pSlot->advance.x);
 			p_glyph_info->y_advance = from26d6(pSlot->advance.y);
 
-			p_glyph_info->glyph.width = pSlot->bitmap.width;
-			p_glyph_info->glyph.height = pSlot->bitmap.rows;
+			p_glyph_info->user_data = 0;
+
+			p_glyph_info->glyph.width          = pSlot->bitmap.width;
+			p_glyph_info->glyph.height         = pSlot->bitmap.rows;
 			p_glyph_info->glyph.bytes_per_line = pSlot->bitmap.width;
 
 			memcpy(p_glyph_info->glyph.p_buffer, pSlot->bitmap.buffer, buffer_size);
@@ -366,4 +368,6 @@ yunjr::Font::unload(std::vector<yunjr::GlyphInfo*>& glyph_info_list) const
 	{
 		p_impl->m_unload(*i);
 	}
+
+	glyph_info_list.clear();
 }

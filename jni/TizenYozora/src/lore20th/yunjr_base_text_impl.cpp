@@ -9,15 +9,28 @@
 // goto to config file
 const int EXPANDING_PIXEL = 2;
 
-yunjr::Text::Impl::Impl(const wchar_t* sz_text, size_t length)
-	: p_text(new wchar_t[length+1])
+yunjr::Text::Impl::Impl()
+	: p_text(new wchar_t[1])
+	, text_length(0)
 {
+	this->typeface.font = resource::getCurrentFont();
+	p_text[0] = 0;
+}
+
+yunjr::Text::Impl::Impl(const Typeface& typeface, const wchar_t* sz_text, size_t length)
+	: p_text(new wchar_t[length+1])
+	, text_length(length)
+{
+	this->typeface = typeface;
+	
+	if (this->typeface.font.isNull())
+		this->typeface.font = resource::getCurrentFont();
+
 	memcpy(p_text.get(), sz_text, sizeof(wchar_t) * length);
 	p_text[length] = 0;
 
-	shared_ptr<yunjr::Font> p_font = resource::getCurrentFont();
-
-	p_font->load(p_text.get(), length, glyph_info);
+	this->typeface.apply();
+	this->typeface.font->load(p_text.get(), length, glyph_info);
 
 	{
 		std::vector<GlyphInfo*>::const_iterator pp_glyph = glyph_info.begin();
@@ -33,13 +46,15 @@ yunjr::Text::Impl::Impl(const wchar_t* sz_text, size_t length)
 
 			p_glyph_info->glyph.p_buffer = (unsigned char*)(p_glyph_info + 1);
 
-			p_glyph_info->left = (*pp_glyph)->left - EXPANDING_PIXEL;
-			p_glyph_info->top = (*pp_glyph)->top - EXPANDING_PIXEL;
+			p_glyph_info->left      = (*pp_glyph)->left - EXPANDING_PIXEL;
+			p_glyph_info->top       = (*pp_glyph)->top - EXPANDING_PIXEL;
 			p_glyph_info->x_advance = (*pp_glyph)->x_advance;
 			p_glyph_info->y_advance = (*pp_glyph)->y_advance;
 
-			p_glyph_info->glyph.width = buffer_width;
-			p_glyph_info->glyph.height = buffer_height;
+			p_glyph_info->user_data = 0;
+
+			p_glyph_info->glyph.width          = buffer_width;
+			p_glyph_info->glyph.height        = buffer_height;
 			p_glyph_info->glyph.bytes_per_line = buffer_width;
 
 			struct _util
@@ -103,9 +118,18 @@ yunjr::Text::Impl::Impl(const wchar_t* sz_text, size_t length)
 
 yunjr::Text::Impl::~Impl()
 {
-	shared_ptr<yunjr::Font> p_font = resource::getCurrentFont();
+	this->typeface.font->unload(glyph_shadow);
+	this->typeface.font->unload(glyph_info);
+}
 
-	// 'p_font' may not a proper font instance to call unload(). A current font can be changed.
-	p_font->unload(glyph_shadow);
-	p_font->unload(glyph_info);
+void yunjr::Text::Impl::reset(void)
+{
+	this->typeface.font->unload(glyph_shadow);
+	this->typeface.font->unload(glyph_info);
+
+	this->typeface.~Typeface();
+	new (&this->typeface) Typeface();
+
+	this->p_text.reset();
+	this->text_length = 0;
 }
