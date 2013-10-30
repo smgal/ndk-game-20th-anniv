@@ -66,7 +66,7 @@ namespace yunjr
 			void writeConsole(unsigned long index, int num_arg, ...);
 			void writeLine(const char* sz_text, unsigned long color = 0xFFFFFFFF);
 			void writeLine(const wchar_t* sz_text, unsigned long color = 0xFFFFFFFF);
-			void showMessage(unsigned long index, const char* sz_message);
+			void showMessage(unsigned long index, const wchar_t* sz_message);
 			void setTextAlign(TEXTALIGN align);
 		}
 
@@ -165,7 +165,7 @@ namespace yunjr
 		namespace select
 		{
 			void init(void);
-			void add(const char* sz_string);
+			void add(const wchar_t* sz_string);
 			void run(void);
 			int  getResult(void);
 		}

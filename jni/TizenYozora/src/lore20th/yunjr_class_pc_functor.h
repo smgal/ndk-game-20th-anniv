@@ -1,4 +1,4 @@
-
+ï»¿
 #ifndef __YUNJR_BASE_PC_FUNCTOR_H__
 #define __YUNJR_BASE_PC_FUNCTOR_H__
 
@@ -7,7 +7,7 @@
 // functor
 namespace
 {
-	// windowÀÇ °»½Å
+	// windowì˜ ê°±ì‹ 
 	template <class type>
 	class FnDisplay
 	{
@@ -18,7 +18,7 @@ namespace
 		}
 	};
 
-	// ¾Æ±ºÀÇ »óÅÂ Á¡°Ë
+	// ì•„êµ°ì˜ ìƒíƒœ ì ê²€
 	template <class type>
 	class FnCheckCondition
 	{
@@ -32,7 +32,7 @@ namespace
 		}
 	};
 
-	// ÀÇ½ÄÀÌ ³²¾Æ ÀÖ´Â playerÀÇ ¼ö
+	// ì˜ì‹ì´ ë‚¨ì•„ ìˆëŠ” playerì˜ ìˆ˜
 	template <class type>
 	class FnNumOfConscious
 	{
@@ -50,12 +50,12 @@ namespace
 		}
 		int Result(void)
 		{
-			// »ì¾Æ ÀÖ´Â playerÀÇ ¼ö
+			// ì‚´ì•„ ìˆëŠ” playerì˜ ìˆ˜
 			return num_alive;
 		}
 	};
 
-	// ÆÄÆ¼°¡ swamp·Î ÀÌµ¿ÇßÀ» ¶§ Àû¿ëµÇ´Â ±ÔÄ¢
+	// íŒŒí‹°ê°€ swampë¡œ ì´ë™í–ˆì„ ë•Œ ì ìš©ë˜ëŠ” ê·œì¹™
 	template <class type>
 	class FnEnterSwamp
 	{
@@ -72,7 +72,7 @@ namespace
 			{
 				if (smutil::random(20) + 1 >= obj->luck)
 				{
-					yunjr::game::console::writeConsole(13, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " Áßµ¶µÇ¾ú´Ù.");
+					yunjr::game::console::writeConsole(13, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " ì¤‘ë…ë˜ì—ˆë‹¤.");
 
 					if (obj->poison == 0)
 						obj->poison = 1;
@@ -83,12 +83,12 @@ namespace
 		}
 		int Result(void)
 		{
-			// µ¥ÀÌÅÍ°¡ °»½ÅµÈ playerÀÇ ¼ö
+			// ë°ì´í„°ê°€ ê°±ì‹ ëœ playerì˜ ìˆ˜
 			return num_updated;
 		}
 	};
 
-	// ÆÄÆ¼°¡ lava·Î ÀÌµ¿ÇßÀ» ¶§ Àû¿ëµÇ´Â ±ÔÄ¢
+	// íŒŒí‹°ê°€ lavaë¡œ ì´ë™í–ˆì„ ë•Œ ì ìš©ë˜ëŠ” ê·œì¹™
 	template <class type>
 	class FnEnterLava
 	{
@@ -110,7 +110,7 @@ namespace
 
 				if (damage > 0)
 				{
-					yunjr::game::console::writeConsole(13, 4, obj->getName(yunjr::PcNameBase::JOSA_SUB), " ", smutil::IntToStr(damage)(), "ÀÇ ÇÇÇØ¸¦ ÀÔ¾ú´Ù !");
+					yunjr::game::console::writeConsole(13, 4, obj->getName(yunjr::PcNameBase::JOSA_SUB), L" ", smutil::IntToStr<wchar_t>(damage)(), L"ì˜ í”¼í•´ë¥¼ ì…ì—ˆë‹¤ !");
 
 					if ((obj->hp > 0) && (obj->unconscious == 0))
 					{
@@ -142,12 +142,12 @@ namespace
 		}
 		int Result(void)
 		{
-			// µ¥ÀÌÅÍ°¡ °»½ÅµÈ playerÀÇ ¼ö
+			// ë°ì´í„°ê°€ ê°±ì‹ ëœ playerì˜ ìˆ˜
 			return num_updated;
 		}
 	};
 
-	// ½Ã°£ÀÌ °¡°Å³ª ÆÄÆ¼°¡ ÀÌµ¿ÇßÀ» ¶§ Àû¿ëµÇ´Â ±ÔÄ¢
+	// ì‹œê°„ì´ ê°€ê±°ë‚˜ íŒŒí‹°ê°€ ì´ë™í–ˆì„ ë•Œ ì ìš©ë˜ëŠ” ê·œì¹™
 	template <class type>
 	class FnTimeGoes
 	{
@@ -190,12 +190,12 @@ namespace
 		}
 		int Result(void)
 		{
-			// µ¥ÀÌÅÍ°¡ °»½ÅµÈ playerÀÇ ¼ö
+			// ë°ì´í„°ê°€ ê°±ì‹ ëœ playerì˜ ìˆ˜
 			return num_updated;
 		}
 	};
 
-	// ÆÄÆ¼°¡ Ä·ÇÁ¸¦ ÇÒ ¶§ Àû¿ëµÇ´Â ±ÔÄ¢
+	// íŒŒí‹°ê°€ ìº í”„ë¥¼ í•  ë•Œ ì ìš©ë˜ëŠ” ê·œì¹™
 	template <class type>
 	class FnRestHere
 	{
@@ -208,18 +208,18 @@ namespace
 
 				if (party.food <= 0)
 				{
-					yunjr::game::console::writeConsole(4, 1, "ÀÏÇàÀº ½Ä·®ÀÌ ¹Ù´Ú³µ´Ù");
+					yunjr::game::console::writeConsole(4, 1, "ì¼í–‰ì€ ì‹ëŸ‰ì´ ë°”ë‹¥ë‚¬ë‹¤");
 				}
 				else if (obj->dead > 0)
 				{
-					yunjr::game::console::writeConsole(7, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " Á×¾ú´Ù");
+					yunjr::game::console::writeConsole(7, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " ì£½ì—ˆë‹¤");
 				}
 				else if ((obj->unconscious > 0) && (obj->poison == 0))
 				{
 					obj->unconscious -= (obj->level[0] + obj->level[1] + obj->level[2]);
 					if (obj->unconscious <= 0)
 					{
-						yunjr::game::console::writeConsole(15, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " ÀÇ½ÄÀÌ È¸º¹µÇ¾ú´Ù");
+						yunjr::game::console::writeConsole(15, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " ì˜ì‹ì´ íšŒë³µë˜ì—ˆë‹¤");
 
 						obj->unconscious = 0;
 						if (obj->hp <= 0)
@@ -229,16 +229,16 @@ namespace
 					}
 					else
 					{
-						yunjr::game::console::writeConsole(15, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " ¿©ÀüÈ÷ ÀÇ½Ä ºÒ¸íÀÌ´Ù");
+						yunjr::game::console::writeConsole(15, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " ì—¬ì „íˆ ì˜ì‹ ë¶ˆëª…ì´ë‹¤");
 					}
 				}
 				else if ((obj->unconscious > 0) && (obj->poison > 0))
 				{
-					yunjr::game::console::writeConsole(7, 3, "µ¶ ¶§¹®¿¡ ", obj->getName(yunjr::PcNameBase::JOSA_NONE), "ÀÇ ÀÇ½ÄÀº È¸º¹µÇÁö ¾Ê¾Ò´Ù");
+					yunjr::game::console::writeConsole(7, 3, "ë… ë•Œë¬¸ì— ", obj->getName(yunjr::PcNameBase::JOSA_NONE), "ì˜ ì˜ì‹ì€ íšŒë³µë˜ì§€ ì•Šì•˜ë‹¤");
 				}
 				else if (obj->poison > 0)
 				{
-					yunjr::game::console::writeConsole(7, 3, "µ¶ ¶§¹®¿¡ ", obj->getName(yunjr::PcNameBase::JOSA_NONE), "ÀÇ °Ç°­Àº È¸º¹µÇÁö ¾Ê¾Ò´Ù");
+					yunjr::game::console::writeConsole(7, 3, "ë… ë•Œë¬¸ì— ", obj->getName(yunjr::PcNameBase::JOSA_NONE), "ì˜ ê±´ê°•ì€ íšŒë³µë˜ì§€ ì•Šì•˜ë‹¤");
 				}
 				else
 				{
@@ -253,11 +253,11 @@ namespace
 					if (obj->hp >= obj->endurance * obj->level[0])
 					{
 						obj->hp = obj->endurance * obj->level[0];
-						yunjr::game::console::writeConsole(15, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " ¸ğµç °Ç°­ÀÌ È¸º¹µÇ¾ú´Ù");
+						yunjr::game::console::writeConsole(15, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " ëª¨ë“  ê±´ê°•ì´ íšŒë³µë˜ì—ˆë‹¤");
 					}
 					else
 					{
-						yunjr::game::console::writeConsole(15, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " Ä¡·áµÇ¾ú´Ù");
+						yunjr::game::console::writeConsole(15, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " ì¹˜ë£Œë˜ì—ˆë‹¤");
 					}
 					--party.food;
 				}
@@ -268,7 +268,7 @@ namespace
 		}
 	};
 
-	// Ä³¸¯ÅÍ ¸®½ºÆ®ÀÇ Æò±Õ Çà¿îÀ» µ¹·ÁÁÖ´Â ÇÔ¼öÀÚ  
+	// ìºë¦­í„° ë¦¬ìŠ¤íŠ¸ì˜ í‰ê·  í–‰ìš´ì„ ëŒë ¤ì£¼ëŠ” í•¨ìˆ˜ì  
 	template <class type>
 	class FnAverageLuck
 	{
@@ -295,7 +295,7 @@ namespace
 		}
 	};
 
-	// Ä³¸¯ÅÍ ¸®½ºÆ®ÀÇ Æò±Õ ¹ÎÃ¸¼ºÀ» µ¹·ÁÁÖ´Â ÇÔ¼öÀÚ  
+	// ìºë¦­í„° ë¦¬ìŠ¤íŠ¸ì˜ í‰ê·  ë¯¼ì²©ì„±ì„ ëŒë ¤ì£¼ëŠ” í•¨ìˆ˜ì  
 	template <class type>
 	class FnAverageAgility
 	{
@@ -322,7 +322,7 @@ namespace
 		}
 	};
 
-	// Ä³¸¯ÅÍ ¸®½ºÆ®ÀÇ Æò±Õ AC¸¦ µ¹·ÁÁÖ´Â ÇÔ¼öÀÚ  
+	// ìºë¦­í„° ë¦¬ìŠ¤íŠ¸ì˜ í‰ê·  ACë¥¼ ëŒë ¤ì£¼ëŠ” í•¨ìˆ˜ì  
 	template <class type>
 	class FnAverageAC
 	{
@@ -349,7 +349,7 @@ namespace
 		}
 	};
 
-	// ÀûµéÀÌ Á¦°øÇÒ ¼ö ÀÖ´Â È²±İÀÇ °³¼ö¸¦ °è»êÇÏ´Â ÇÔ¼öÀÚ
+	// ì ë“¤ì´ ì œê³µí•  ìˆ˜ ìˆëŠ” í™©ê¸ˆì˜ ê°œìˆ˜ë¥¼ ê³„ì‚°í•˜ëŠ” í•¨ìˆ˜ì
 	template <class type>
 	class FnPlusGold
 	{

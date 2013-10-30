@@ -79,21 +79,21 @@ namespace yunjr
 		void checkCondition(void);
 
 		//! 현재의 상태를 나타내는 문자열을 돌려줌
-		const char* getConditionString(void) const;
+		const wchar_t* getConditionString(void) const;
 		//! 현재의 상태를 32-bit 컬러 값으로 돌려줌
 		unsigned long getConditionColor(void) const;
 		//! 3인칭 대명사를 돌려줌
-		const char* get3rdPersonName(void) const;
+		const wchar_t* get3rdPersonName(void) const;
 		//! 성별을 나타내는 문자열을 돌려줌
-		const char* getGenderName(void) const;
+		const wchar_t* getGenderName(void) const;
 		//! class를 나타내는 문자열을 돌려줌
-		const char* getClassName(void) const;
+		const wchar_t* getClassName(void) const;
 		//! 현재의 무기를 나타내는 문자열을 돌려줌
-		const char* getWeaponName(void) const;
+		const wchar_t* getWeaponName(void) const;
 		//! 현재의 방패를 나타내는 문자열을 돌려줌
-		const char* getShieldName(void) const;
+		const wchar_t* getShieldName(void) const;
 		//! 현재의 갑옷을 나타내는 문자열을 돌려줌
-		const char* getArmorName(void) const;
+		const wchar_t* getArmorName(void) const;
 
 		//! 문자열을 통해 현재의 속성을 변경
 		bool changeAttribute(const char* sz_attribute, int value);

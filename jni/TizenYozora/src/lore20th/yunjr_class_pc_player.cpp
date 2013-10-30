@@ -1,4 +1,4 @@
-
+ï»¿
 #include "yunjr_class_pc_player.h"
 
 #if defined(_WIN32)
@@ -34,7 +34,7 @@ namespace
 {
 	using yunjr::PcPlayer;
 
-	// ÆÄÆ¼¿¡ µî·ÏµÈ playerÀÇ ¼ö
+	// íŒŒí‹°ì— ë“±ë¡ëœ playerì˜ ìˆ˜
 	template <class type>
 	class FnNumOfRegistered
 	{
@@ -59,14 +59,14 @@ namespace
 	///////////////////////////////////////////////////////////////////////////////
 	// static function
 
-	void setPlayerName(PcPlayer& player, const char* sz_name)
+	void setPlayerName(PcPlayer& player, const wchar_t* sz_name)
 	{
 		player.setName(sz_name);
 	}
 
 	void getPlayerName(PcPlayer& player, smutil::string& ref_name)
 	{
-		const char* sz_name = player.getName();
+		const wchar_t* sz_name = player.getName();
 		ref_name = sz_name;
 	}
 
@@ -100,13 +100,13 @@ namespace
 
 namespace
 {
-	typedef std::map<smutil::string, int> AttribMapInt;
+	typedef std::map<smutil::string8, int> AttribMapInt;
 	static AttribMapInt s_attrib_map_int_list;
 
 	typedef void (*FnSet)(PcPlayer&, const char*);
 	typedef void (*FnGet)(PcPlayer&, smutil::string&);
 	typedef sena::pair<void*, void*> FnSetGet;
-	typedef std::map<smutil::string, FnSetGet> AttribMapStr;
+	typedef std::map<smutil::string8, FnSetGet> AttribMapStr;
 	static AttribMapStr s_attrib_map_str_list;
 }
 
@@ -134,11 +134,11 @@ bool yunjr::PcPlayer::_save(const smutil::WriteStream& stream) const
 
 yunjr::PcPlayer::PcPlayer(void)
 {
-	// save data 0À¸·Î ÃÊ±âÈ­
+	// save data 0ìœ¼ë¡œ ì´ˆê¸°í™”
 	for (int i = 0; i < sizeof(save) / sizeof(save[0]); i++)
 		save[i] = 0;
 
-	// static dataÀÇ ÃÊ±âÈ­
+	// static dataì˜ ì´ˆê¸°í™”
 	if (s_attrib_map_int_list.empty())
 	{
 		s_attrib_map_int_list["class"]           = int(&this->class_) - int(this);
@@ -177,7 +177,7 @@ yunjr::PcPlayer::~PcPlayer(void)
 
 void yunjr::PcPlayer::setDefault(int kind)
 {
-	CT_ASSERT(sizeof(*this) == 916, TPlayer_size_is_changed);
+	CT_ASSERT(sizeof(*this) == 124 + 24*sizeof(wchar_t) + sizeof(smutil::string)*3, TPlayer_size_is_changed);
 
 	order         = 0;
 	gender        = GENDER_MALE;
@@ -228,7 +228,7 @@ void yunjr::PcPlayer::checkCondition(void)
 		dead = 1;
 }
 
-const char* yunjr::PcPlayer::getConditionString(void) const
+const wchar_t* yunjr::PcPlayer::getConditionString(void) const
 {
 	resource::CONDITION ix_condition = getPlayerCondition(*this);
 
@@ -256,7 +256,7 @@ unsigned long yunjr::PcPlayer::getConditionColor(void) const
 	return 0xFFFFFFFF;
 }
 
-const char* yunjr::PcPlayer::get3rdPersonName(void) const
+const wchar_t* yunjr::PcPlayer::get3rdPersonName(void) const
 {
 	int ix_gender;
 
@@ -275,7 +275,7 @@ const char* yunjr::PcPlayer::get3rdPersonName(void) const
 	return resource::get3rdPersonName(ix_gender).sz_name;
 }
 
-const char* yunjr::PcPlayer::getGenderName(void) const
+const wchar_t* yunjr::PcPlayer::getGenderName(void) const
 {
 	int ix_gender;
 
@@ -294,22 +294,22 @@ const char* yunjr::PcPlayer::getGenderName(void) const
 	return resource::getGenderName(ix_gender).sz_name;
 }
 
-const char* yunjr::PcPlayer::getClassName(void) const
+const wchar_t* yunjr::PcPlayer::getClassName(void) const
 {
 	return resource::getClassName(class_).sz_name;
 }
 
-const char* yunjr::PcPlayer::getWeaponName(void) const
+const wchar_t* yunjr::PcPlayer::getWeaponName(void) const
 {
 	return resource::getWeaponName(weapon).sz_name;
 }
 
-const char* yunjr::PcPlayer::getShieldName(void) const
+const wchar_t* yunjr::PcPlayer::getShieldName(void) const
 {
 	return resource::getShieldName(shield).sz_name;
 }
 
-const char* yunjr::PcPlayer::getArmorName(void) const
+const wchar_t* yunjr::PcPlayer::getArmorName(void) const
 {
 	return resource::getArmorName(armor).sz_name;
 }
@@ -382,12 +382,10 @@ void yunjr::PcPlayer::applyAttribute(void)
 
 void yunjr::PcPlayer::operator<<(const EnemyData& data)
 {
-	CT_ASSERT(sizeof(*this) == 916, TPlayer_size_is_changed);
-
-	// ÀÌ¸§ ¼³Á¤
+	// ì´ë¦„ ì„¤ì •
 	this->setName(data._name);
 
-	// ±âÅ¸ ¼Ó¼º ¼³Á¤
+	// ê¸°íƒ€ ì†ì„± ì„¤ì •
 	gender        = GENDER_MALE;
 	class_        = 0;
 	
@@ -548,9 +546,9 @@ void yunjr::PcPlayer::castCureSpell(void)
 	{
 		int num_enabled = p_player->level[1] / 2 - 3;
 
-		if (num_enabled <= 0) //@@ ¿ø·¡´Â < 0 ÀÌ¾úÀ½ °ËÅä ÇÊ¿ä
+		if (num_enabled <= 0) //@@ ì›ë˜ëŠ” < 0 ì´ì—ˆìŒ ê²€í†  í•„ìš”
 		{
-			game::console::writeConsole(7, 3, p_player->getName(JOSA_SUB), " ", resource::getMessageString(resource::MESSAGE_CANNOT_USE_POWERFUL_CURE_SPELL));
+			game::console::writeConsole(7, 3, p_player->getName(JOSA_SUB), L" ", resource::getMessageString(resource::MESSAGE_CANNOT_USE_POWERFUL_CURE_SPELL));
 			game::pressAnyKey();
 
 			return;
@@ -601,8 +599,8 @@ void yunjr::PcPlayer::castCureSpell(void)
 		}
 	}
 
-	LoreConsole::getConsole().write("");
-	LoreConsole::getConsole().write("");
+	LoreConsole::getConsole().write(L"");
+	LoreConsole::getConsole().write(L"");
 	LoreConsole::getConsole().display();
 
 	game::window::displayStatus();
@@ -701,10 +699,10 @@ void yunjr::PcPlayer::castPhenominaSpell(void)
 			MenuList menu;
 
 			menu.push_back(resource::getMessageString(resource::MESSAGE_SELECT_DIRECTION));
-			menu.push_back("ºÏÂÊÀ¸·Î ±âÈ­ ÀÌµ¿");
-			menu.push_back("³²ÂÊÀ¸·Î ±âÈ­ ÀÌµ¿");
-			menu.push_back("µ¿ÂÊÀ¸·Î ±âÈ­ ÀÌµ¿");
-			menu.push_back("¼­ÂÊÀ¸·Î ±âÈ­ ÀÌµ¿");
+			menu.push_back(L"ë¶ìª½ìœ¼ë¡œ ê¸°í™” ì´ë™");
+			menu.push_back(L"ë‚¨ìª½ìœ¼ë¡œ ê¸°í™” ì´ë™");
+			menu.push_back(L"ë™ìª½ìœ¼ë¡œ ê¸°í™” ì´ë™");
+			menu.push_back(L"ì„œìª½ìœ¼ë¡œ ê¸°í™” ì´ë™");
 
 			int selected = MenuSelection(menu)();
 
@@ -737,16 +735,16 @@ void yunjr::PcPlayer::castPhenominaSpell(void)
 
 			if (!map.isJumpable(x, y))
 			{
-				game::console::showMessage(7, "±âÈ­ ÀÌµ¿ÀÌ ÅëÇÏÁö ¾Ê½À´Ï´Ù.");
+				game::console::showMessage(7, L"ê¸°í™” ì´ë™ì´ í†µí•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 				return;
 			}
 
 			p_player->sp -= 25;
 
-			// ±âÈ­ ÀÌµ¿ Áß°£¿¡ ÀÌº¥Æ® ÁöÁ¡ÀÌ ÀÖÀ» ¶§
+			// ê¸°í™” ì´ë™ ì¤‘ê°„ì— ì´ë²¤íŠ¸ ì§€ì ì´ ìˆì„ ë•Œ
 			if (map.isEventPos((party.x + x) / 2, (party.y + y) / 2))
 			{
-				game::console::showMessage(13, "¾Ë ¼ö ¾ø´Â ÈûÀÌ ´ç½ÅÀÇ ¸¶¹ıÀ» ¹èÃ´ÇÕ´Ï´Ù.");
+				game::console::showMessage(13, L"ì•Œ ìˆ˜ ì—†ëŠ” í˜ì´ ë‹¹ì‹ ì˜ ë§ˆë²•ì„ ë°°ì²™í•©ë‹ˆë‹¤.");
 				return;
 			}
 
@@ -755,7 +753,7 @@ void yunjr::PcPlayer::castPhenominaSpell(void)
 			party.x = x;
 			party.y = y;
 
-			game::console::showMessage(15, "±âÈ­ ÀÌµ¿À» ¸¶ÃÆ½À´Ï´Ù.");
+			game::console::showMessage(15, L"ê¸°í™” ì´ë™ì„ ë§ˆì³¤ìŠµë‹ˆë‹¤.");
 
 			game::window::displayMap();
 		}
@@ -764,7 +762,7 @@ void yunjr::PcPlayer::castPhenominaSpell(void)
 		{
 			if (map.hasHandicap(Map::HANDICAP_TILECHANGING))
 			{
-				game::console::showMessage(13, "ÀÌ°÷ÀÇ ¾ÇÀÇ ÈûÀÌ ÀÌ ¸¶¹ıÀ» ¹æÇØÇÕ´Ï´Ù.");
+				game::console::showMessage(13, L"ì´ê³³ì˜ ì•…ì˜ í˜ì´ ì´ ë§ˆë²•ì„ ë°©í•´í•©ë‹ˆë‹¤.");
 				return;
 			}
 
@@ -777,10 +775,10 @@ void yunjr::PcPlayer::castPhenominaSpell(void)
 			MenuList menu;
 
 			menu.push_back(resource::getMessageString(resource::MESSAGE_SELECT_DIRECTION));
-			menu.push_back("ºÏÂÊ¿¡ ÁöÇü º¯È­");
-			menu.push_back("³²ÂÊ¿¡ ÁöÇü º¯È­");
-			menu.push_back("µ¿ÂÊ¿¡ ÁöÇü º¯È­");
-			menu.push_back("¼­ÂÊ¿¡ ÁöÇü º¯È­");
+			menu.push_back(L"ë¶ìª½ì— ì§€í˜• ë³€í™”");
+			menu.push_back(L"ë‚¨ìª½ì— ì§€í˜• ë³€í™”");
+			menu.push_back(L"ë™ìª½ì— ì§€í˜• ë³€í™”");
+			menu.push_back(L"ì„œìª½ì— ì§€í˜• ë³€í™”");
 
 			int selected = MenuSelection(menu)();
 
@@ -810,16 +808,16 @@ void yunjr::PcPlayer::castPhenominaSpell(void)
 
 			p_player->sp -= 30;
 
-			// ÀÌº¥Æ® ÁöÁ¡¿¡ ´ëÇØ ÁöÇü º¯È­¸¦ ÇÏ·ÁÇÒ ¶§
+			// ì´ë²¤íŠ¸ ì§€ì ì— ëŒ€í•´ ì§€í˜• ë³€í™”ë¥¼ í•˜ë ¤í•  ë•Œ
 			if (map.isEventPos(party.x + dx, party.y + dy))
 			{
-				game::console::showMessage(13, "¾Ë ¼ö ¾ø´Â ÈûÀÌ ´ç½ÅÀÇ ¸¶¹ıÀ» ¹èÃ´ÇÕ´Ï´Ù.");
+				game::console::showMessage(13, L"ì•Œ ìˆ˜ ì—†ëŠ” í˜ì´ ë‹¹ì‹ ì˜ ë§ˆë²•ì„ ë°°ì²™í•©ë‹ˆë‹¤.");
 				return;
 			}
 
 			map.changeToWay(party.x + dx, party.y + dy);
 
-			game::console::showMessage(15, "ÁöÇü º¯È­¿¡ ¼º°øÇß½À´Ï´Ù.");
+			game::console::showMessage(15, L"ì§€í˜• ë³€í™”ì— ì„±ê³µí–ˆìŠµë‹ˆë‹¤.");
 
 			game::window::displayMap();
 		}
@@ -828,7 +826,7 @@ void yunjr::PcPlayer::castPhenominaSpell(void)
 		{
 			if (map.hasHandicap(Map::HANDICAP_TELEPORT))
 			{
-				game::console::showMessage(13, "ÀÌ°÷ÀÇ ¾ÇÀÇ ÈûÀÌ ÀÌ ¸¶¹ıÀ» ¹æÇØÇÕ´Ï´Ù.");
+				game::console::showMessage(13, L"ì´ê³³ì˜ ì•…ì˜ í˜ì´ ì´ ë§ˆë²•ì„ ë°©í•´í•©ë‹ˆë‹¤.");
 				return;
 			}
 
@@ -864,14 +862,14 @@ void yunjr::PcPlayer::castPhenominaSpell(void)
 				assert(false);
 			}
 
-			LoreConsole::getConsole().write("");
+			LoreConsole::getConsole().write(L"");
 			LoreConsole::getConsole().setTextColorIndex(11);
-			LoreConsole::getConsole().write("´ç½ÅÀÇ °ø°£ ÀÌµ¿·ÂÀ» ÁöÁ¤");
+			LoreConsole::getConsole().write(L"ë‹¹ì‹ ì˜ ê³µê°„ ì´ë™ë ¥ì„ ì§€ì •");
 			LoreConsole::getConsole().setTextColorIndex(15);
-			LoreConsole::getConsole().write(" ## 5000 °ø°£ ÀÌµ¿·Â");
+			LoreConsole::getConsole().write(L" ## 5000 ê³µê°„ ì´ë™ë ¥");
 			LoreConsole::getConsole().display();
 
-			//@@ console¿¡¼­ text extent Çü½ÄÀ¸·Î ¾ò¾î ¿Í¾ß ÇÔ
+			//@@ consoleì—ì„œ text extent í˜•ì‹ìœ¼ë¡œ ì–»ì–´ ì™€ì•¼ í•¨
 			int power = 5000;
 			{
 				int x_origin;
@@ -892,29 +890,29 @@ void yunjr::PcPlayer::castPhenominaSpell(void)
 
 			if (!game::map::isValidWarpPos(x, y))
 			{
-				game::console::showMessage(7, "°ø°£ ÀÌµ¿ÀÌ ÅëÇÏÁö ¾Ê½À´Ï´Ù.");
+				game::console::showMessage(7, L"ê³µê°„ ì´ë™ì´ í†µí•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 				return;
 			}
 
-			// ÀÌº¥Æ® ÁöÁ¡¿¡ ´ëÇØ ÁöÇü º¯È­¸¦ ÇÏ·ÁÇÒ ¶§
+			// ì´ë²¤íŠ¸ ì§€ì ì— ëŒ€í•´ ì§€í˜• ë³€í™”ë¥¼ í•˜ë ¤í•  ë•Œ
 			if (!map.isTeleportable(x, y))
 			{
-				game::console::showMessage(13, "°ø°£ ÀÌµ¿ Àå¼Ò·Î ºÎÀûÇÕ ÇÕ´Ï´Ù.");
+				game::console::showMessage(13, L"ê³µê°„ ì´ë™ ì¥ì†Œë¡œ ë¶€ì í•© í•©ë‹ˆë‹¤.");
 				return;
 			}
 
 			p_player->sp -= 50;
 
-			// ¼ø°£ ÀÌµ¿ ÁöÁ¡ÀÌ ÀÌº¥Æ® ÁöÁ¡ÀÏ ¶§
+			// ìˆœê°„ ì´ë™ ì§€ì ì´ ì´ë²¤íŠ¸ ì§€ì ì¼ ë•Œ
 			if (map.isEventPos(x, y))
 			{
-				game::console::showMessage(13, "¾Ë ¼ö ¾ø´Â ÈûÀÌ ´ç½ÅÀ» ¹èÃ´ÇÕ´Ï´Ù.");
+				game::console::showMessage(13, L"ì•Œ ìˆ˜ ì—†ëŠ” í˜ì´ ë‹¹ì‹ ì„ ë°°ì²™í•©ë‹ˆë‹¤.");
 				return;
 			}
 
 			party.warp(PcParty::POS_ABS, x, y);
 
-			game::console::showMessage(15, "°ø°£ ÀÌµ¿ ¸¶¹ıÀÌ ¼º°øÇß½À´Ï´Ù.");
+			game::console::showMessage(15, L"ê³µê°„ ì´ë™ ë§ˆë²•ì´ ì„±ê³µí–ˆìŠµë‹ˆë‹¤.");
 
 			game::window::displayMap();
 		}
@@ -943,21 +941,21 @@ void yunjr::PcPlayer::castPhenominaSpell(void)
 				LoreConsole& console = LoreConsole::getConsole();
 				console.clear();
 				console.setTextColorIndex(15);
-				console.write(" ½Ä·® Á¦Á¶ ¸¶¹ıÀº ¼º°øÀûÀ¸·Î ¼öÇàµÇ¾ú½À´Ï´Ù");
+				console.write(L" ì‹ëŸ‰ ì œì¡° ë§ˆë²•ì€ ì„±ê³µì ìœ¼ë¡œ ìˆ˜í–‰ë˜ì—ˆìŠµë‹ˆë‹¤");
 
 				{
 					smutil::string s;
-					s += "            ";
-					s += smutil::IntToStr(num_player)();
-					s += " °³ÀÇ ½Ä·®ÀÌ Áõ°¡µÊ";
+					s += L"            ";
+					s += smutil::IntToStr<wchar_t>(num_player)();
+					s += L" ê°œì˜ ì‹ëŸ‰ì´ ì¦ê°€ë¨";
 					console.write(s);
 				}
 
 				{
 					smutil::string s;
-					s += "      ÀÏÇàÀÇ ÇöÀç ½Ä·®Àº ";
-					s += smutil::IntToStr(party.food)();
-					s += " °³ ÀÔ´Ï´Ù";
+					s += L"      ì¼í–‰ì˜ í˜„ì¬ ì‹ëŸ‰ì€ ";
+					s += smutil::IntToStr<wchar_t>(party.food)();
+					s += L" ê°œ ì…ë‹ˆë‹¤";
 					console.setTextColorIndex(11);
 					console.write(s);
 				}
@@ -1000,23 +998,23 @@ void yunjr::PcPlayer::attackWithWeapon(int ix_object, int ix_enemy)
 	console.setTextColorIndex(15);
 	console.write(getBattleMessage(*p_player, 1, ix_object, *p_enemy));
 
-	const char* sz_gender = p_player->get3rdPersonName();
+	const wchar_t* sz_gender = p_player->get3rdPersonName();
 
 	if ((p_enemy->unconscious > 0) && (p_enemy->dead == 0))
 	{
 		switch (smutil::random(4))
 		{
 		case 0:
-			game::console::writeConsole(12, 4, sz_gender, "ÀÇ ¹«±â°¡ ", p_enemy->getName(), "ÀÇ ½ÉÀåÀ» ²ç¶Õ¾ú´Ù");
+			game::console::writeConsole(12, 4, sz_gender, L"ì˜ ë¬´ê¸°ê°€ ", p_enemy->getName(), L"ì˜ ì‹¬ì¥ì„ ê¿°ëš«ì—ˆë‹¤");
 			break;
 		case 1:
-			game::console::writeConsole(12, 4, p_enemy->getName(), "ÀÇ ¸Ó¸®´Â ", sz_gender, "ÀÇ °ø°İÀ¸·Î »ê»ê Á¶°¢ÀÌ ³µ´Ù");
+			game::console::writeConsole(12, 4, p_enemy->getName(), L"ì˜ ë¨¸ë¦¬ëŠ” ", sz_gender, L"ì˜ ê³µê²©ìœ¼ë¡œ ì‚°ì‚° ì¡°ê°ì´ ë‚¬ë‹¤");
 			break;
 		case 2:
-			game::console::writeConsole(12, 1, "ÀûÀÇ ÇÇ°¡ »ç¹æ¿¡ »Ñ·ÁÁ³´Ù");
+			game::console::writeConsole(12, 1, L"ì ì˜ í”¼ê°€ ì‚¬ë°©ì— ë¿Œë ¤ì¡Œë‹¤");
 			break;
 		case 3:
-			game::console::writeConsole(12, 1, "ÀûÀº ºñ¸í°ú ÇÔ²² Âõ°Ü ³ª°¬´Ù");
+			game::console::writeConsole(12, 1, L"ì ì€ ë¹„ëª…ê³¼ í•¨ê»˜ ì°¢ê²¨ ë‚˜ê°”ë‹¤");
 			break;
 		}
 
@@ -1032,13 +1030,13 @@ void yunjr::PcPlayer::attackWithWeapon(int ix_object, int ix_enemy)
 
 	if (smutil::random(20) > p_player->accuracy[0])
 	{
-		game::console::writeConsole(12, 2, sz_gender, "ÀÇ °ø°İÀº ºø³ª°¬´Ù ....");
+		game::console::writeConsole(12, 2, sz_gender, L"ì˜ ê³µê²©ì€ ë¹—ë‚˜ê°”ë‹¤ ....");
 		return;
 	}
 
 	if (smutil::random(100) < p_enemy->resistance)
 	{
-		game::console::writeConsole(7, 3, "ÀûÀº ", sz_gender, "ÀÇ °ø°İÀ» ÀúÁö Çß´Ù");
+		game::console::writeConsole(7, 3, L"ì ì€ ", sz_gender, L"ì˜ ê³µê²©ì„ ì €ì§€ í–ˆë‹¤");
 		return;
 	}
 
@@ -1049,7 +1047,7 @@ void yunjr::PcPlayer::attackWithWeapon(int ix_object, int ix_enemy)
 
 	if (damage <= 0)
 	{
-		game::console::writeConsole(7, 3, "±×·¯³ª ÀûÀº ", sz_gender, "ÀÇ °ø°İÀ» ¸·¾Ò´Ù");
+		game::console::writeConsole(7, 3, L"ê·¸ëŸ¬ë‚˜ ì ì€ ", sz_gender, L"ì˜ ê³µê²©ì„ ë§‰ì•˜ë‹¤");
 		return;
 	}
 
@@ -1061,7 +1059,7 @@ void yunjr::PcPlayer::attackWithWeapon(int ix_object, int ix_enemy)
 		p_enemy->unconscious = 0;
 		p_enemy->dead = 0;
 
-		game::console::writeConsole(12, 3, "ÀûÀº ", sz_gender, "ÀÇ °ø°İÀ¸·Î ÀÇ½Ä ºÒ¸íÀÌ µÇ¾ú´Ù");
+		game::console::writeConsole(12, 3, L"ì ì€ ", sz_gender, L"ì˜ ê³µê²©ìœ¼ë¡œ ì˜ì‹ ë¶ˆëª…ì´ ë˜ì—ˆë‹¤");
 
 		sound::playFx(sound::SOUND_HIT);
 
@@ -1071,7 +1069,7 @@ void yunjr::PcPlayer::attackWithWeapon(int ix_object, int ix_enemy)
 	}
 	else
 	{
-		game::console::writeConsole(7, 3, "ÀûÀº ", smutil::IntToStr(damage)(), "¸¸Å­ÀÇ ÇÇÇØ¸¦ ÀÔ¾ú´Ù"); // ¿ø·¡´Â Áß°£ÀÌ 15¹ø »ö
+		game::console::writeConsole(7, 3, L"ì ì€ ", smutil::IntToStr<wchar_t>(damage)(), L"ë§Œí¼ì˜ í”¼í•´ë¥¼ ì…ì—ˆë‹¤"); // ì›ë˜ëŠ” ì¤‘ê°„ì´ 15ë²ˆ ìƒ‰
 
 		sound::playFx(sound::SOUND_HIT);
 	}
@@ -1117,11 +1115,11 @@ void yunjr::PcPlayer::castSpellToOne(int ix_object, int ix_enemy)
 	console.setTextColorIndex(15);
 	console.write(getBattleMessage(*p_player, 2, ix_object, *p_enemy));
 
-	const char* sz_gender = p_player->get3rdPersonName();
+	const wchar_t* sz_gender = p_player->get3rdPersonName();
 
 	if ((p_enemy->unconscious > 0) && (p_enemy->dead == 0))
 	{
-		game::console::writeConsole(12, 2, sz_gender, "ÀÇ ¸¶¹ıÀº ÀûÀÇ ½ÃÃ¼ À§¿¡¼­ ÀÛ¿­Çß´Ù");
+		game::console::writeConsole(12, 2, sz_gender, L"ì˜ ë§ˆë²•ì€ ì ì˜ ì‹œì²´ ìœ„ì—ì„œ ì‘ì—´í–ˆë‹¤");
 
 		sound::playFx(sound::SOUND_SCREAM1);
 
@@ -1133,7 +1131,7 @@ void yunjr::PcPlayer::castSpellToOne(int ix_object, int ix_enemy)
 		return;
 	}
 
-	// ¸¶¹ı ¼Ò¸ğÄ¡
+	// ë§ˆë²• ì†Œëª¨ì¹˜
 	{
 		int consumption = (ix_object * ix_object* p_player->level[1] + 1) / 2;
 
@@ -1144,13 +1142,13 @@ void yunjr::PcPlayer::castSpellToOne(int ix_object, int ix_enemy)
 
 	if (smutil::random(20) >= p_player->accuracy[1])
 	{
-		game::console::writeConsole(7, 3, "±×·¯³ª, ", p_enemy->getName(JOSA_OBJ), " ºø³ª°¬´Ù");
+		game::console::writeConsole(7, 3, L"ê·¸ëŸ¬ë‚˜, ", p_enemy->getName(JOSA_OBJ), L" ë¹—ë‚˜ê°”ë‹¤");
 		return;
 	}
 
 	if (smutil::random(100) < p_enemy->resistance)
 	{
-		game::console::writeConsole(7, 4, p_enemy->getName(JOSA_SUB), " ", sz_gender, "ÀÇ ¸¶¹ıÀ» ÀúÁö Çß´Ù");
+		game::console::writeConsole(7, 4, p_enemy->getName(JOSA_SUB), L" ", sz_gender, L"ì˜ ë§ˆë²•ì„ ì €ì§€ í–ˆë‹¤");
 		return;
 	}
 
@@ -1160,7 +1158,7 @@ void yunjr::PcPlayer::castSpellToOne(int ix_object, int ix_enemy)
 
 	if (damage <= 0)
 	{
-		game::console::writeConsole(7, 5, "±×·¯³ª, ", p_enemy->getName(JOSA_SUB), " ", sz_gender, "ÀÇ ¸¶¹ı °ø°İÀ» ¸·¾Ò´Ù");
+		game::console::writeConsole(7, 5, L"ê·¸ëŸ¬ë‚˜, ", p_enemy->getName(JOSA_SUB), L" ", sz_gender, L"ì˜ ë§ˆë²• ê³µê²©ì„ ë§‰ì•˜ë‹¤");
 		return;
 	}
 
@@ -1172,7 +1170,7 @@ void yunjr::PcPlayer::castSpellToOne(int ix_object, int ix_enemy)
 		p_enemy->unconscious = 0;
 		p_enemy->dead = 0;
 
-		game::console::writeConsole(12, 4, p_enemy->getName(JOSA_SUB), " ", sz_gender, "ÀÇ ¸¶¹ı¿¡ ÀÇÇØ ÀÇ½Ä ºÒ¸íÀÌ µÇ¾ú´Ù");
+		game::console::writeConsole(12, 4, p_enemy->getName(JOSA_SUB), L" ", sz_gender, L"ì˜ ë§ˆë²•ì— ì˜í•´ ì˜ì‹ ë¶ˆëª…ì´ ë˜ì—ˆë‹¤");
 
 		sound::playFx(sound::SOUND_HIT);
 
@@ -1182,7 +1180,7 @@ void yunjr::PcPlayer::castSpellToOne(int ix_object, int ix_enemy)
 	}
 	else
 	{
-		game::console::writeConsole(7, 4, p_enemy->getName(JOSA_SUB), " ", smutil::IntToStr(damage)(), "¸¸Å­ÀÇ ÇÇÇØ¸¦ ÀÔ¾ú´Ù"); // ¿ø·¡´Â Áß°£ÀÌ 15¹ø »ö
+		game::console::writeConsole(7, 4, p_enemy->getName(JOSA_SUB), L" ", smutil::IntToStr<wchar_t>(damage)(), L"ë§Œí¼ì˜ í”¼í•´ë¥¼ ì…ì—ˆë‹¤"); // ì›ë˜ëŠ” ì¤‘ê°„ì´ 15ë²ˆ ìƒ‰
 
 		sound::playFx(sound::SOUND_HIT);
 	}
@@ -1194,14 +1192,14 @@ void yunjr::PcPlayer::useESP(void)
 {
 	if (!m_canUseESP())
 	{
-		game::console::writeConsole(7, 1, "´ç½Å¿¡°Ô´Â ¾ÆÁ÷ ´É·ÂÀÌ ¾ø½À´Ï´Ù.");
+		game::console::writeConsole(7, 1, L"ë‹¹ì‹ ì—ê²ŒëŠ” ì•„ì§ ëŠ¥ë ¥ì´ ì—†ìŠµë‹ˆë‹¤.");
 		return;
 	}
 
 	MenuList menu;
 
 	menu.clear();
-	menu.push_back("»ç¿ëÇÒ ÃÊ°¨°¢ÀÇ Á¾·ù ======>");
+	menu.push_back(L"ì‚¬ìš©í•  ì´ˆê°ê°ì˜ ì¢…ë¥˜ ======>");
 
 	for (int i = 1; i <= 5; i++)
 		menu.push_back(resource::getMagicName(40+i).sz_name);
@@ -1217,7 +1215,7 @@ void yunjr::PcPlayer::useESP(void)
 
 		s += resource::getMagicName(40+selected).sz_name;
 		s += resource::getMagicName(40+selected).sz_josa_sub1;
-		s += " ÀüÅõ ¸ğµå¿¡¼­¸¸ »ç¿ëµË´Ï´Ù.";
+		s += L" ì „íˆ¬ ëª¨ë“œì—ì„œë§Œ ì‚¬ìš©ë©ë‹ˆë‹¤.";
 
 		game::console::showMessage(7, s);
 		return;
@@ -1235,7 +1233,7 @@ void yunjr::PcPlayer::useESP(void)
 
 				if (map.hasHandicap(Map::HANDICAP_SEETHROUGH))
 				{
-					game::console::showMessage(13, "ÀÌ°÷ÀÇ ¾ÇÀÇ ÈûÀÌ ÀÌ ¸¶¹ıÀ» ¹æÇØÇÕ´Ï´Ù.");
+					game::console::showMessage(13, L"ì´ê³³ì˜ ì•…ì˜ í˜ì´ ì´ ë§ˆë²•ì„ ë°©í•´í•©ë‹ˆë‹¤.");
 					return;
 				}
 			}
@@ -1265,7 +1263,7 @@ void yunjr::PcPlayer::useESP(void)
 
 			Scroll(TRUE);
 
-			Print(15,"ÀÏÇàÀº ÁÖÀ§¸¦ Åõ½ÃÇÏ°í ÀÖ´Ù.");
+			Print(15,"ì¼í–‰ì€ ì£¼ìœ„ë¥¼ íˆ¬ì‹œí•˜ê³  ìˆë‹¤.");
 
 			pressAnyKey;
 
@@ -1290,15 +1288,15 @@ void yunjr::PcPlayer::useESP(void)
 
 			p_player->esp -= 5;
 /*??
-			Print(7," ´ç½ÅÀº ´ç½ÅÀÇ ¹Ì·¡¸¦ ¿¹¾ğÇÑ´Ù ...");
+			Print(7," ë‹¹ì‹ ì€ ë‹¹ì‹ ì˜ ë¯¸ë˜ë¥¼ ì˜ˆì–¸í•œë‹¤ ...");
 			Print(7,"");
 
 			k = ReturnPredict;
 
 			if (k in [1..25])
-				s = "´ç½ÅÀº " + Predict_Data[k] + " °ÍÀÌ´Ù"
+				s = "ë‹¹ì‹ ì€ " + Predict_Data[k] + " ê²ƒì´ë‹¤"
 			else
-				s = "´ç½ÅÀº ¾î¶² Èû¿¡ ÀÇÇØ ¿¹¾ğÀ» ¹æÇØ ¹Ş°í ÀÖ´Ù";
+				s = "ë‹¹ì‹ ì€ ì–´ë–¤ í˜ì— ì˜í•´ ì˜ˆì–¸ì„ ë°©í•´ ë°›ê³  ìˆë‹¤";
 
 			cPrint(10,15," # ",s,"");
 
@@ -1317,7 +1315,7 @@ void yunjr::PcPlayer::useESP(void)
 
 			p_player->esp -= 20;
 
-			game::console::showMessage(5, "´ç½ÅÀº Àá½Ãµ¿¾È ´Ù¸¥ »ç¶÷ÀÇ ¸¶À½À» ÀĞÀ»¼ö ÀÖ´Ù.");
+			game::console::showMessage(5, L"ë‹¹ì‹ ì€ ì ì‹œë™ì•ˆ ë‹¤ë¥¸ ì‚¬ëŒì˜ ë§ˆìŒì„ ì½ì„ìˆ˜ ìˆë‹¤.");
 
 			party.ability.mind_control = 3;
 		}
@@ -1330,7 +1328,7 @@ void yunjr::PcPlayer::useESP(void)
 
 				if (map.hasHandicap(Map::HANDICAP_CLAIRVOYANCE))
 				{
-					game::console::showMessage(13, "ÀÌ°÷ÀÇ ¾ÇÀÇ ÈûÀÌ ÀÌ ¸¶¹ıÀ» ¹æÇØÇÕ´Ï´Ù.");
+					game::console::showMessage(13, L"ì´ê³³ì˜ ì•…ì˜ í˜ì´ ì´ ë§ˆë²•ì„ ë°©í•´í•©ë‹ˆë‹¤.");
 					return;
 				}
 			}
@@ -1343,10 +1341,10 @@ void yunjr::PcPlayer::useESP(void)
 
 			menu.clear();
 			menu.push_back(resource::getMessageString(resource::MESSAGE_SELECT_DIRECTION));
-			menu.push_back("ºÏÂÊÀ¸·Î Ãµ¸®¾ÈÀ» »ç¿ë");
-			menu.push_back("³²ÂÊÀ¸·Î Ãµ¸®¾ÈÀ» »ç¿ë");
-			menu.push_back("µ¿ÂÊÀ¸·Î Ãµ¸®¾ÈÀ» »ç¿ë");
-			menu.push_back("¼­ÂÊÀ¸·Î Ãµ¸®¾ÈÀ» »ç¿ë");
+			menu.push_back(L"ë¶ìª½ìœ¼ë¡œ ì²œë¦¬ì•ˆì„ ì‚¬ìš©");
+			menu.push_back(L"ë‚¨ìª½ìœ¼ë¡œ ì²œë¦¬ì•ˆì„ ì‚¬ìš©");
+			menu.push_back(L"ë™ìª½ìœ¼ë¡œ ì²œë¦¬ì•ˆì„ ì‚¬ìš©");
+			menu.push_back(L"ì„œìª½ìœ¼ë¡œ ì²œë¦¬ì•ˆì„ ì‚¬ìš©");
 
 			int selected = MenuSelection(menu)();
 
@@ -1369,16 +1367,16 @@ void yunjr::PcPlayer::useESP(void)
 			party.xaxis = x;
 			party.yaxis = y;
 
-			//@@ »ç¿îµå ²ô´Â ºÎºĞ Ãß°¡
+			//@@ ì‚¬ìš´ë“œ ë„ëŠ” ë¶€ë¶„ ì¶”ê°€
 
 			for i = 0 to 1 do
 			{
 				page = 1 - page;
 				setactivepage(page);
 				hany = 30;
-				print(15,"Ãµ¸®¾ÈÀÇ »ç¿ëÁß ...");
+				print(15,"ì²œë¦¬ì•ˆì˜ ì‚¬ìš©ì¤‘ ...");
 				setcolor(14);
-				HPrintXY4Select(250,184,"¾Æ¹«Å°³ª ´©¸£½Ã¿À ...");
+				HPrintXY4Select(250,184,"ì•„ë¬´í‚¤ë‚˜ ëˆ„ë¥´ì‹œì˜¤ ...");
 			}
 
 			for i = 1 to player[person].level[3] do
@@ -1406,7 +1404,7 @@ Exit_For:
 			x = party.xaxis;
 			y = party.yaxis;
 
-			//@@ »ç¿îµå ¼³Á¤ º¹¿øÇÏ´Â ºÎºĞ Ãß°¡
+			//@@ ì‚¬ìš´ë“œ ì„¤ì • ë³µì›í•˜ëŠ” ë¶€ë¶„ ì¶”ê°€
 
 			Scroll(TRUE);
 */
@@ -1428,7 +1426,7 @@ void yunjr::PcPlayer::useESPForBattle(int ix_object, int ix_enemy)
 
 	if (!m_canUseESP())
 	{
-		game::console::writeConsole(7, 1, "´ç½Å¿¡°Ô´Â ¾ÆÁ÷ ´É·ÂÀÌ ¾ø½À´Ï´Ù.");
+		game::console::writeConsole(7, 1, L"ë‹¹ì‹ ì—ê²ŒëŠ” ì•„ì§ ëŠ¥ë ¥ì´ ì—†ìŠµë‹ˆë‹¤.");
 		return;
 	}
 
@@ -1444,7 +1442,7 @@ void yunjr::PcPlayer::useESPForBattle(int ix_object, int ix_enemy)
 
 	if ((ix_object == 1) || (ix_object == 2) || (ix_object == 4))
 	{
-		game::console::writeConsole(7, 3, resource::getMagicName(ix_object+40).sz_name, resource::getMagicName(ix_object+40).sz_josa_with, " ÀüÅõ¸ğµå¿¡¼­´Â »ç¿ëÇÒ ¼ö°¡ ¾ø½À´Ï´Ù.");
+		game::console::writeConsole(7, 3, resource::getMagicName(ix_object+40).sz_name, resource::getMagicName(ix_object+40).sz_josa_with, L" ì „íˆ¬ëª¨ë“œì—ì„œëŠ” ì‚¬ìš©í•  ìˆ˜ê°€ ì—†ìŠµë‹ˆë‹¤.");
 		return;
 	}
 
@@ -1452,7 +1450,7 @@ void yunjr::PcPlayer::useESPForBattle(int ix_object, int ix_enemy)
 	{
 		if (p_player->esp < 15)
 		{
-			game::console::writeConsole(7, 1, "ÃÊ°¨°¢ Áö¼ö°¡ ºÎÁ·Çß´Ù");
+			game::console::writeConsole(7, 1, L"ì´ˆê°ê° ì§€ìˆ˜ê°€ ë¶€ì¡±í–ˆë‹¤");
 			return;
 		}
 
@@ -1462,28 +1460,28 @@ void yunjr::PcPlayer::useESPForBattle(int ix_object, int ix_enemy)
 
 		if (!MIND_CONTROLLABLE.isSet(p_enemy->ed_number))
 		{
-			game::console::writeConsole(7, 1, "µ¶½É¼úÀº ÀüÇô ÅëÇÏÁö ¾Ê¾Ò´Ù");
+			game::console::writeConsole(7, 1, L"ë…ì‹¬ìˆ ì€ ì „í˜€ í†µí•˜ì§€ ì•Šì•˜ë‹¤");
 			return;
 		}
 
 		int enemyLevel = p_enemy->level;
-		//@@ Æ¯¼öÇÑ °æ¿ì?
+		//@@ íŠ¹ìˆ˜í•œ ê²½ìš°?
 		if (p_enemy->ed_number == 62)
 			enemyLevel = 17;
 
 		if ((enemyLevel > p_player->level[2]) && (smutil::random(2) == 0))
 		{
-			game::console::writeConsole(7, 1, "ÀûÀÇ ¸¶À½À» ²ø¾îµéÀÌ±â¿¡´Â ¾ÆÁ÷ ´É·ÂÀÌ ºÎÁ·Çß´Ù");
+			game::console::writeConsole(7, 1, L"ì ì˜ ë§ˆìŒì„ ëŒì–´ë“¤ì´ê¸°ì—ëŠ” ì•„ì§ ëŠ¥ë ¥ì´ ë¶€ì¡±í–ˆë‹¤");
 			return;
 		}
 
 		if (smutil::random(60) > (p_player->level[2]-enemyLevel)*2 + p_player->accuracy[2])
 		{
-			game::console::writeConsole(7, 1, "ÀûÀÇ ¸¶À½Àº Èçµé¸®Áö ¾Ê¾Ò´Ù");
+			game::console::writeConsole(7, 1, L"ì ì˜ ë§ˆìŒì€ í”ë“¤ë¦¬ì§€ ì•Šì•˜ë‹¤");
 			return;
 		}
 
-		game::console::writeConsole(11, 1, "ÀûÀº ¿ì¸®ÀÇ ÆíÀÌ µÇ¾ú´Ù");
+		game::console::writeConsole(11, 1, L"ì ì€ ìš°ë¦¬ì˜ í¸ì´ ë˜ì—ˆë‹¤");
 
 		*player[player.size()-1] << getEnemyDataFromEnemyTable(p_enemy->ed_number);
 
@@ -1498,7 +1496,7 @@ void yunjr::PcPlayer::useESPForBattle(int ix_object, int ix_enemy)
 	{
 		if (p_player->esp < 20)
 		{
-			game::console::writeConsole(7, 1, "ÃÊ°¨°¢ Áö¼ö°¡ ºÎÁ·Çß´Ù");
+			game::console::writeConsole(7, 1, L"ì´ˆê°ê° ì§€ìˆ˜ê°€ ë¶€ì¡±í–ˆë‹¤");
 			return;
 		}
 
@@ -1519,15 +1517,15 @@ void yunjr::PcPlayer::useESPForBattle(int ix_object, int ix_enemy)
 				{
 				case 1:
 				case 2:
-					game::console::writeConsole(7, 3, "ÁÖÀ§ÀÇ µ¹µéÀÌ ¶°¿Ã¶ó ", p_enemy->getName(JOSA_OBJ), " °ø°İÇÏ±â ½ÃÀÛÇÑ´Ù");
+					game::console::writeConsole(7, 3, L"ì£¼ìœ„ì˜ ëŒë“¤ì´ ë– ì˜¬ë¼ ", p_enemy->getName(JOSA_OBJ), L" ê³µê²©í•˜ê¸° ì‹œì‘í•œë‹¤");
 					break;
 				case 3:
 				case 4:
-					game::console::writeConsole(7, 2, p_enemy->getName(JOSA_NONE), " ÁÖÀ§ÀÇ ¼¼±ÕÀÌ ±×¿¡°Ô Ä§ÅõÇÏ¿© ÇØ¸¦ ÀÔÈ÷±â ½ÃÀÛÇÑ´Ù");
+					game::console::writeConsole(7, 2, p_enemy->getName(JOSA_NONE), L" ì£¼ìœ„ì˜ ì„¸ê· ì´ ê·¸ì—ê²Œ ì¹¨íˆ¬í•˜ì—¬ í•´ë¥¼ ì…íˆê¸° ì‹œì‘í•œë‹¤");
 					break;
 				case 5:
 				case 6:
-					game::console::writeConsole(7, 4, p_player->getGenderName(), "ÀÇ ¹«±â°¡ °©ÀÚ±â ", p_enemy->getName(JOSA_NONE), "¿¡°Ô ´Ş·Áµé±â ½ÃÀÛÇÑ´Ù");
+					game::console::writeConsole(7, 4, p_player->getGenderName(), L"ì˜ ë¬´ê¸°ê°€ ê°‘ìê¸° ", p_enemy->getName(JOSA_NONE), L"ì—ê²Œ ë‹¬ë ¤ë“¤ê¸° ì‹œì‘í•œë‹¤");
 					break;
 				}
 
@@ -1557,11 +1555,11 @@ void yunjr::PcPlayer::useESPForBattle(int ix_object, int ix_enemy)
 				{
 				case 7:
 				case 8:
-					game::console::writeConsole(7, 1, "°©ÀÚ±â ¶¥¼ÓÀÇ ¿ì¶ó´½ÀÌ ÇÙºĞ¿­À» ÀÏÀ¸ÄÑ °í¿ÂÀÇ ¿­±â°¡ ÀûÀÇ ÁÖÀ§¸¦ °¨½Î±â ½ÃÀÛÇÑ´Ù");
+					game::console::writeConsole(7, 1, L"ê°‘ìê¸° ë•…ì†ì˜ ìš°ë¼ëŠ„ì´ í•µë¶„ì—´ì„ ì¼ìœ¼ì¼œ ê³ ì˜¨ì˜ ì—´ê¸°ê°€ ì ì˜ ì£¼ìœ„ë¥¼ ê°ì‹¸ê¸° ì‹œì‘í•œë‹¤");
 					break;
 				case 9:
 				case 10:
-					game::console::writeConsole(7, 1, "°ø±âÁßÀÇ ¼ö¼Ò°¡ µ¹¿¬È÷ ÇÙÀ¶ÇÕÀ» ÀÏÀ¸ÄÑ Áú·® °á¼ÕÀÇ ¿¡³ÊÁö¸¦ Àûµé¿¡°Ô ¹æÃâÇÏ±â ½ÃÀÛÇÑ´Ù");
+					game::console::writeConsole(7, 1, L"ê³µê¸°ì¤‘ì˜ ìˆ˜ì†Œê°€ ëŒì—°íˆ í•µìœµí•©ì„ ì¼ìœ¼ì¼œ ì§ˆëŸ‰ ê²°ì†ì˜ ì—ë„ˆì§€ë¥¼ ì ë“¤ì—ê²Œ ë°©ì¶œí•˜ê¸° ì‹œì‘í•œë‹¤");
 					break;
 				}
 
@@ -1593,7 +1591,7 @@ void yunjr::PcPlayer::useESPForBattle(int ix_object, int ix_enemy)
 		case 11:
 		case 12:
 			{
-				game::console::writeConsole(7, 2, p_player->getGenderName(), "´Â Àû¿¡°Ô °øÆ÷½ÉÀ» ºÒ¾î ³Ö¾ú´Ù");
+				game::console::writeConsole(7, 2, p_player->getGenderName(), L"ëŠ” ì ì—ê²Œ ê³µí¬ì‹¬ì„ ë¶ˆì–´ ë„£ì—ˆë‹¤");
 
 				if (smutil::random(40) < p_enemy->resistance)
 				{
@@ -1615,13 +1613,13 @@ void yunjr::PcPlayer::useESPForBattle(int ix_object, int ix_enemy)
 
 				p_enemy->dead = 1;
 
-				game::console::writeConsole(10, 2, p_enemy->getName(JOSA_SUB), " °ÌÀ» ¸Ô°í´Â µµ¸Á °¡¹ö·È´Ù");
+				game::console::writeConsole(10, 2, p_enemy->getName(JOSA_SUB), L" ê²ì„ ë¨¹ê³ ëŠ” ë„ë§ ê°€ë²„ë ¸ë‹¤");
 			}
 			break;
 		case 13:
 		case 14:
 			{
-				game::console::writeConsole(7, 2, p_player->getGenderName(), "´Â ÀûÀÇ ½ÅÁø ´ë»ç¸¦ Á¶ÀıÇÏ¿© ÀûÀÇ Ã¼·ÂÀ» Á¡Â÷ ¾àÈ­ ½ÃÅ°·Á ÇÑ´Ù");
+				game::console::writeConsole(7, 2, p_player->getGenderName(), L"ëŠ” ì ì˜ ì‹ ì§„ ëŒ€ì‚¬ë¥¼ ì¡°ì ˆí•˜ì—¬ ì ì˜ ì²´ë ¥ì„ ì ì°¨ ì•½í™” ì‹œí‚¤ë ¤ í•œë‹¤");
 
 				if (smutil::random(100) < p_enemy->resistance)
 					return;
@@ -1636,7 +1634,7 @@ void yunjr::PcPlayer::useESPForBattle(int ix_object, int ix_enemy)
 		case 16:
 		case 17:
 			{
-				game::console::writeConsole(7, 2, p_player->getGenderName(), "´Â ¿°·ÂÀ¸·Î ÀûÀÇ ½ÉÀåÀ» ¸ØÃß·Á ÇÑ´Ù");
+				game::console::writeConsole(7, 2, p_player->getGenderName(), L"ëŠ” ì—¼ë ¥ìœ¼ë¡œ ì ì˜ ì‹¬ì¥ì„ ë©ˆì¶”ë ¤ í•œë‹¤");
 
 				if (smutil::random(40) < p_enemy->resistance)
 				{
@@ -1666,7 +1664,7 @@ void yunjr::PcPlayer::useESPForBattle(int ix_object, int ix_enemy)
 			break;
 		default:
 			{
-				game::console::writeConsole(7, 2, p_player->getGenderName(), "´Â ÀûÀ» È¯»ó¼Ó¿¡ ºüÁö°Ô ÇÏ·ÁÇÑ´Ù");
+				game::console::writeConsole(7, 2, p_player->getGenderName(), L"ëŠ” ì ì„ í™˜ìƒì†ì— ë¹ ì§€ê²Œ í•˜ë ¤í•œë‹¤");
 
 				if (smutil::random(40) < p_enemy->resistance)
 				{
@@ -1688,7 +1686,7 @@ void yunjr::PcPlayer::useESPForBattle(int ix_object, int ix_enemy)
 			}
 		}
 
-		game::window::displayBattle(0); //@@DisplayEnemies(FALSE); ¸Â´ÂÁö ¸ğ¸£°ÚÀ½
+		game::window::displayBattle(0); //@@DisplayEnemies(FALSE); ë§ëŠ”ì§€ ëª¨ë¥´ê² ìŒ
 	}
 }
 
@@ -1698,7 +1696,7 @@ void yunjr::PcPlayer::castSpellWithSpecialAbility(int ix_object, int ix_enemy)
 
 	if (!p_player->m_canUseSpecialMagic())
 	{
-		game::console::writeConsole(7, 1, "´ç½Å¿¡°Ô´Â ¾ÆÁ÷ ´É·ÂÀÌ ¾ø½À´Ï´Ù.");
+		game::console::writeConsole(7, 1, L"ë‹¹ì‹ ì—ê²ŒëŠ” ì•„ì§ ëŠ¥ë ¥ì´ ì—†ìŠµë‹ˆë‹¤.");
 		return;
 	}
 
@@ -1722,17 +1720,17 @@ void yunjr::PcPlayer::castSpellWithSpecialAbility(int ix_object, int ix_enemy)
 
 			if (smutil::random(100) < p_enemy->resistance)
 			{
-				game::console::writeConsole(7, 1, "ÀûÀº µ¶ °ø°İÀ» ÀúÁö Çß´Ù");
+				game::console::writeConsole(7, 1, L"ì ì€ ë… ê³µê²©ì„ ì €ì§€ í–ˆë‹¤");
 				return;
 			}
 
 			if (smutil::random(40) > p_player->accuracy[1])
 			{
-				game::console::writeConsole(7, 1, "µ¶ °ø°İÀº ºø³ª°¬´Ù");
+				game::console::writeConsole(7, 1, L"ë… ê³µê²©ì€ ë¹—ë‚˜ê°”ë‹¤");
 				return;
 			}
 
-			game::console::writeConsole(4, 2, p_enemy->getName(JOSA_SUB), " Áßµ¶ µÇ¾ú´Ù");
+			game::console::writeConsole(4, 2, p_enemy->getName(JOSA_SUB), L" ì¤‘ë… ë˜ì—ˆë‹¤");
 			++p_enemy->poison;
 		}
 		break;
@@ -1744,17 +1742,17 @@ void yunjr::PcPlayer::castSpellWithSpecialAbility(int ix_object, int ix_enemy)
 
 			if (smutil::random(100) < p_enemy->resistance)
 			{
-				game::console::writeConsole(7, 1, "±â¼ú ¹«·ÂÈ­ °ø°İÀº ÀúÁö ´çÇß´Ù");
+				game::console::writeConsole(7, 1, L"ê¸°ìˆ  ë¬´ë ¥í™” ê³µê²©ì€ ì €ì§€ ë‹¹í–ˆë‹¤");
 				return;
 			}
 
 			if (smutil::random(60) > p_player->accuracy[1])
 			{
-				game::console::writeConsole(7, 1, "±â¼ú ¹«·ÂÈ­ °ø°İÀº ºø³ª°¬´Ù");
+				game::console::writeConsole(7, 1, L"ê¸°ìˆ  ë¬´ë ¥í™” ê³µê²©ì€ ë¹—ë‚˜ê°”ë‹¤");
 				return;
 			}
 
-			game::console::writeConsole(4, 2, p_enemy->getName(JOSA_NONE), "ÀÇ Æ¯¼ö °ø°İ ´É·ÂÀÌ Á¦°ÅµÇ¾ú´Ù");
+			game::console::writeConsole(4, 2, p_enemy->getName(JOSA_NONE), L"ì˜ íŠ¹ìˆ˜ ê³µê²© ëŠ¥ë ¥ì´ ì œê±°ë˜ì—ˆë‹¤");
 
 			p_enemy->special = 0;
 		}
@@ -1767,7 +1765,7 @@ void yunjr::PcPlayer::castSpellWithSpecialAbility(int ix_object, int ix_enemy)
 
 			if (smutil::random(100) < p_enemy->resistance)
 			{
-				game::console::writeConsole(7, 1, "¹æ¾î ¹«·ÂÈ­ °ø°İÀº ÀúÁö ´çÇß´Ù");
+				game::console::writeConsole(7, 1, L"ë°©ì–´ ë¬´ë ¥í™” ê³µê²©ì€ ì €ì§€ ë‹¹í–ˆë‹¤");
 				return;
 			}
 
@@ -1775,11 +1773,11 @@ void yunjr::PcPlayer::castSpellWithSpecialAbility(int ix_object, int ix_enemy)
 
 			if (smutil::random(temp) > p_player->accuracy[1])
 			{
-				game::console::writeConsole(7, 1, "¹æ¾î ¹«·ÂÈ­ °ø°İÀº ºø³ª°¬´Ù");
+				game::console::writeConsole(7, 1, L"ë°©ì–´ ë¬´ë ¥í™” ê³µê²©ì€ ë¹—ë‚˜ê°”ë‹¤");
 				return;
 			}
 
-			game::console::writeConsole(4, 2, p_enemy->getName(JOSA_NONE), "ÀÇ ¹æ¾î ´É·ÂÀÌ ÀúÇÏµÇ¾ú´Ù");
+			game::console::writeConsole(4, 2, p_enemy->getName(JOSA_NONE), L"ì˜ ë°©ì–´ ëŠ¥ë ¥ì´ ì €í•˜ë˜ì—ˆë‹¤");
 
 			if ((p_enemy->resistance < 31) || (smutil::random(2) == 0))
 				--p_enemy->ac;
@@ -1795,17 +1793,17 @@ void yunjr::PcPlayer::castSpellWithSpecialAbility(int ix_object, int ix_enemy)
 
 			if (smutil::random(200) < p_enemy->resistance)
 			{
-				game::console::writeConsole(7, 1, "´É·Â ÀúÇÏ °ø°İÀº ÀúÁö ´çÇß´Ù");
+				game::console::writeConsole(7, 1, L"ëŠ¥ë ¥ ì €í•˜ ê³µê²©ì€ ì €ì§€ ë‹¹í–ˆë‹¤");
 				return;
 			}
 
 			if (smutil::random(30) > p_player->accuracy[1])
 			{
-				game::console::writeConsole(7, 1, "´É·Â ÀúÇÏ °ø°İÀº ºø³ª°¬´Ù");
+				game::console::writeConsole(7, 1, L"ëŠ¥ë ¥ ì €í•˜ ê³µê²©ì€ ë¹—ë‚˜ê°”ë‹¤");
 				return;
 			}
 
-			game::console::writeConsole(4, 2, p_enemy->getName(JOSA_NONE), "ÀÇ ÀüÃ¼ÀûÀÎ ´É·ÂÀÌ ÀúÇÏµÇ¾ú´Ù");
+			game::console::writeConsole(4, 2, p_enemy->getName(JOSA_NONE), L"ì˜ ì „ì²´ì ì¸ ëŠ¥ë ¥ì´ ì €í•˜ë˜ì—ˆë‹¤");
 
 			if (p_enemy->level > 1)
 				--p_enemy->level;
@@ -1824,13 +1822,13 @@ void yunjr::PcPlayer::castSpellWithSpecialAbility(int ix_object, int ix_enemy)
 
 			if (smutil::random(100) < p_enemy->resistance)
 			{
-				game::console::writeConsole(7, 1, "¸¶¹ı ºÒ´É °ø°İÀº ÀúÁö ´çÇß´Ù");
+				game::console::writeConsole(7, 1, L"ë§ˆë²• ë¶ˆëŠ¥ ê³µê²©ì€ ì €ì§€ ë‹¹í–ˆë‹¤");
 				return;
 			}
 
 			if (smutil::random(100) > p_player->accuracy[1])
 			{
-				game::console::writeConsole(7, 1, "¸¶¹ı ºÒ´É °ø°İÀº ºø³ª°¬´Ù");
+				game::console::writeConsole(7, 1, L"ë§ˆë²• ë¶ˆëŠ¥ ê³µê²©ì€ ë¹—ë‚˜ê°”ë‹¤");
 				return;
 			}
 
@@ -1838,9 +1836,9 @@ void yunjr::PcPlayer::castSpellWithSpecialAbility(int ix_object, int ix_enemy)
 				--p_enemy->cast_level;
 
 			if (p_enemy->cast_level > 0)
-				game::console::writeConsole(4, 2, p_enemy->getName(JOSA_NONE), "ÀÇ ¸¶¹ı ´É·ÂÀÌ ÀúÇÏµÇ¾ú´Ù");
+				game::console::writeConsole(4, 2, p_enemy->getName(JOSA_NONE), L"ì˜ ë§ˆë²• ëŠ¥ë ¥ì´ ì €í•˜ë˜ì—ˆë‹¤");
 			else
-				game::console::writeConsole(4, 2, p_enemy->getName(JOSA_NONE), "ÀÇ ¸¶¹ı ´É·ÂÀº »ç¶óÁ³´Ù");
+				game::console::writeConsole(4, 2, p_enemy->getName(JOSA_NONE), L"ì˜ ë§ˆë²• ëŠ¥ë ¥ì€ ì‚¬ë¼ì¡Œë‹¤");
 
 		}
 		break;
@@ -1852,13 +1850,13 @@ void yunjr::PcPlayer::castSpellWithSpecialAbility(int ix_object, int ix_enemy)
 
 			if (smutil::random(100) < p_enemy->resistance)
 			{
-				game::console::writeConsole(7, 1, "Å» ÃÊÀÎÈ­ °ø°İÀº ÀúÁö ´çÇß´Ù");
+				game::console::writeConsole(7, 1, L"íƒˆ ì´ˆì¸í™” ê³µê²©ì€ ì €ì§€ ë‹¹í–ˆë‹¤");
 				return;
 			}
 
 			if (smutil::random(100) > p_player->accuracy[1])
 			{
-				game::console::writeConsole(7, 1, "Å» ÃÊÀÎÈ­ °ø°İÀº ºø³ª°¬´Ù");
+				game::console::writeConsole(7, 1, L"íƒˆ ì´ˆì¸í™” ê³µê²©ì€ ë¹—ë‚˜ê°”ë‹¤");
 				return;
 			}
 
@@ -1866,9 +1864,9 @@ void yunjr::PcPlayer::castSpellWithSpecialAbility(int ix_object, int ix_enemy)
 				--p_enemy->special_cast_level;
 
 			if (p_enemy->special_cast_level > 0)
-				game::console::writeConsole(4, 1, p_enemy->getName(JOSA_NONE), "ÀÇ ÃÊÀÚ¿¬Àû ´É·ÂÀÌ ÀúÇÏµÇ¾ú´Ù");
+				game::console::writeConsole(4, 1, p_enemy->getName(JOSA_NONE), L"ì˜ ì´ˆìì—°ì  ëŠ¥ë ¥ì´ ì €í•˜ë˜ì—ˆë‹¤");
 			else
-				game::console::writeConsole(4, 1, p_enemy->getName(JOSA_NONE), "ÀÇ ÃÊÀÚ¿¬Àû ´É·ÂÀº »ç¶óÁ³´Ù");
+				game::console::writeConsole(4, 1, p_enemy->getName(JOSA_NONE), L"ì˜ ì´ˆìì—°ì  ëŠ¥ë ¥ì€ ì‚¬ë¼ì¡Œë‹¤");
 		}
 		break;
 	default:
@@ -1882,12 +1880,12 @@ bool yunjr::PcPlayer::tryToRunAway()
 
 	if (smutil::random(50) > p_player->agility)
 	{
-		game::console::writeConsole(7, 1, "±×·¯³ª, ÀÏÇàÀº ¼º°øÇÏÁö ¸øÇß´Ù");
+		game::console::writeConsole(7, 1, L"ê·¸ëŸ¬ë‚˜, ì¼í–‰ì€ ì„±ê³µí•˜ì§€ ëª»í–ˆë‹¤");
 		return false;
 	}
 	else
 	{
-		game::console::writeConsole(11, 1, "¼º°øÀûÀ¸·Î µµ¸ÁÀ» °¬´Ù");
+		game::console::writeConsole(11, 1, L"ì„±ê³µì ìœ¼ë¡œ ë„ë§ì„ ê°”ë‹¤");
 		return true;
 	}
 }
@@ -1906,7 +1904,7 @@ namespace
 		return func;
 	}
 
-	// ¾Æ±º Ä³¸¯ÅÍÀÇ °æÇèÄ¡¸¦ ¿Ã·ÁÁÖ´Â ÇÔ¼öÀÚ
+	// ì•„êµ° ìºë¦­í„°ì˜ ê²½í—˜ì¹˜ë¥¼ ì˜¬ë ¤ì£¼ëŠ” í•¨ìˆ˜ì
 	template <class type>
 	class FnPlusExp
 	{
@@ -1931,7 +1929,7 @@ void yunjr::PcPlayer::m_healOne(PcPlayer* p_target)
 	if ((p_target->dead > 0) || (p_target->unconscious > 0) || (p_target->poison > 0))
 	{
 		if (!game::status::inBattle())
-			game::console::writeConsole(7, 2, p_target->getName(JOSA_SUB), " Ä¡·áµÉ »óÅÂ°¡ ¾Æ´Õ´Ï´Ù.");
+			game::console::writeConsole(7, 2, p_target->getName(JOSA_SUB), L" ì¹˜ë£Œë  ìƒíƒœê°€ ì•„ë‹™ë‹ˆë‹¤.");
 
 		return;
 	}
@@ -1939,7 +1937,7 @@ void yunjr::PcPlayer::m_healOne(PcPlayer* p_target)
 	if (p_target->hp >= p_target->endurance * p_target->level[0])
 	{
 		if (!game::status::inBattle())
-			game::console::writeConsole(7, 2, p_target->getName(JOSA_SUB), " Ä¡·áÇÒ ÇÊ¿ä°¡ ¾ø½À´Ï´Ù.");
+			game::console::writeConsole(7, 2, p_target->getName(JOSA_SUB), L" ì¹˜ë£Œí•  í•„ìš”ê°€ ì—†ìŠµë‹ˆë‹¤.");
 
 		return;
 	}
@@ -1960,7 +1958,7 @@ void yunjr::PcPlayer::m_healOne(PcPlayer* p_target)
 	if (p_target->hp > p_target->level[0] * p_target->endurance)
 		p_target->hp = p_target->level[0] * p_target->endurance;
 
-	game::console::writeConsole(15, 2, p_target->getName(JOSA_SUB), " Ä¡·áµÇ¾î Á³½À´Ï´Ù.");
+	game::console::writeConsole(15, 2, p_target->getName(JOSA_SUB), L" ì¹˜ë£Œë˜ì–´ ì¡ŒìŠµë‹ˆë‹¤.");
 }
 
 void yunjr::PcPlayer::m_antidoteOne(PcPlayer* p_target)
@@ -1970,7 +1968,7 @@ void yunjr::PcPlayer::m_antidoteOne(PcPlayer* p_target)
 	if ((p_target->dead > 0) || (p_target->unconscious > 0))
 	{
 		if (!game::status::inBattle())
-			game::console::writeConsole(7, 2, p_target->getName(JOSA_SUB), " µ¶ÀÌ Ä¡·áµÉ »óÅÂ°¡ ¾Æ´Õ´Ï´Ù.");
+			game::console::writeConsole(7, 2, p_target->getName(JOSA_SUB), L" ë…ì´ ì¹˜ë£Œë  ìƒíƒœê°€ ì•„ë‹™ë‹ˆë‹¤.");
 
 		return;
 	}
@@ -1978,7 +1976,7 @@ void yunjr::PcPlayer::m_antidoteOne(PcPlayer* p_target)
 	if (p_target->poison == 0)
 	{
 		if (!game::status::inBattle())
-			game::console::writeConsole(7, 2, p_target->getName(JOSA_SUB), " µ¶¿¡ °É¸®Áö ¾Ê¾Ò½À´Ï´Ù.");
+			game::console::writeConsole(7, 2, p_target->getName(JOSA_SUB), L" ë…ì— ê±¸ë¦¬ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
 
 		return;
 	}
@@ -1994,7 +1992,7 @@ void yunjr::PcPlayer::m_antidoteOne(PcPlayer* p_target)
 	p_player->sp -= 15;
 	p_target->poison = 0;
 
-	game::console::writeConsole(15, 2, p_target->getName(), "ÀÇ µ¶Àº Á¦°Å µÇ¾ú½À´Ï´Ù.");
+	game::console::writeConsole(15, 2, p_target->getName(), L"ì˜ ë…ì€ ì œê±° ë˜ì—ˆìŠµë‹ˆë‹¤.");
 }
 
 void yunjr::PcPlayer::m_recoverConsciousnessOne(PcPlayer* p_target)
@@ -2004,7 +2002,7 @@ void yunjr::PcPlayer::m_recoverConsciousnessOne(PcPlayer* p_target)
 	if (p_target->dead > 0)
 	{
 		if (!game::status::inBattle())
-			game::console::writeConsole(7, 2, p_target->getName(JOSA_SUB), " ÀÇ½ÄÀÌ µ¹¾Æ¿Ã »óÅÂ°¡ ¾Æ´Õ´Ï´Ù.");
+			game::console::writeConsole(7, 2, p_target->getName(JOSA_SUB), L" ì˜ì‹ì´ ëŒì•„ì˜¬ ìƒíƒœê°€ ì•„ë‹™ë‹ˆë‹¤.");
 
 		return;
 	}
@@ -2012,7 +2010,7 @@ void yunjr::PcPlayer::m_recoverConsciousnessOne(PcPlayer* p_target)
 	if (p_target->unconscious == 0)
 	{
 		if (!game::status::inBattle())
-			game::console::writeConsole(7, 2, p_target->getName(JOSA_SUB), " ÀÇ½ÄºÒ¸íÀÌ ¾Æ´Õ´Ï´Ù.");
+			game::console::writeConsole(7, 2, p_target->getName(JOSA_SUB), L" ì˜ì‹ë¶ˆëª…ì´ ì•„ë‹™ë‹ˆë‹¤.");
 
 		return;
 	}
@@ -2033,7 +2031,7 @@ void yunjr::PcPlayer::m_recoverConsciousnessOne(PcPlayer* p_target)
 	if (p_target->hp <= 0)
 		p_target->hp = 1;
 
-	game::console::writeConsole(15, 2, p_target->getName(JOSA_SUB), " ÀÇ½ÄÀ» µÇÃ£¾Ò½À´Ï´Ù.");
+	game::console::writeConsole(15, 2, p_target->getName(JOSA_SUB), L" ì˜ì‹ì„ ë˜ì°¾ì•˜ìŠµë‹ˆë‹¤.");
 }
 
 void yunjr::PcPlayer::m_revitalizeOne(PcPlayer* p_target)
@@ -2043,7 +2041,7 @@ void yunjr::PcPlayer::m_revitalizeOne(PcPlayer* p_target)
 	if (p_target->dead == 0)
 	{
 		if (!game::status::inBattle())
-			game::console::writeConsole(7, 2, p_target->getName(JOSA_SUB), " ¾ÆÁ÷ »ì¾Æ ÀÖ½À´Ï´Ù.");
+			game::console::writeConsole(7, 2, p_target->getName(JOSA_SUB), L" ì•„ì§ ì‚´ì•„ ìˆìŠµë‹ˆë‹¤.");
 
 		return;
 	}
@@ -2068,7 +2066,7 @@ void yunjr::PcPlayer::m_revitalizeOne(PcPlayer* p_target)
 	if (p_target->unconscious == 0)
 		p_target->unconscious = 1;
 
-	game::console::writeConsole(15, 2, p_target->getName(JOSA_SUB), " ´Ù½Ã »ı¸íÀ» ¾ò¾ú½À´Ï´Ù.");
+	game::console::writeConsole(15, 2, p_target->getName(JOSA_SUB), L" ë‹¤ì‹œ ìƒëª…ì„ ì–»ì—ˆìŠµë‹ˆë‹¤.");
 }
 
 void yunjr::PcPlayer::m_healAll(void)
@@ -2123,16 +2121,16 @@ bool yunjr::PcPlayer::m_canUseSpecialMagic(void)
 
 bool yunjr::PcPlayer::m_canUseESP(void)
 {
-	// ¾Æ·¡ÀÇ Á¶°Ç Áß ÇÏ³ª¸¸ ¸¸Á·ÇÏ¸é µÈ´Ù
+	// ì•„ë˜ì˜ ì¡°ê±´ ì¤‘ í•˜ë‚˜ë§Œ ë§Œì¡±í•˜ë©´ ëœë‹¤
 
-	// ESP ½Àµæ ¿©ºÎ
+	// ESP ìŠµë“ ì—¬ë¶€
 	{
 		PcParty& party = game::object::getParty();
 		if (party.ability.can_use_ESP)
 			return true;
 	}
 		
-	// Class Á¦¾à È®ÀÎ
+	// Class ì œì•½ í™•ì¸
 	{
 		static const smutil::SmSet s_ESPer("2,3,6");
 		if (s_ESPer.isSet(class_))
@@ -2157,7 +2155,7 @@ void yunjr::PcPlayer::m_plusExperience(PcEnemy* p_enemy)
 
 	if (p_enemy->unconscious == 0)
 	{
-		game::console::writeConsole(14, 4, p_player->getName(JOSA_SUB), " ", smutil::IntToStr(plus)(), "¸¸Å­ °æÇèÄ¡¸¦ ¾ò¾ú´Ù !");
+		game::console::writeConsole(14, 4, p_player->getName(JOSA_SUB), L" ", smutil::IntToStr<wchar_t>(plus)(), L"ë§Œí¼ ê²½í—˜ì¹˜ë¥¼ ì–»ì—ˆë‹¤ !");
 		p_player->experience += plus;
 	}
 	else
@@ -2169,12 +2167,12 @@ void yunjr::PcPlayer::m_plusExperience(PcEnemy* p_enemy)
 
 void yunjr::PcPlayer::m_printSpNotEnough(void)
 {
-	game::console::showMessage(7, "¸¶¹ı Áö¼ö°¡ ÃæºĞÇÏÁö ¾Ê½À´Ï´Ù.");
+	game::console::showMessage(7, L"ë§ˆë²• ì§€ìˆ˜ê°€ ì¶©ë¶„í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 }
 
 void yunjr::PcPlayer::m_printESPNotEnough(void)
 {
-	game::console::showMessage(7, "ESP Áö¼ö°¡ ÃæºĞÇÏÁö ¾Ê½À´Ï´Ù.");
+	game::console::showMessage(7, L"ESP ì§€ìˆ˜ê°€ ì¶©ë¶„í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2185,57 +2183,57 @@ smutil::string yunjr::getBattleMessage(const yunjr::PcPlayer& who, int how, int 
 	smutil::string s;
 
 	s += who.getName(PcNameBase::JOSA_SUB);
-	s += " ";
+	s += L" ";
 
 	switch (how)
 	{
 	case 1:
 		s += resource::getWeaponName(who.weapon).sz_name;
 		s += resource::getWeaponName(who.weapon).sz_josa_with;
-		s += "·Î ";
+		s += L"ë¡œ ";
 		s += whom.getName(PcNameBase::JOSA_OBJ);
-		s += " °ø°İÇß´Ù";
+		s += L" ê³µê²©í–ˆë‹¤";
 		break;
 	case 2:
 		s += resource::getMagicName(what).sz_name;
 		s += resource::getMagicName(what).sz_josa_with;
-		s += "·Î ";
+		s += L"ë¡œ ";
 		s += whom.getName(PcNameBase::JOSA_NONE);
-		s += "¿¡°Ô °ø°İÇß´Ù";
+		s += L"ì—ê²Œ ê³µê²©í–ˆë‹¤";
 		break;
 	case 3:
 		s += resource::getMagicName(what+6).sz_name;
 		s += resource::getMagicName(what+6).sz_josa_with;
-		s += "·Î ";
+		s += L"ë¡œ ";
 		s += whom.getName(PcNameBase::JOSA_NONE);
-		s += "¿¡°Ô °ø°İÇß´Ù";
+		s += L"ì—ê²Œ ê³µê²©í–ˆë‹¤";
 		break;
 	case 4:
 		s += whom.getName(PcNameBase::JOSA_NONE);
-		s += "¿¡°Ô ";
+		s += L"ì—ê²Œ ";
 		s += resource::getMagicName(what+12).sz_name;
 		s += resource::getMagicName(what+12).sz_josa_with;
-		s += "·Î Æ¯¼ö °ø°İÀ» Çß´Ù";
+		s += L"ë¡œ íŠ¹ìˆ˜ ê³µê²©ì„ í–ˆë‹¤";
 		break;
 	case 5:
 		s += whom.getName(PcNameBase::JOSA_NONE);
-		s += "¿¡°Ô ";
+		s += L"ì—ê²Œ ";
 		s += resource::getMagicName(what+18).sz_name;
 		s += resource::getMagicName(what+18).sz_josa_obj;
-		s += " »ç¿ëÇß´Ù";
+		s += L" ì‚¬ìš©í–ˆë‹¤";
 		break;
 	case 6:
 		s += whom.getName(PcNameBase::JOSA_NONE);
-		s += "¿¡°Ô ";
+		s += L"ì—ê²Œ ";
 		s += resource::getMagicName(what+40).sz_name;
 		s += resource::getMagicName(what+40).sz_josa_obj;
-		s += " »ç¿ëÇß´Ù";
+		s += L" ì‚¬ìš©í–ˆë‹¤";
 		break;
 	case 7:
-		s  = "ÀÏÇàÀº µµ¸ÁÀ» ½ÃµµÇß´Ù";
+		s  = L"ì¼í–‰ì€ ë„ë§ì„ ì‹œë„í–ˆë‹¤";
 		break;
 	default:
-		s += "Àá½Ã ÁÖÀúÇß´Ù";
+		s += L"ì ì‹œ ì£¼ì €í–ˆë‹¤";
 	}
 
 	return s;

@@ -1,11 +1,11 @@
-
+ï»¿
 #include "yunjr_res_string.h"
 #include "util/sm_util_set.h"
 
 using yunjr::resource::HanString;
 
 ////////////////////////////////////////////////////////////////////////////////
-// °ÔÀÓÀÇ ±âº» ¼Ó¼º ¹®ÀÚ¿­ (player, weapon µî)
+// ê²Œì„ì˜ ê¸°ë³¸ ì†ì„± ë¬¸ìì—´ (player, weapon ë“±)
 
 #define RETURN_HAN_STRING(josa_set, default_has_jongsung) \
 	HanString han_string; \
@@ -19,17 +19,17 @@ using yunjr::resource::HanString;
 	\
 	if (s_josa.isSet(index) || ((han_string.sz_name == NAME_UNKNOWN) && default_has_jongsung)) \
 	{ \
-		han_string.sz_josa_sub1 = "Àº"; \
-		han_string.sz_josa_sub2 = "ÀÌ"; \
-		han_string.sz_josa_obj  = "À»"; \
-		han_string.sz_josa_with = "À¸"; \
+		han_string.sz_josa_sub1 = L"ì€"; \
+		han_string.sz_josa_sub2 = L"ì´"; \
+		han_string.sz_josa_obj  = L"ì„"; \
+		han_string.sz_josa_with = L"ìœ¼"; \
 	} \
 	else \
 	{ \
-		han_string.sz_josa_sub1 = "´Â"; \
-		han_string.sz_josa_sub2 = "°¡"; \
-		han_string.sz_josa_obj  = "¸¦"; \
-		han_string.sz_josa_with = ""; \
+		han_string.sz_josa_sub1 = L"ëŠ”"; \
+		han_string.sz_josa_sub2 = L"ê°€"; \
+		han_string.sz_josa_obj  = L"ë¥¼"; \
+		han_string.sz_josa_with = L""; \
 	} \
 	\
 	return han_string;
@@ -37,19 +37,19 @@ using yunjr::resource::HanString;
 
 HanString yunjr::resource::getWeaponName(int index)
 {
-	const char* NAME_UNKNOWN = "ºÒÈ®½ÇÇÑ ¹«±â";
-	const char* NAME[] =
+	const wchar_t* NAME_UNKNOWN = L"ë¶ˆí™•ì‹¤í•œ ë¬´ê¸°";
+	const wchar_t* NAME[] =
 	{
-		"¸Ç¼Õ",
-		"´Üµµ",
-		"°ïºÀ",
-		"¹Ì´ÃÃ¢",
-		"Àå°Ë",
-		"Ã¶Åğ",
-		"±âº´Ã¢",
-		"µµ³¢Ã¢",
-		"»ïÁöÃ¢",
-		"È­¿°°Ë",
+		L"ë§¨ì†",
+		L"ë‹¨ë„",
+		L"ê³¤ë´‰",
+		L"ë¯¸ëŠ˜ì°½",
+		L"ì¥ê²€",
+		L"ì² í‡´",
+		L"ê¸°ë³‘ì°½",
+		L"ë„ë¼ì°½",
+		L"ì‚¼ì§€ì°½",
+		L"í™”ì—¼ê²€",
 	};
 
 	RETURN_HAN_STRING("0,2..4,6..9", false)
@@ -57,15 +57,15 @@ HanString yunjr::resource::getWeaponName(int index)
 
 HanString yunjr::resource::getShieldName(int index)
 {
-	const char* NAME_UNKNOWN = "ºÒÈ®½ÇÇÑ ¹æÆĞ";
-	const char* NAME[] =
+	const wchar_t* NAME_UNKNOWN = L"ë¶ˆí™•ì‹¤í•œ ë°©íŒ¨";
+	const wchar_t* NAME[] =
 	{
-		"¾øÀ½",
-		"°¡Á× ¹æÆĞ",
-		"Ã»µ¿ ¹æÆĞ",
-		"°­Ã¶ ¹æÆĞ",
-		"ÀºÁ¦ ¹æÆĞ",
-		"±İÁ¦ ¹æÆĞ",
+		L"ì—†ìŒ",
+		L"ê°€ì£½ ë°©íŒ¨",
+		L"ì²­ë™ ë°©íŒ¨",
+		L"ê°•ì²  ë°©íŒ¨",
+		L"ì€ì œ ë°©íŒ¨",
+		L"ê¸ˆì œ ë°©íŒ¨",
 	};
 
 	RETURN_HAN_STRING("0", false)
@@ -73,15 +73,15 @@ HanString yunjr::resource::getShieldName(int index)
 
 HanString yunjr::resource::getArmorName(int index)
 {
-	const char* NAME_UNKNOWN = "ºÒÈ®½ÇÇÑ °©¿Ê";
-	const char* NAME[] =
+	const wchar_t* NAME_UNKNOWN = L"ë¶ˆí™•ì‹¤í•œ ê°‘ì˜·";
+	const wchar_t* NAME[] =
 	{
-		"¾øÀ½",
-		"°¡Á× °©¿Ê",
-		"Ã»µ¿ °©¿Ê",
-		"°­Ã¶ °©¿Ê",
-		"ÀºÁ¦ °©¿Ê",
-		"±İÁ¦ °©¿Ê",
+		L"ì—†ìŒ",
+		L"ê°€ì£½ ê°‘ì˜·",
+		L"ì²­ë™ ê°‘ì˜·",
+		L"ê°•ì²  ê°‘ì˜·",
+		L"ì€ì œ ê°‘ì˜·",
+		L"ê¸ˆì œ ê°‘ì˜·",
 	};
 
 	RETURN_HAN_STRING("0..5", true)
@@ -89,11 +89,11 @@ HanString yunjr::resource::getArmorName(int index)
 
 HanString yunjr::resource::get3rdPersonName(int index)
 {
-	const char* NAME_UNKNOWN = "±×";
-	const char* NAME[] =
+	const wchar_t* NAME_UNKNOWN = L"ê·¸";
+	const wchar_t* NAME[] =
 	{
-		"±×",
-		"±×³à",
+		L"ê·¸",
+		L"ê·¸ë…€",
 	};
 
 	RETURN_HAN_STRING("", false)
@@ -101,11 +101,11 @@ HanString yunjr::resource::get3rdPersonName(int index)
 
 HanString yunjr::resource::getGenderName(int index)
 {
-	const char* NAME_UNKNOWN = "ºÒÈ®½ÇÇÔ";
-	const char* NAME[] =
+	const wchar_t* NAME_UNKNOWN = L"ë¶ˆí™•ì‹¤í•¨";
+	const wchar_t* NAME[] =
 	{
-		"³²¼º",
-		"¿©¼º",
+		L"ë‚¨ì„±",
+		L"ì—¬ì„±",
 	};
 
 	RETURN_HAN_STRING("0, 1", true)
@@ -113,13 +113,13 @@ HanString yunjr::resource::getGenderName(int index)
 
 HanString yunjr::resource::getConditionName(CONDITION index)
 {
-	const char* NAME_UNKNOWN = "ÀÌ»ó»óÅÂ";
-	const char* NAME[] =
+	const wchar_t* NAME_UNKNOWN = L"ì´ìƒìƒíƒœ";
+	const wchar_t* NAME[] =
 	{
-		"good",
-		"poisoned",
-		"unconscious",
-		"dead",
+		L"good",
+		L"poisoned",
+		L"unconscious",
+		L"dead",
 	};
 
 	RETURN_HAN_STRING("", false);
@@ -127,20 +127,20 @@ HanString yunjr::resource::getConditionName(CONDITION index)
 
 HanString yunjr::resource::getClassName(int index)
 {
-	const char* NAME_UNKNOWN = "ºÒÈ®½ÇÇÔ";
-	const char* NAME[] =
+	const wchar_t* NAME_UNKNOWN = L"ë¶ˆí™•ì‹¤í•¨";
+	const wchar_t* NAME[] =
 	{
-		"ºÒÈ®½ÇÇÔ",
-		"±â»ç",
-		"¸¶¹ı»ç",
-		"¿¡½ºÆÛ",
-		"Àü»ç",
-		"ÀüÅõ½Â",
-		"´ÑÀÚ",
-		"»ç³É²Û",
-		"¶°µ¹ÀÌ",
-		"È¥·É",
-		"¹İ½Å¹İÀÎ",
+		L"ë¶ˆí™•ì‹¤í•¨",
+		L"ê¸°ì‚¬",
+		L"ë§ˆë²•ì‚¬",
+		L"ì—ìŠ¤í¼",
+		L"ì „ì‚¬",
+		L"ì „íˆ¬ìŠ¹",
+		L"ë‹Œì",
+		L"ì‚¬ëƒ¥ê¾¼",
+		L"ë– ëŒì´",
+		L"í˜¼ë ¹",
+		L"ë°˜ì‹ ë°˜ì¸",
 	};
 
 	RETURN_HAN_STRING("0,5,7,9,10", true)
@@ -148,56 +148,56 @@ HanString yunjr::resource::getClassName(int index)
 
 HanString yunjr::resource::getMagicName(int index)
 {
-	const char* NAME_UNKNOWN = "";
-	const char* NAME[46] =
+	const wchar_t* NAME_UNKNOWN = L"";
+	const wchar_t* NAME[46] =
 	{
-		"",
-		"¸¶¹ı È­»ì",
-		"¸¶¹ı È­±¸",
-		"¸¶¹ı ´ÜÃ¢",
-		"µ¶ ¹Ù´Ã",
-		"¸Æµ¿ ±¤¼±",
-		"Á÷°İ ³úÀü",
-		"°ø±â ÆøÇ³",
-		"¿­¼± ÆÄµ¿",
-		"ÃÊÀ½ÆÄ",
+		L"", 
+		L"ë§ˆë²• í™”ì‚´", 
+		L"ë§ˆë²• í™”êµ¬", 
+		L"ë§ˆë²• ë‹¨ì°½", 
+		L"ë… ë°”ëŠ˜", 
+		L"ë§¥ë™ ê´‘ì„ ", 
+		L"ì§ê²© ë‡Œì „", 
+		L"ê³µê¸° í­í’", 
+		L"ì—´ì„  íŒŒë™", 
+		L"ì´ˆìŒíŒŒ", 
 		// 10
-		"ÃÊ³Ã±â",
-		"ÀÎ°ø ÁöÁø",
-		"Â÷¿ø ÀÌÅ»",
-		"µ¶",
-		"±â¼ú ¹«·ÂÈ­",
-		"¹æ¾î ¹«·ÂÈ­",
-		"´É·Â ÀúÇÏ",
-		"¸¶¹ı ºÒ´É",
-		"Å» ÃÊÀÎÈ­",
-		"ÇÑ¸í Ä¡·á",
-		"ÇÑ¸í µ¶ Á¦°Å",
-		"ÇÑ¸í Ä¡·á¿Í µ¶Á¦°Å",
-		"ÇÑ¸í ÀÇ½Ä µ¹¸²",
-		"ÇÑ¸í ºÎÈ°",
-		"ÇÑ¸í Ä¡·á¿Í µ¶Á¦°Å¿Í ÀÇ½Äµ¹¸²",
-		"ÇÑ¸í º¹ÇÕ Ä¡·á",
-		"¸ğµÎ Ä¡·á",
-		"¸ğµÎ µ¶ Á¦°Å",
-		"¸ğµÎ Ä¡·á¿Í µ¶Á¦°Å",
-		"¸ğµÎ ÀÇ½Ä µ¹¸²",
-		"¸ğµÎ Ä¡·á¿Í µ¶Á¦°Å¿Í ÀÇ½Äµ¹¸²",
-		"¸ğµÎ ºÎÈ°",
-		"¸ğµÎ º¹ÇÕ Ä¡·á",
-		"¸¶¹ıÀÇ ÇŞºÒ",
-		"°øÁß ºÎ»ó",
-		"¹°À§¸¦ °ÉÀ½",
-		"´ËÀ§¸¦ °ÉÀ½",
-		"±âÈ­ ÀÌµ¿",
-		"ÁöÇü º¯È­",
-		"°ø°£ ÀÌµ¿",
-		"½Ä·® Á¦Á¶",
-		"Åõ½Ã",
-		"¿¹¾ğ",
-		"µ¶½É",
-		"Ãµ¸®¾È",
-		"¿°·Â",
+		L"ì´ˆëƒ‰ê¸°", 
+		L"ì¸ê³µ ì§€ì§„", 
+		L"ì°¨ì› ì´íƒˆ", 
+		L"ë…", 
+		L"ê¸°ìˆ  ë¬´ë ¥í™”", 
+		L"ë°©ì–´ ë¬´ë ¥í™”", 
+		L"ëŠ¥ë ¥ ì €í•˜", 
+		L"ë§ˆë²• ë¶ˆëŠ¥", 
+		L"íƒˆ ì´ˆì¸í™”", 
+		L"í•œëª… ì¹˜ë£Œ", 
+		L"í•œëª… ë… ì œê±°", 
+		L"í•œëª… ì¹˜ë£Œì™€ ë…ì œê±°", 
+		L"í•œëª… ì˜ì‹ ëŒë¦¼", 
+		L"í•œëª… ë¶€í™œ", 
+		L"í•œëª… ì¹˜ë£Œì™€ ë…ì œê±°ì™€ ì˜ì‹ëŒë¦¼", 
+		L"í•œëª… ë³µí•© ì¹˜ë£Œ", 
+		L"ëª¨ë‘ ì¹˜ë£Œ", 
+		L"ëª¨ë‘ ë… ì œê±°", 
+		L"ëª¨ë‘ ì¹˜ë£Œì™€ ë…ì œê±°", 
+		L"ëª¨ë‘ ì˜ì‹ ëŒë¦¼", 
+		L"ëª¨ë‘ ì¹˜ë£Œì™€ ë…ì œê±°ì™€ ì˜ì‹ëŒë¦¼", 
+		L"ëª¨ë‘ ë¶€í™œ", 
+		L"ëª¨ë‘ ë³µí•© ì¹˜ë£Œ", 
+		L"ë§ˆë²•ì˜ í–‡ë¶ˆ", 
+		L"ê³µì¤‘ ë¶€ìƒ", 
+		L"ë¬¼ìœ„ë¥¼ ê±¸ìŒ", 
+		L"ëŠªìœ„ë¥¼ ê±¸ìŒ", 
+		L"ê¸°í™” ì´ë™", 
+		L"ì§€í˜• ë³€í™”", 
+		L"ê³µê°„ ì´ë™", 
+		L"ì‹ëŸ‰ ì œì¡°", 
+		L"íˆ¬ì‹œ", 
+		L"ì˜ˆì–¸", 
+		L"ë…ì‹¬", 
+		L"ì²œë¦¬ì•ˆ", 
+		L"ì—¼ë ¥@@"
 	};
 
 	RETURN_HAN_STRING("1,3..8,11..13,17,22..24,29..31,33..37,39,42..45", false)
@@ -205,9 +205,9 @@ HanString yunjr::resource::getMagicName(int index)
 
 HanString yunjr::resource::getAuxName(AUX index)
 {
-	const char* NAME[] =
+	const wchar_t* NAME[] =
 	{
-		"Reserved",
+		L"Reserved",
 	};
 
 	HanString han_string;
@@ -221,37 +221,40 @@ HanString yunjr::resource::getAuxName(AUX index)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// °ÔÀÓÀÇ ¸Ş½ÃÁö ¹®ÀÚ¿­
+// ê²Œì„ì˜ ë©”ì‹œì§€ ë¬¸ìì—´
 
-const char* yunjr::resource::getMessageString(MESSAGE message)
+const wchar_t* yunjr::resource::getMessageString(MESSAGE message)
 {
-	static const char* MESSAGE_STRING_TABLE[MESSAGE_MAX] =
+	static const wchar_t* MESSAGE_STRING_TABLE[MESSAGE_MAX] =
 	{
-		"¸¶¹ı Áö¼ö°¡ ºÎÁ·Çß´Ù",
-		"Noname",
-		"ÀüÅõ ¸ğµå°¡ ¾Æ´Ò¶§´Â °ø°İ ¸¶¹ıÀ» »ç¿ëÇÒ ¼ö ¾ø½À´Ï´Ù.",
-		"´©±¸¿¡°Ô",
-		"¸ğµç »ç¶÷µé¿¡°Ô",
-		"¼±ÅÃ",
-		"°­ÇÑ Ä¡·á ¸¶¹ıÀº ¾ÆÁ÷ ºÒ°¡´É ÇÕ´Ï´Ù.",
-		"@F<<<  ¹æÇâÀ» ¼±ÅÃÇÏ½Ã¿À  >>>@@",
-		"ºÏÂÊÀ¸·Î °ø°£ÀÌµ¿",
-		"³²ÂÊÀ¸·Î °ø°£ÀÌµ¿",
-		"µ¿ÂÊÀ¸·Î °ø°£ÀÌµ¿",
-		"¼­ÂÊÀ¸·Î °ø°£ÀÌµ¿",
+		L"ë§ˆë²• ì§€ìˆ˜ê°€ ë¶€ì¡±í–ˆë‹¤",
+		L"Noname",
+		L"ì „íˆ¬ ëª¨ë“œê°€ ì•„ë‹ë•ŒëŠ” ê³µê²© ë§ˆë²•ì„ ì‚¬ìš©í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.",
+		L"ëˆ„êµ¬ì—ê²Œ",
+		L"ëª¨ë“  ì‚¬ëŒë“¤ì—ê²Œ",
+		L"ì„ íƒ",
+		L"ê°•í•œ ì¹˜ë£Œ ë§ˆë²•ì€ ì•„ì§ ë¶ˆê°€ëŠ¥ í•©ë‹ˆë‹¤.",
+		L"@F<<<  ë°©í–¥ì„ ì„ íƒí•˜ì‹œì˜¤  >>>@@",
+		L"ë¶ìª½ìœ¼ë¡œ ê³µê°„ì´ë™",
+		L"ë‚¨ìª½ìœ¼ë¡œ ê³µê°„ì´ë™",
+		L"ë™ìª½ìœ¼ë¡œ ê³µê°„ì´ë™",
+		L"ì„œìª½ìœ¼ë¡œ ê³µê°„ì´ë™",
 	};
 
 	return MESSAGE_STRING_TABLE[message];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Resource °ü¸® utility
+// Resource ê´€ë¦¬ utility
 
-unsigned short yunjr::resource::getLastMultiByte(const char* sz_text)
+wchar_t yunjr::resource::getLastMultiByte(const wchar_t* sz_text)
 {
 	const unsigned char* p_prev;
 	const unsigned char* p_ch = (const unsigned char*)sz_text;
 
+	//??
+	return 0;
+/*??
 	while (1)
 	{
 		p_prev = p_ch;
@@ -272,6 +275,7 @@ unsigned short yunjr::resource::getLastMultiByte(const char* sz_text)
 		else
 			return int(*p_prev);
 	}
+*/
 }
 
 bool yunjr::resource::hasJongsung(unsigned short code)
@@ -554,7 +558,7 @@ bool yunjr::resource::hasJongsung(unsigned short code)
 			}
 		}
 	}
-	//?? ¿µ¾î¿¡ ´ëÇØ¼­µµ Àû¿ëÇØ¾ß ÇÔ
+	//?? ì˜ì–´ì— ëŒ€í•´ì„œë„ ì ìš©í•´ì•¼ í•¨
 
 	// default
 	return true;

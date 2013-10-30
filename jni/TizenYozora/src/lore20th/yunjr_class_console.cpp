@@ -89,6 +89,8 @@ bool yunjr::LoreConsole::isModified(void)
 
 void yunjr::LoreConsole::clear(void)
 {
+	yunjr::game::console::clear();
+
 //??	sena::for_each(m_line.begin(), m_line.end(), FnDeleteArray<gfx::BltParam*>());
 
 	m_line.clear();
@@ -129,7 +131,12 @@ void yunjr::LoreConsole::setTextAlign(TEXTALIGN align)
 
 void yunjr::LoreConsole::write(const smutil::string text)
 {
-	this->write(text.operator const char*());
+	this->write(text.operator const wchar_t*());
+}
+
+void yunjr::LoreConsole::write(const wchar_t* sz_text)
+{
+	yunjr::game::console::writeLine(sz_text);
 }
 
 void yunjr::LoreConsole::write(const char* sz_text)

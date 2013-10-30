@@ -110,9 +110,8 @@ DEF_ii(sample, Occur)
 
 	IF ON(12,10) THEN
 		_Talk("Event script 1")
-/*
 		_WarpPrevPos()
-*/
+
 	ELSEIF ON(16,16) THEN
 		IF _Flag_IsSet(_FLAG_BATTLE) THEN
 /*
@@ -151,20 +150,20 @@ ENDDEF
 ////////////////////////////////////////////////////////////////////////////////
 
 DEF_ii(sample, Enter)
-/*
+
 	IF ON(14,5) THEN
 		_Select_Init()
-		_Select_Add("새로운 스크립트를 로드하시겠습니까?")
-		_Select_Add("예")
-		_Select_Add("아니오")
+		_Select_Add(L"새로운 스크립트를 로드하시겠습니까?")
+		_Select_Add(L"예")
+		_Select_Add(L"아니오")
 		_Select_Run()
 
 		DECLARE(temp)
 		ASSIGN(temp, _Select_Result())
-
+/*
 		IF EQUAL(temp, 1) THEN
 			_LoadScript("town2.cm2")
-		END
+		END*/
 	END
-*/
+
 ENDDEF

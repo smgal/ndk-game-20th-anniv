@@ -647,6 +647,16 @@ namespace sena
 		return dest;
 	}
 
+	template<typename BaseType>
+	inline int strlen(const BaseType* src)
+	{
+		const BaseType* p = src;
+		while (*p++)
+			;
+
+		return (p - src) - 1;
+	}
+
 	// from 'man strncat'
 	template<typename BaseType>
 	inline BaseType* strncat(BaseType* dest, const BaseType* src, int n)

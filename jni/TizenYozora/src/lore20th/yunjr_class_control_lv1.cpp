@@ -1,4 +1,4 @@
-
+﻿
 #include "yunjr_base.h"
 #include "yunjr_base_font.h"
 #include "yunjr_base_gfx.h"
@@ -397,13 +397,16 @@ yunjr::ControlStatus* yunjr::ControlStatus::newInstance(int x, int y, int width,
 							text_board.renderTextFx(text_x, text_y, text, 0xFFFFFFFF, 0xFFFFFFFF);
 
 							char s[256];
-							sprintf(s, "%d,  %d,  %d,  %d,  %d,  %s"
+							sprintf(s, "%d,  %d,  %d,  %d,  %d,  "
 								, player_list[i]->hp, player_list[i]->sp
 								, player_list[i]->esp, player_list[i]->ac
-								, player_list[i]->level[0], player_list[i]->getConditionString());
+								, player_list[i]->level[0]);
 
-							Text text_aux(typeface, s);
-							text_board.renderTextFx(text_x+150, text_y, text_aux, 0xFFFFFFFF, 0xFFFFFFFF);
+							Text text_aux1(typeface, s);
+							text_board.renderTextFx(text_x+150, text_y, text_aux1, 0xFFFFFFFF, 0xFFFFFFFF);
+
+							Text text_aux2(typeface, player_list[i]->getConditionString());
+							text_board.renderTextFx(text_x+400, text_y, text_aux2, 0xFFFFFFFF, 0xFFFFFFFF);
 
 							text_y += text_y_gap;
 						}

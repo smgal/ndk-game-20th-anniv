@@ -29,6 +29,38 @@ namespace yunjr
 
 namespace yunjr
 {
+	enum ENDBATTLE
+	{
+		ENDBATTLE_NONE,
+		ENDBATTLE_LOSE,
+		ENDBATTLE_WIN,
+		ENDBATTLE_RUN_AWAY,
+	};
+
+	enum GAMESTATE
+	{
+		GAMESTATE_MAP,
+		GAMESTATE_BATTLE,
+	};
+
+	enum EXITCODE
+	{
+		EXITCODE_BY_USER,
+		EXITCODE_BY_ACCIDENT,
+		EXITCODE_BY_ENEMY,
+		EXITCODE_BY_FORCE,
+	};
+
+	enum BATTLERESULT
+	{
+		BATTLERESULT_EVADE,
+		BATTLERESULT_WIN,
+		BATTLERESULT_LOSE,
+	};
+}
+
+namespace yunjr
+{
 	typedef flat_board::FlatBoard<flat_board::PIXELFORMAT_ARGB8888> FlatBoard32;
 	using flat_board::Color32;
 

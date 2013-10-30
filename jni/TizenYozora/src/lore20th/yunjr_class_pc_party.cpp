@@ -1,4 +1,4 @@
-
+ï»¿
 #include "yunjr_class_extern.h"
 #include "yunjr_class_pc_party.h"
 
@@ -48,7 +48,7 @@ void yunjr::PcParty::move(int x1, int y1)
 		x_prev = x;
 		y_prev = y;
 
-		// ½ÇÁ¦ ÀÌµ¿ÀÌ ÀÖÀ» ¶§¸¸ ¹æÇâÀÌ ¹Ù²ï´Ù
+		// ì‹¤ì œ ì´ë™ì´ ìˆì„ ë•Œë§Œ ë°©í–¥ì´ ë°”ë€ë‹¤
 		this->face(x1, y1);
 	}
 
@@ -88,7 +88,7 @@ void yunjr::PcParty::igniteTorch(void)
 	if (ability.magic_torch > 255)
 		ability.magic_torch = 255;
 
-	game::console::showMessage(15, "ÀÏÇàÀº ¸¶¹ıÀÇ È¶ºÒÀ» ¹àÇû½À´Ï´Ù.");
+	game::console::showMessage(15, L"ì¼í–‰ì€ ë§ˆë²•ì˜ íšƒë¶ˆì„ ë°í˜”ìŠµë‹ˆë‹¤.");
 
 	game::window::displayMap();
 }
@@ -96,17 +96,17 @@ void yunjr::PcParty::igniteTorch(void)
 void yunjr::PcParty::levitate(void)
 {
 	ability.levitation = 255;
-	game::console::showMessage(15, "ÀÏÇàÀº °øÁß ºÎ»ó Áß ÀÔ´Ï´Ù.");
+	game::console::showMessage(15, L"ì¼í–‰ì€ ê³µì¤‘ ë¶€ìƒ ì¤‘ ì…ë‹ˆë‹¤.");
 }
 
 void yunjr::PcParty::walkOnWater(void)
 {
 	ability.walk_on_water = 255;
-	game::console::showMessage(15, "ÀÏÇàÀº ¹° À§¸¦ °ÉÀ»¼ö ÀÖ½À´Ï´Ù.");
+	game::console::showMessage(15, L"ì¼í–‰ì€ ë¬¼ ìœ„ë¥¼ ê±¸ì„ìˆ˜ ìˆìŠµë‹ˆë‹¤.");
 }
 
 void yunjr::PcParty::walkOnSwamp(void)
 {
 	ability.walk_on_swamp = 255;
-	game::console::showMessage(15, "ÀÏÇàÀº ´Ë À§¸¦ °ÉÀ»¼ö ÀÖ½À´Ï´Ù.");
+	game::console::showMessage(15, L"ì¼í–‰ì€ ëŠª ìœ„ë¥¼ ê±¸ì„ìˆ˜ ìˆìŠµë‹ˆë‹¤.");
 }

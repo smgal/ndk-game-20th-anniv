@@ -25,11 +25,11 @@ namespace yunjr
 
 		bool isValid(void) const;
 
-		void setName(const char* sz_name);
-		const char* getName(JOSA method = JOSA_NONE) const;
+		void setName(const wchar_t* sz_name);
+		const wchar_t* getName(JOSA method = JOSA_NONE) const;
 
 	protected:
-		char _name[24];
+		wchar_t _name[24];
 
 		bool _load(const smutil::ReadStream& stream);
 		bool _save(const smutil::WriteStream& stream) const;

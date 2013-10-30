@@ -1,32 +1,12 @@
 
 #include "yunjr_class_select.h"
 
+#include "yunjr_base_gfx.h"
+//??#include "yunjr_base_key_buffer.h"
+#include "yunjr_class_console.h"
+#include "yunjr_class_extern.h"
+
 void yunjr::MenuSelection::m_display(const MenuList& menu, int num_menu, int num_enabled, int selected)
-{
-}
-
-yunjr::MenuSelection::MenuSelection(const MenuList& menu, int num_enabled, int ix_initial)
-{
-}
-
-yunjr::MenuSelectionUpDown::MenuSelectionUpDown(int x, int y, int min, int max, int step, int init, unsigned long fgColor, unsigned long bgColor)
-{
-}
-
-
-#if 0
-
-#include "hd_base_config.h"
-#include "hd_base_gfx.h"
-#include "hd_base_key_buffer.h"
-
-#include "hd_class_extern.h"
-#include "hd_class_select.h"
-#include "hd_class_console.h"
-
-#include <vector>
-
-void hadar::MenuSelection::m_display(const MenuList& menu, int num_menu, int num_enabled, int selected)
 {
 	assert(num_menu > 0);
 	assert(num_enabled <= num_menu);
@@ -49,7 +29,7 @@ void hadar::MenuSelection::m_display(const MenuList& menu, int num_menu, int num
 	game::updateScreen();
 }
 
-hadar::MenuSelection::MenuSelection(const MenuList& menu, int num_enabled, int ix_initial)
+yunjr::MenuSelection::MenuSelection(const MenuList& menu, int num_enabled, int ix_initial)
 	: m_selected(0)
 {
 	int num_menu = menu.size() - 1;
@@ -72,6 +52,9 @@ hadar::MenuSelection::MenuSelection(const MenuList& menu, int num_enabled, int i
 
 		bool has_been_updated = false;
 
+		//??
+		break;
+/*
 		do
 		{
 			unsigned short key;
@@ -109,16 +92,17 @@ hadar::MenuSelection::MenuSelection(const MenuList& menu, int num_enabled, int i
 				return;
 			}
 		} while (!has_been_updated);
-		
+*/
 	} while (1);
 }
 
 //////////////////////////////////////////////////////
 // MenuSelectionUpDown
 
-hadar::MenuSelectionUpDown::MenuSelectionUpDown(int x, int y, int min, int max, int step, int init, unsigned long fgColor, unsigned long bgColor)
+yunjr::MenuSelectionUpDown::MenuSelectionUpDown(int x, int y, int min, int max, int step, int init, unsigned long fgColor, unsigned long bgColor)
 	: m_value(init)
 {
+/*
 	do
 	{
 		//@@ smutil::IntToStr를 2번하니 비효율적
@@ -166,6 +150,5 @@ hadar::MenuSelectionUpDown::MenuSelectionUpDown(int x, int y, int min, int max, 
 		} while (!has_been_updated);
 		
 	} while (1);
+*/
 }
-
-#endif

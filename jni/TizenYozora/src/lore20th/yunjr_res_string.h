@@ -27,18 +27,18 @@ namespace yunjr
 
 		struct HanString
 		{
-			const char* sz_name;
-			const char* sz_josa_sub1;
-			const char* sz_josa_sub2;
-			const char* sz_josa_obj;
-			const char* sz_josa_with;
+			const wchar_t* sz_name;
+			const wchar_t* sz_josa_sub1;
+			const wchar_t* sz_josa_sub2;
+			const wchar_t* sz_josa_obj;
+			const wchar_t* sz_josa_with;
 
 			HanString(void)
-				: sz_name("")
-				, sz_josa_sub1("")
-				, sz_josa_sub2("")
-				, sz_josa_obj("")
-				, sz_josa_with("")
+				: sz_name(L"")
+				, sz_josa_sub1(L"")
+				, sz_josa_sub2(L"")
+				, sz_josa_obj(L"")
+				, sz_josa_with(L"")
 			{
 			}
 		};
@@ -76,12 +76,12 @@ namespace yunjr
 			MESSAGE_MAX
 		};
 
-		const char* getMessageString(MESSAGE message);
+		const wchar_t* getMessageString(MESSAGE message);
 
 		///////////////////////////////////////////////////////////////////////////////
 		// Resource 관리 utility
 
-		unsigned short getLastMultiByte(const char* sz_text);
+		wchar_t getLastMultiByte(const wchar_t* sz_text);
 		bool hasJongsung(unsigned short code);
 
 	} // namespace resource

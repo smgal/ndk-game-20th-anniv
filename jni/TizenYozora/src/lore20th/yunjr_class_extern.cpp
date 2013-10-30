@@ -8,6 +8,7 @@
 #include "yunjr_class_game_option.h"
 #include "yunjr_class_map_event.h"
 #include "yunjr_class_control_lv1.h"
+#include "yunjr_class_select.h"
 #include "yunjr_res.h"
 
 #include "../flat_board/target_dep.h"
@@ -92,6 +93,12 @@ namespace yunjr
 				index = 15;
 
 			return s_COLOR_TABLE[index];
+		}
+
+		//! 이전의 맵 상의 위치로 복귀한다.
+		void warpPrevPos(void)
+		{
+			s_party.warp(PcParty::POS_PREV);
 		}
 
 		void pressAnyKey(void) {} //??
@@ -213,7 +220,7 @@ namespace yunjr
 		namespace console
 		{
 			void writeConsole(unsigned long index, int num_arg, ...) {} //??
-			void showMessage(unsigned long index, const char* sz_message) {} //??
+			void showMessage(unsigned long index, const wchar_t* sz_message) {} //??
 
 			void clear(void)
 			{
@@ -230,7 +237,9 @@ namespace yunjr
 				if (p_console)
 				{
 					Typeface typeface;
-					p_console->add(Text(typeface, sz_text));
+					Text     text(typeface, sz_text);
+
+					p_console->add(text);
 				}
 			} 
 			void writeLine(const wchar_t* sz_text, unsigned long color) //??
@@ -240,7 +249,9 @@ namespace yunjr
 				if (p_console)
 				{
 					Typeface typeface;
-					p_console->add(Text(typeface, sz_text));
+					Text     text(typeface, sz_text);
+
+					p_console->add(text);
 				}
 			} 
 		}
@@ -325,7 +336,53 @@ namespace yunjr
 
 		namespace battle
 		{
-			void registerEnemy(int ix_enemy) {} //??
+			//? 여기에 전투 최종 결과 값을 넣어야 한다.
+			static BATTLERESULT s_result = BATTLERESULT_EVADE;
+
+			//! 전투 상황에 돌입했음을 알려 준다.
+			void init(void)
+			{
+				game::object::getEnemyList().clear();
+			}
+			//! 현재의 데이터로 전투를 한다.
+			void start(bool is_assualt_mode)
+			{
+				/*??
+				s_result = s_p_game_main->runBattleMode(is_assualt_mode);
+				s_p_game_main->changeWindowForField();
+				*/
+			}
+			//! 전투에 참가하는 적을 추가한다. 입력 방식은 적의 index 번호를 넘겨 주는 것이다.
+			void registerEnemy(int ix_enemy)
+			{
+				/*??
+				s_p_game_main->registerEnemy(ix_enemy);
+				*/
+			}
+			//! 전투에 참가하는 적을 화면에 표시한다.
+			void showEnemy(void)
+			{
+				/*??
+				s_p_game_main->changeWindowForBattle();
+				game::updateScreen();
+				*/
+			}
+			//! 전투의 결과를 돌려준다.
+			int  getResult(void)
+			{
+				switch (s_result)
+				{
+				case BATTLERESULT_EVADE:
+					return 0;
+				case BATTLERESULT_WIN:
+					return 1;
+				case BATTLERESULT_LOSE:
+					return 2;
+				default:
+					ASSERT(0);
+					return 1;
+				}
+			}
 		}
 
 		// namespace party
@@ -340,7 +397,35 @@ namespace yunjr
 			int getNumOfConsciousEnemy(void) { return 1; } //??
 		}
 
-		// namespace select
+		namespace select
+		{
+			//? MenuSelection의 default parameter에 대한 변경을 하는 것이 필요할지도 모름
+			static MenuList s_menu;
+			static int s_result = 0;
+
+			//! 선택 아이템을 초기화 한다.
+			void init(void)
+			{
+				s_menu.clear();
+				s_result = 0;
+			}
+			//! 선택 아이템을 추가 한다.
+			void add(const wchar_t* sz_string)
+			{
+				s_menu.push_back(sz_string);
+			}
+			//! 현재 선택된 아이템으로 선택을 한다.
+			void run(void)
+			{
+				s_result = MenuSelection(s_menu)();
+			}
+			//! 선택된 결과를 가져 온다.
+			int  getResult(void)
+			{
+				return s_result;
+			}
+		}
+
 	}
 
 }

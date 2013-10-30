@@ -13,7 +13,7 @@ namespace yunjr
 	#pragma pack(push, 1)
 	struct EnemyData
 	{
-		char _name[20];
+		wchar_t _name[20];
 		unsigned char strength;
 		unsigned char mentality;
 		unsigned char endurance;

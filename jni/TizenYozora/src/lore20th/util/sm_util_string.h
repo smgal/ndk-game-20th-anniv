@@ -31,83 +31,103 @@
 namespace smutil
 {
 
+template <typename T>
 class IntToStr
 {
-	char m_s[32];
+	T m_s[32];
 public:
 	IntToStr(int value)
 	{
-		SPRINTF(m_s, 32, "%d", value);
+		if (sizeof(T) == sizeof(char))
+		{
+			SPRINTF((char*)m_s, 32, "%d", value);
+		}
+		else
+		{
+			char s[32];
+			SPRINTF(s, 32, "%d", value);
+
+			memset(&m_s[0], 0, sizeof(m_s));
+
+			for (int i = 0; i < 32; i++)
+			{
+				m_s[i] = T(s[i]);
+			}
+		}
 	}
-	const char* operator()(void)
+	const T* operator()(void)
 	{
 		return m_s;
 	}
 };
 
-template <unsigned int _MAX_STRLEN>
+template <typename CHAR, unsigned int _MAX_STRLEN>
 class basic_string
 {
 	enum { MAX_STRLEN = _MAX_STRLEN };
 
 private:
-	char m_string[MAX_STRLEN+1];
+	CHAR m_string[MAX_STRLEN+1];
 
 public:
 	basic_string(void)
 	{
 		m_string[0] = 0;
 	}
-	basic_string(const char* lpsz)
+	basic_string(const CHAR* lpsz)
 	{      
 		sena::strncpy(m_string, lpsz, MAX_STRLEN);
 	}
 
-	operator const char*() const
+	operator const CHAR*() const
 	{
 		return m_string;
 	}
 
-	const basic_string& operator=(const char* lpsz)
+	const basic_string& operator=(const CHAR* lpsz)
 	{      
 		sena::strncpy(m_string, lpsz, MAX_STRLEN);
 		return *this;
 	}
 
-	const basic_string& operator+=(const char* lpsz)
+	const basic_string& operator+=(const CHAR* lpsz)
 	{      
 		sena::strncat(m_string, lpsz, MAX_STRLEN);
 		return *this;
 	}
 
-	template <unsigned int MAX_STRLEN>
-	friend bool operator==(const basic_string<MAX_STRLEN>& str1, const basic_string<MAX_STRLEN>& str2)
+	template <typename T, unsigned int MAX_STRLEN>
+//	friend bool operator==(const basic_string<T, MAX_STRLEN>& str1, const basic_string<T, MAX_STRLEN>& str2)
+	friend bool operator==(const basic_string& str1, const basic_string& str2)
 	{      
 		return sena::strndiff(str1.m_string, str2.m_string, MAX_STRLEN);
 	}
 
-	bool operator==(const basic_string<MAX_STRLEN>& str) const
+	template <typename T, unsigned int MAX_STRLEN>
+	bool operator==(const basic_string<T, MAX_STRLEN>& str) const
 	{      
 		return sena::strndiff(m_string, str.m_string, MAX_STRLEN);
 	}
 
-	bool operator<(const char* lpsz) const
+	bool operator<(const CHAR* lpsz) const
 	{
 		return (sena::strncmp(m_string, lpsz, MAX_STRLEN) < 0);
 	}
 
 	void copyToFront(const basic_string& lpsz)
 	{      
-		char m_temp[MAX_STRLEN+1];
+		CHAR m_temp[MAX_STRLEN+1];
 		sena::strncpy(m_temp, m_string, MAX_STRLEN);
 		sena::strncpy(m_string, lpsz.m_string, MAX_STRLEN);
 		sena::strncat(m_string, m_temp, MAX_STRLEN);
 	}
 };
 
-typedef basic_string<255> string;
-typedef basic_string<511> long_string;
-typedef basic_string<1023> long_long_string;
+typedef basic_string<wchar_t, 255> string;
+
+typedef basic_string<char, 255> string8;
+typedef basic_string<char, 511> long_string;
+typedef basic_string<char, 1023> long_long_string;
 
 }
 

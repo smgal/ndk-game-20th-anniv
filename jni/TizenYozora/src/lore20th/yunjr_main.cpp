@@ -1,4 +1,4 @@
-
+ï»¿
 #include "yunjr_base.h"
 #include "yunjr_base_gfx.h"
 #include "yunjr_base_font.h"
@@ -18,6 +18,8 @@
 
 #include "yunjr_res.h"
 #include "yunjr_res_string.h"
+
+#include "yunjr_util.h"
 
 #include <new>
 #include <vector>
@@ -70,10 +72,10 @@ namespace
 	{
 		sena::vector<yunjr::shared::PcPlayer>& player_list = yunjr::game::object::getPlayerList();
 
-		// ÀüÃ³¸®
+		// ì „ì²˜ë¦¬
 		sena::for_each(player_list.begin(), player_list.end(), FnCheckCondition<yunjr::shared::PcPlayer>());
 /*??
-		// ½ÇÁ¦ »ıÁ¸ÇØ ÀÖ´Â ¼ıÀÚ¸¦ È®ÀÎ
+		// ì‹¤ì œ ìƒì¡´í•´ ìˆëŠ” ìˆ«ìë¥¼ í™•ì¸
 		int num_alive = NUM_OF_CONSCIOUS_PLAYER(player_list);
 
 		if (num_alive == 0)
@@ -101,7 +103,7 @@ namespace
 
 			num_updated = sena::for_each(player.begin(), player.end(), FnTimeGoes<PcPlayer*>()).Result();
 
-			// playerÀÇ µğ½ºÇÃ·¹ÀÌ µÈ ¼öÄ¡¿¡ º¯È­°¡ »ı°å´Ù¸é
+			// playerì˜ ë””ìŠ¤í”Œë ˆì´ ëœ ìˆ˜ì¹˜ì— ë³€í™”ê°€ ìƒê²¼ë‹¤ë©´
 			if (num_updated > 0)
 			{
 				window[WINDOWTYPE_STATUS]->setUpdateFlag();
@@ -109,7 +111,7 @@ namespace
 
 			detectGameOver();
 			
-			// µ¶½É¼úÀ» »ç¿ë ÁßÀÌ¶ó¸é »ç¿ë ½Ã°£À» °¨¼Ò ½ÃÅ´
+			// ë…ì‹¬ìˆ ì„ ì‚¬ìš© ì¤‘ì´ë¼ë©´ ì‚¬ìš© ì‹œê°„ì„ ê°ì†Œ ì‹œí‚´
 			if (party.ability.mind_control > 0)
 				--party.ability.mind_control;
 
@@ -124,15 +126,14 @@ namespace
 		static void actEvent(int x1, int y1, bool bUseless)
 		{
 			yunjr::PcParty& party = yunjr::game::object::getParty();
-/* //??
+
 			party.move(x1, y1);
 
-			window[WINDOWTYPE_MAP]->setUpdateFlag();
+//??			window[WINDOWTYPE_MAP]->setUpdateFlag();
 
-			LoreConsole::getConsole().clear();
+			yunjr::LoreConsole::getConsole().clear();
 
-			map_event::occur(map_event::TYPE_EVENT, 0, party.x, party.y);
-*/
+			yunjr::map_event::occur(yunjr::map_event::TYPE_EVENT, 0, party.x, party.y);
 		}
 		static void actEnter(int x1, int y1, bool bUseless)
 		{
@@ -152,7 +153,7 @@ namespace
 
 			console.clear();
 			console.setTextColorIndex(7);
-			console.write("Ç¥ÁöÆÇ¿¡´Â ´ÙÀ½°ú °°ÀÌ ÀûÇô ÀÖ¾ú´Ù.");
+			console.write("í‘œì§€íŒì—ëŠ” ë‹¤ìŒê³¼ ê°™ì´ ì í˜€ ìˆì—ˆë‹¤.");
 			console.write("");
 
 			yunjr::map_event::occur(yunjr::map_event::TYPE_SIGN, 0, party.x + x1, party.y + y1);
@@ -182,7 +183,7 @@ namespace
 
 			actMove(x1, y1, false);
 
-			// walkOnSwamp¿¡ ´ëÇÑ Ã³¸®
+			// walkOnSwampì— ëŒ€í•œ ì²˜ë¦¬
 			if (party.ability.walk_on_swamp > 0)
 			{
 				--party.ability.walk_on_swamp;
@@ -193,8 +194,8 @@ namespace
 
 				console.clear();
 				console.setTextColorIndex(13);
-				console.write("ÀÏÇàÀº µ¶ÀÌ ÀÖ´Â ´Ë¿¡ µé¾î°¬´Ù !!!");
-				console.write("");
+				console.write(L"ì¼í–‰ì€ ë…ì´ ìˆëŠ” ëŠªì— ë“¤ì–´ê°”ë‹¤ !!!");
+				console.write(L"");
 
 				sena::vector<yunjr::shared::PcPlayer>& player_list = yunjr::game::object::getPlayerList();
 
@@ -202,11 +203,9 @@ namespace
 
 				console.display();
 
-				// playerÀÇ µğ½ºÇÃ·¹ÀÌ µÈ ¼öÄ¡¿¡ º¯È­°¡ »ı°å´Ù¸é
+				// playerì˜ ë””ìŠ¤í”Œë ˆì´ ëœ ìˆ˜ì¹˜ì— ë³€í™”ê°€ ìƒê²¼ë‹¤ë©´
 				if (num_updated > 0)
-				{
-					//?? window[WINDOWTYPE_STATUS]->setUpdateFlag();
-				}
+					INVALIDATE_STATUS;
 			}
 
 			detectGameOver();
@@ -222,7 +221,7 @@ namespace
 				yunjr::LoreConsole& console = yunjr::LoreConsole::getConsole();
 				console.clear();
 				console.setTextColorIndex(12);
-				console.write("ÀÏÇàÀº ¿ë¾ÏÁö´ë·Î µé¾î¼¹´Ù !!!");
+				console.write("ì¼í–‰ì€ ìš©ì•”ì§€ëŒ€ë¡œ ë“¤ì–´ì„°ë‹¤ !!!");
 				console.write("");
 
 				sena::vector<yunjr::shared::PcPlayer>& player_list = yunjr::game::object::getPlayerList();
@@ -231,12 +230,7 @@ namespace
 
 				console.display();
 
-				//?? static? and by using MACRO
-//				STATUS_INVALIDATE;
-//#define STATUS_INVALIDATE
-				yunjr::ControlStatus* p_status = (yunjr::ControlStatus*)yunjr::resource::getMainWindow()->findControl("STATUS");
-				p_status->invalidate();
-				//?? window[WINDOWTYPE_STATUS]->setUpdateFlag();
+				INVALIDATE_STATUS;
 			}
 
 			detectGameOver();
@@ -289,10 +283,15 @@ void yunjr::init(const char* sz_id)
 		{
 			Typeface typeface;
 
+			Text text1(typeface, L"April is the cruelest month, breeding");
+			Text text2(typeface, L"Lilacs out of the dead land, mixing");
+			Text text3(typeface, L"Memory and desire, sirring");
+
 			p_console->clear();
-			p_console->add(Text(typeface, L"April is the cruelest month, breeding"));
-			p_console->add(Text(typeface, L"Lilacs out of the dead land, mixing"));
-			p_console->add(Text(typeface, L"Memory and desire, sirring"));
+
+			p_console->add(text1);
+			p_console->add(text2);
+			p_console->add(text3);
 		}
 	}
 
@@ -321,11 +320,11 @@ void yunjr::init(const char* sz_id)
 		chara_list.push_back(Playable::newInstance());
 	}
 
-	// party ÃÊ±âÈ­
+	// party ì´ˆê¸°í™”
 	{
 		yunjr::PcParty& party = yunjr::game::object::getParty();
 
-		// ¿ÜºÎ¿¡¼­ ÀÌ °ªÀÌ ¼öÁ¤µÇ¾îÁ®¾ß ÇÔ
+		// ì™¸ë¶€ì—ì„œ ì´ ê°’ì´ ìˆ˜ì •ë˜ì–´ì ¸ì•¼ í•¨
 		party.x = -1;
 		party.y = -1;
 
@@ -333,7 +332,7 @@ void yunjr::init(const char* sz_id)
 		party.ability.can_use_special_magic = false;
 	}
 
-	// player ÃÊ±âÈ­
+	// player ì´ˆê¸°í™”
 	{
 		sena::vector<shared::PcPlayer>& player_list = game::object::getPlayerList();
 
@@ -342,7 +341,7 @@ void yunjr::init(const char* sz_id)
 
 			p_player->setDefault(0);
 
-			p_player->setName("SMgal");
+			p_player->setName(L"SMgal");
 			p_player->class_ = 8;
 			p_player->level[0] = 19;
 			p_player->level[1] = 1;
@@ -353,13 +352,13 @@ void yunjr::init(const char* sz_id)
 			player_list.push_back(p_player);
 		}
 
-		// ÀÓ½Ã party ¸â¹öµé
+		// ì„ì‹œ party ë©¤ë²„ë“¤
 		{
 			shared::PcPlayer p_player(new PcPlayer());
 
 			p_player->setDefault(0);
 
-			p_player->setName("Hercules");
+			p_player->setName(L"Hercules");
 			p_player->hp = 17;
 			p_player->sp = 5;
 			p_player->esp = 5;
@@ -372,7 +371,7 @@ void yunjr::init(const char* sz_id)
 
 			p_player->setDefault(0);
 
-			p_player->setName("Betelgeuse");
+			p_player->setName(L"Betelgeuse");
 			p_player->gender = PcPlayer::GENDER_FEMALE;
 			p_player->hp = 7;
 			p_player->sp = 17;
@@ -386,7 +385,7 @@ void yunjr::init(const char* sz_id)
 
 			p_player->setDefault(0);
 
-			p_player->setName("Cominus");
+			p_player->setName(L"Cominus");
 			p_player->hp = 10;
 			p_player->sp = 11;
 			p_player->esp = 3;

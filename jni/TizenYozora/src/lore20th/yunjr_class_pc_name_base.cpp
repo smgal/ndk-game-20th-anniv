@@ -1,4 +1,4 @@
-
+ï»¿
 #include "yunjr_class_pc_name_base.h"
 #include "yunjr_res_string.h"
 
@@ -11,7 +11,7 @@ bool yunjr::PcNameBase::_load(const smutil::ReadStream& stream)
 {
 	if (stream.read((void*)_name, sizeof(_name)) == sizeof(_name))
 	{
-		// ´Ù¸¥ ¸â¹ö º¯¼öÀÇ °ªµµ »ı¼ºÇÏ±â À§ÇÔ
+		// ë‹¤ë¥¸ ë©¤ë²„ ë³€ìˆ˜ì˜ ê°’ë„ ìƒì„±í•˜ê¸° ìœ„í•¨
 		setName(_name);
 		return true;
 	}
@@ -43,25 +43,25 @@ bool yunjr::PcNameBase::isValid(void) const
 	return (_name[0] != 0);
 }
 
-void yunjr::PcNameBase::setName(const char* sz_name)
+void yunjr::PcNameBase::setName(const wchar_t* sz_name)
 {
-	sena::strncpy(_name, sz_name, sizeof(_name)-1);
+	sena::strncpy(_name, sz_name, sizeof(_name) / sizeof(_name[0])-1);
 
 	bool has_jongsung = resource::hasJongsung(resource::getLastMultiByte(_name));
 
 	m_name_subject1  = _name;
-	m_name_subject1 += (has_jongsung) ? "Àº" : "´Â";
+	m_name_subject1 += (has_jongsung) ? L"ì€" : L"ëŠ”";
 
 	m_name_subject2  = _name;
-	m_name_subject2 += (has_jongsung) ? "ÀÌ" : "°¡";
+	m_name_subject2 += (has_jongsung) ? L"ì´" : L"ê°€";
 
 	m_name_object    = _name;
-	m_name_object   += (has_jongsung) ? "À»" : "¸¦";
+	m_name_object   += (has_jongsung) ? L"ì„" : L"ë¥¼";
 }
 
-const char* yunjr::PcNameBase::getName(JOSA method) const
+const wchar_t* yunjr::PcNameBase::getName(JOSA method) const
 {
-	static const char* sz_none = "";
+	static const wchar_t* sz_none = L"";
 
 	switch (method)
 	{
