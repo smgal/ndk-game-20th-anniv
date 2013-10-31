@@ -29,6 +29,7 @@ namespace yunjr
 
 		bool isEmpty(void);
 
+		void setColor(unsigned long color);
 		void split(int width, Text& remaining_text, ALIGNMETHOD align = ALIGNMETHOD_LEFT);
 
 		struct Impl;

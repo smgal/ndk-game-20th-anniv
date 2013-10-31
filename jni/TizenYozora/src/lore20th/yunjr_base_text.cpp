@@ -75,6 +75,16 @@ bool yunjr::Text::isEmpty(void)
 	return (this->p_impl->text_length == 0);
 }
 
+void yunjr::Text::setColor(unsigned long color)
+{
+	std::vector<GlyphInfo*>::iterator pp_glyph_info = this->p_impl->glyph_info.begin();
+
+	for ( ; pp_glyph_info != this->p_impl->glyph_info.end(); ++pp_glyph_info)
+	{
+		(*pp_glyph_info)->user_data = color;
+	}
+}
+
 void yunjr::Text::split(int width, Text& remaining_text, ALIGNMETHOD align)
 {
 	remaining_text.p_impl->reset();
@@ -82,34 +92,34 @@ void yunjr::Text::split(int width, Text& remaining_text, ALIGNMETHOD align)
 	std::vector<GlyphInfo*> stream1_1, stream1_2;
 	std::vector<GlyphInfo*> stream2_1, stream2_2;
 
-	std::vector<GlyphInfo*>::iterator ppGlyphInfo1 = this->p_impl->glyph_info.begin();
-	std::vector<GlyphInfo*>::iterator ppGlyphInfo2 = this->p_impl->glyph_shadow.begin();
+	std::vector<GlyphInfo*>::iterator pp_glyph_info1 = this->p_impl->glyph_info.begin();
+	std::vector<GlyphInfo*>::iterator pp_glyph_info2 = this->p_impl->glyph_shadow.begin();
 
 	bool has_shadow = (this->p_impl->glyph_info.size() <= this->p_impl->glyph_shadow.size());
 
 	int x = 0;
 
-	for ( ; ppGlyphInfo1 != this->p_impl->glyph_info.end(); ++ppGlyphInfo1)
+	for ( ; pp_glyph_info1 != this->p_impl->glyph_info.end(); ++pp_glyph_info1)
 	{
-		int x2 = x + (*ppGlyphInfo1)->x_advance;
+		int x2 = x + (*pp_glyph_info1)->x_advance;
 
 		if (x2 < width)
 		{
-			stream1_1.push_back(*ppGlyphInfo1);
+			stream1_1.push_back(*pp_glyph_info1);
 			if (has_shadow)
-				stream1_2.push_back(*ppGlyphInfo2);
+				stream1_2.push_back(*pp_glyph_info2);
 		}
 		else
 		{
-			stream2_1.push_back(*ppGlyphInfo1);
+			stream2_1.push_back(*pp_glyph_info1);
 			if (has_shadow)
-				stream2_2.push_back(*ppGlyphInfo2);
+				stream2_2.push_back(*pp_glyph_info2);
 		}
 
 		x = x2;
 
 		if (has_shadow)
-			++ppGlyphInfo2;
+			++pp_glyph_info2;
 	}
 
 	int text_length1 = stream1_1.size();
@@ -130,12 +140,12 @@ void yunjr::Text::split(int width, Text& remaining_text, ALIGNMETHOD align)
 
 	// splited text
 	{
-		wchar_t* temp = new wchar_t[text_length1 + 1];
-		memcpy(temp, &this->p_impl->p_text[0], sizeof(wchar_t) * text_length1);
-		temp[text_length1] = 0;
+		wchar_t* p_temp = new wchar_t[text_length1 + 1];
+		memcpy(p_temp, &this->p_impl->p_text[0], sizeof(wchar_t) * text_length1);
+		p_temp[text_length1] = 0;
 
 		this->p_impl->text_length = text_length1;
-		this->p_impl->p_text.reset(temp);
+		this->p_impl->p_text.reset(p_temp);
 
 		this->p_impl->glyph_info.swap(stream1_1);
 		this->p_impl->glyph_shadow.swap(stream1_2);

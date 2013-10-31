@@ -136,7 +136,7 @@ void yunjr::LoreConsole::write(const smutil::string text)
 
 void yunjr::LoreConsole::write(const wchar_t* sz_text)
 {
-	yunjr::game::console::writeLine(sz_text);
+	yunjr::game::console::writeLine(sz_text, m_text_color);
 }
 
 void yunjr::LoreConsole::write(const char* sz_text)

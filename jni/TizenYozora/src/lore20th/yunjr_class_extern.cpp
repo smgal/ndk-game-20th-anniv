@@ -239,6 +239,8 @@ namespace yunjr
 					Typeface typeface;
 					Text     text(typeface, sz_text);
 
+					text.setColor(color);
+
 					p_console->add(text);
 				}
 			} 
@@ -250,6 +252,8 @@ namespace yunjr
 				{
 					Typeface typeface;
 					Text     text(typeface, sz_text);
+
+					text.setColor(color);
 
 					p_console->add(text);
 				}

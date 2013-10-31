@@ -119,6 +119,14 @@ void yunjr::gfx::TextBoard::renderText(int pos_x, int pos_y, const std::vector<y
 
 	std::vector<GlyphInfo*>::const_iterator pp_glyph = glyph_info.begin();
 
+	//?? temporary
+	if (pp_glyph != glyph_info.end())
+	{
+		unsigned long glyph_color = (*pp_glyph)->user_data;
+		if (glyph_color)
+			color1 = color2 = glyph_color;
+	}
+
 	TgtPixel s_a1 = (color1.argb >> 24) & 0xFF;
 	TgtPixel s_r1 = (color1.argb >> 16) & 0xFF;
 	TgtPixel s_g1 = (color1.argb >> 8) & 0xFF;
