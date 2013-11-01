@@ -235,6 +235,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\lore20th\yunjr_base_key_buffer.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_base_key_buffer.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\lore20th\yunjr_base_serialized.cpp"
 					>
 				</File>
