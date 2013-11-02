@@ -140,6 +140,7 @@ SRC_LORE20TH_FT := \
 SRC_LORE20TH    := \
                    $(SRC_ROOT)/lore20th/yunjr_base_font.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_base_gfx.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_base_key_buffer.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_base_serialized.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_base_sound.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_base_text.cpp \

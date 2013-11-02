@@ -67,13 +67,13 @@ namespace
 
 		return yunjr::KeyBuffer::getKeyBuffer().setKeyUp(key);
 	}
-/*??
-	avej::input::EventCallback s_callback =
+
+	target::EventCallback s_callback =
 	{
 		OnKeyDown,
 		OnKeyUp,
 	};
-*/
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -125,7 +125,7 @@ bool yunjr::KeyBuffer::isKeyPressed(void)
 {
 	this->processAutoRepeat();
 
-//??	avej::input::processMessage(s_callback);
+	target::processMessage(s_callback);
 
 	return  (m_key_head_ptr != m_key_tail_ptr);
 }
@@ -139,7 +139,7 @@ yunjr::KeyBuffer::Key yunjr::KeyBuffer::getKey()
 		key = m_key_buffer[m_key_head_ptr];
 		m_key_head_ptr = m_increasePtr(m_key_head_ptr);
 	}
-
+key = KEY_DIR_DOWN;
 	return key;
 }
 

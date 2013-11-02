@@ -2,9 +2,10 @@
 #include "yunjr_class_select.h"
 
 #include "yunjr_base_gfx.h"
-//??#include "yunjr_base_key_buffer.h"
+#include "yunjr_base_key_buffer.h"
 #include "yunjr_class_console.h"
 #include "yunjr_class_extern.h"
+
 
 void yunjr::MenuSelection::m_display(const MenuList& menu, int num_menu, int num_enabled, int selected)
 {
@@ -30,7 +31,8 @@ void yunjr::MenuSelection::m_display(const MenuList& menu, int num_menu, int num
 }
 
 yunjr::MenuSelection::MenuSelection(const MenuList& menu, int num_enabled, int ix_initial)
-	: m_selected(0)
+	: m_currrent(-1)
+	, m_selected(0)
 {
 	int num_menu = menu.size() - 1;
 
@@ -44,17 +46,21 @@ yunjr::MenuSelection::MenuSelection(const MenuList& menu, int num_enabled, int i
 	if (ix_initial > num_menu)
 		ix_initial = num_menu;
 
-	int selected = ix_initial;
+	MenuList::const_iterator p_item = menu.begin();
+	for ( ; p_item != menu.end(); ++p_item)
+		m_menu.push_back(*p_item);
 
+	m_currrent = ix_initial;
+	m_num_enabled = num_enabled;
+
+	m_display(menu, num_menu, num_enabled, m_currrent);
+/*
 	do
 	{
 		m_display(menu, num_menu, num_enabled, selected);
 
 		bool has_been_updated = false;
 
-		//??
-		break;
-/*
 		do
 		{
 			unsigned short key;
@@ -92,8 +98,54 @@ yunjr::MenuSelection::MenuSelection(const MenuList& menu, int num_enabled, int i
 				return;
 			}
 		} while (!has_been_updated);
-*/
+
 	} while (1);
+*/
+}
+
+bool yunjr::MenuSelection::loop(void)
+{
+	bool has_been_updated = false;
+
+	unsigned short key;
+	while ((key = KeyBuffer::getKeyBuffer().getKey()) < 0)
+		;
+
+	switch (key)
+	{
+	case KEY_DIR_UP:
+	case KEY_DIR_DOWN:
+		{
+			int dy = (key == KEY_DIR_UP) ? -1 : +1;
+			m_currrent += dy;
+
+			if (m_currrent <= 0)
+				m_currrent = m_num_enabled;
+			if (m_currrent > m_num_enabled)
+				m_currrent = 1;
+
+			has_been_updated = true;
+		}
+		break;
+	case KEY_BTN_A:
+		m_currrent = 0;
+		// pass through
+	case KEY_BTN_B:
+		{
+			LoreConsole& console = LoreConsole::getConsole();
+			console.clear();
+			console.display();
+		}
+
+		m_selected = m_currrent;
+
+		return false;
+	}
+
+	if (has_been_updated)
+		m_display(m_menu, m_menu.size() - 1, m_num_enabled, m_currrent);
+
+	return true;
 }
 
 //////////////////////////////////////////////////////

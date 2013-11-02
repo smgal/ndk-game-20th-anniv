@@ -954,6 +954,10 @@ namespace sena
 		}
 
 		iterator m_first, m_last, m_end;
+
+	private:
+		TMyVector& operator=(const TMyVector&);
+
 	};
 
 }

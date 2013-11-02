@@ -137,3 +137,7 @@ target::InputDevice* target::getInputDevice(void)
 
 	return &s_input_device;
 }
+
+void target::processMessage(EventCallback s_callback)
+{
+}
