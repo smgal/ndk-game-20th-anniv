@@ -54,6 +54,9 @@ yunjr::MenuSelection::MenuSelection(const MenuList& menu, int num_enabled, int i
 	m_num_enabled = num_enabled;
 
 	m_display(menu, num_menu, num_enabled, m_currrent);
+
+	while (this->loop())
+		;
 /*
 	do
 	{
@@ -125,7 +128,7 @@ bool yunjr::MenuSelection::loop(void)
 				m_currrent = 1;
 
 			has_been_updated = true;
-		}
+		}     
 		break;
 	case KEY_BTN_A:
 		m_currrent = 0;

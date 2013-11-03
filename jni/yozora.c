@@ -32,11 +32,26 @@ char g_package_name[1024] = {0};
 struct zip* g_p_zip_file;
 
 ////////////////////////////////////////////////////////////////////////////////
+// callback
+
+static JNIEnv* s_p_env = 0;
+static jclass s_native_class = 0;
+static jmethodID s_fn_updateScreen = 0;
+
+////////////////////////////////////////////////////////////////////////////////
 //
 
 void g_printLog(const char* sz_log)
 {
 	LOGI("%s", sz_log);
+}
+
+void g_updateScreen(void)
+{
+	if (s_fn_updateScreen)
+	{
+		(*s_p_env)->CallStaticVoidMethod(s_p_env, s_native_class, s_fn_updateScreen);
+	}
 }
 
 int g_fileExists(const char* sz_file_name)
@@ -122,6 +137,20 @@ extern int  yozora_glue_render(void* p_start_address, int width, int height, int
 
 JNIEXPORT void JNICALL Java_com_avej_lore20th_YozoraView_initYozora(JNIEnv* p_env, jobject obj, jstring sj_package_name, jstring sj_app_name)
 {
+	s_p_env = p_env;
+
+	s_native_class = (*p_env)->FindClass(p_env, "com/avej/lore20th/GameTask");
+
+	if (s_native_class)
+	{
+		s_fn_updateScreen = (*p_env)->GetStaticMethodID(p_env, s_native_class, "updateScreen", "()V");
+
+		if (s_fn_updateScreen)
+		{
+			g_printLog("[SMGAL] Callback function 'updateScreen()' found");
+		}
+	}
+
 	// open package file as zip file
 	{
 		const char* p_buffer = (*p_env)->GetStringUTFChars(p_env, sj_package_name, 0);

@@ -33,12 +33,12 @@ namespace
 			CASE(LEFT,    DIR_LEFT);
 			CASE(DOWN,    DIR_DOWN);
 			CASE(RIGHT,   DIR_RIGHT);
-			CASE(A,   BTN_A);
-			CASE(B,   BTN_B);
-			CASE(X,   BTN_C);
-			CASE(Y,   BTN_D);
-			CASE(L,   BTN_L1);
-			CASE(R,   BTN_R1);
+			CASE(A,       BTN_A);
+			CASE(B,       BTN_B);
+			CASE(X,       BTN_C);
+			CASE(Y,       BTN_D);
+			CASE(L,       BTN_L1);
+			CASE(R,       BTN_R1);
 			CASE(VOLUP,   VOL_UP);
 			CASE(VOLDOWN, VOL_DOWN);
 
@@ -139,7 +139,7 @@ yunjr::KeyBuffer::Key yunjr::KeyBuffer::getKey()
 		key = m_key_buffer[m_key_head_ptr];
 		m_key_head_ptr = m_increasePtr(m_key_head_ptr);
 	}
-key = KEY_DIR_DOWN;
+
 	return key;
 }
 

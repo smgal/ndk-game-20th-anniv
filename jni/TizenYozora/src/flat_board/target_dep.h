@@ -58,8 +58,8 @@ namespace target
 
 	struct EventCallback
 	{
-		bool (*FnOnKeyDown)(unsigned short avej_key, unsigned long state);
-		bool (*FnOnKeyUp)(unsigned short avej_key, unsigned long state);
+		bool (*FnOnKeyDown)(unsigned short target_key, unsigned long state);
+		bool (*FnOnKeyUp)(unsigned short target_key, unsigned long state);
 	};
 
 	void processMessage(EventCallback s_callback);
@@ -123,6 +123,8 @@ namespace target
 
 	int getScreenWidth(void);
 	int getScreenHeight(void);
+
+	void updateScreen(void);
 }
 
 #endif

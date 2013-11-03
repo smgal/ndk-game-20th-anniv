@@ -140,4 +140,29 @@ target::InputDevice* target::getInputDevice(void)
 
 void target::processMessage(EventCallback s_callback)
 {
+	//?? virtual key event should be generated.
+
+	//?? temp
+	static int s_tick = 0;
+
+	s_tick++;
+
+	if (s_tick == 100)
+		s_callback.FnOnKeyDown(KEY_DOWN, 0);
+	if (s_tick == 120)
+		s_callback.FnOnKeyDown(KEY_UP, 0);
+	if (s_tick == 200)
+		s_callback.FnOnKeyDown(KEY_DOWN, 0);
+	if (s_tick == 220)
+		s_callback.FnOnKeyDown(KEY_UP, 0);
+
+	if (s_tick == 300)
+	{
+		s_callback.FnOnKeyDown(KEY_B, 0);
+		s_tick = 0;
+	}
+
+
+
+
 }

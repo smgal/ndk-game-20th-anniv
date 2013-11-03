@@ -231,6 +231,58 @@ namespace MAIN_APP
 	bool loop(const BufferDesc& buffer_desc);
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
+namespace
+{
+	typedef   TARGET_PIXEL Pixel;
+	const int BUFFER_W     = X_RESOLUTION;
+	const int BUFFER_H     = Y_RESOLUTION;
+	const int BUFFER_DEPTH = sizeof(Pixel) * 8;
+	const int BUFFER_PITCH = BUFFER_W * sizeof(Pixel);
+
+	MAIN_APP::BufferDesc buffer_desc;
+	BITMAPINFOHEADER bitmap_info;
+}
+
+void updateScreen(void)
+{
+	if (X_RESOLUTION == X_VIEWPORT && Y_RESOLUTION == Y_VIEWPORT)
+	{
+		::SetDIBitsToDevice
+		(
+			g_h_dc
+			, 0, 0, BUFFER_W, BUFFER_H
+			, 0, 0, 0, BUFFER_H
+			, buffer_desc.p_start_address, (BITMAPINFO*)&bitmap_info, DIB_RGB_COLORS
+		);
+	}
+	else
+	{
+		::StretchDIBits
+		(
+			g_h_dc
+			, 0, 0, X_VIEWPORT, Y_VIEWPORT
+			, 0, 0, BUFFER_W, BUFFER_H
+			, buffer_desc.p_start_address, (BITMAPINFO*)&bitmap_info, DIB_RGB_COLORS, SRCCOPY
+		);
+
+		/* faster method
+			HBITMAP hBitmap = CreateBitmap(BUFFER_W, BUFFER_H, 1, BUFFER_DEPTH, buffer_desc.p_start_address);
+			HDC hBitmapDC   = CreateCompatibleDC(g_h_dc);
+			HGDIOBJ hOld    = SelectObject(hBitmapDC, (HGDIOBJ)hBitmap);
+
+			SetStretchBltMode(g_h_dc, HALFTONE);
+
+			// in while loop
+			StretchBlt(g_h_dc, 0, 0, X_VIEWPORT, Y_VIEWPORT, hBitmapDC, 0, 0, BUFFER_W, BUFFER_H, SRCCOPY);
+
+			SelectObject(hBitmapDC, hOld);
+			DeleteObject(hBitmapDC);
+		*/
+	}
+}
+
 void utilFilesToRes(void);
 
 int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -240,12 +292,6 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 	ENABLE_MEMORY_MANAGER
 	//_CrtSetBreakAlloc(???);
 
-	typedef   TARGET_PIXEL Pixel;
-	const int BUFFER_W     = X_RESOLUTION;
-	const int BUFFER_H     = Y_RESOLUTION;
-	const int BUFFER_DEPTH = sizeof(Pixel) * 8;
-	const int BUFFER_PITCH = BUFFER_W * sizeof(Pixel);
-
 	CreateNativeWindow(1, X_VIEWPORT, Y_VIEWPORT, BUFFER_DEPTH);
 
 	// instead of unique_ptr<>
@@ -253,7 +299,6 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 
 	memset(auto_buffer.get(), 0, BUFFER_W * BUFFER_H * sizeof(Pixel));
 
-	MAIN_APP::BufferDesc buffer_desc;
 	{
 		buffer_desc.p_start_address = auto_buffer.get();
 		buffer_desc.width = BUFFER_W;
@@ -262,7 +307,6 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 		buffer_desc.bits_per_pixel = BUFFER_DEPTH;
 	}
 
-	BITMAPINFOHEADER bitmap_info;
 	{
 		memset(&bitmap_info, 0, sizeof(bitmap_info));
 
@@ -287,40 +331,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 
 		//OutputDebugString("*");
 
-		if (X_RESOLUTION == X_VIEWPORT && Y_RESOLUTION == Y_VIEWPORT)
-		{
-			::SetDIBitsToDevice
-			(
-				g_h_dc
-				, 0, 0, BUFFER_W, BUFFER_H
-				, 0, 0, 0, BUFFER_H
-				, buffer_desc.p_start_address, (BITMAPINFO*)&bitmap_info, DIB_RGB_COLORS
-			);
-		}
-		else
-		{
-			::StretchDIBits
-			(
-				g_h_dc
-				, 0, 0, X_VIEWPORT, Y_VIEWPORT
-				, 0, 0, BUFFER_W, BUFFER_H
-				, buffer_desc.p_start_address, (BITMAPINFO*)&bitmap_info, DIB_RGB_COLORS, SRCCOPY
-			);
-
-			/* faster method
-				HBITMAP hBitmap = CreateBitmap(BUFFER_W, BUFFER_H, 1, BUFFER_DEPTH, buffer_desc.p_start_address);
-				HDC hBitmapDC   = CreateCompatibleDC(g_h_dc);
-				HGDIOBJ hOld    = SelectObject(hBitmapDC, (HGDIOBJ)hBitmap);
-
-				SetStretchBltMode(g_h_dc, HALFTONE);
-
-				// in while loop
-				StretchBlt(g_h_dc, 0, 0, X_VIEWPORT, Y_VIEWPORT, hBitmapDC, 0, 0, BUFFER_W, BUFFER_H, SRCCOPY);
-
-				SelectObject(hBitmapDC, hOld);
-				DeleteObject(hBitmapDC);
-			*/
-		}
+		updateScreen();
 	}
 
 	MAIN_APP::done();

@@ -11,3 +11,10 @@ unsigned long target::system::getTicks(void)
 	//??
 	return ++s_tick;
 }
+
+extern "C" void g_updateScreen(void);
+
+void target::updateScreen(void)
+{
+	g_updateScreen();
+}

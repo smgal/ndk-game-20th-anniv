@@ -46,6 +46,7 @@ class GameConfig
 	static double scaling_factor_y = 1.0;
 	static long   start_time = 0;
 	
+	static GameTask game_task;
 	static MediaPlayer media_player;
 	
 	public static void processTouchEvent()
@@ -99,8 +100,8 @@ public class Lore20th extends Activity
 		YozoraView yozoraView = new YozoraView(this);
 		setContentView(yozoraView);
 		
-		GameTask task = new GameTask(this, yozoraView);
-		task.execute();
+		GameConfig.game_task = new GameTask(this, yozoraView);
+		GameConfig.game_task.execute();
 	}
 
 	@Override
@@ -351,4 +352,26 @@ class GameTask extends AsyncTask<Void, Void, Void>
 		//??System.exit(0);
 	}
 	
+	private static void updateScreen()
+	{
+		if (GameConfig.USE_LOG_LIFE_CICLE)
+			android.util.Log.i("[SMGAL]", "updateScreen() calling...");
+
+		GameConfig.is_rendering_queue_empty = false;
+
+		GameConfig.game_task.publishProgress();
+
+		while (!GameConfig.is_rendering_queue_empty)
+		{
+			try
+			{
+				Thread.sleep(0);
+			}
+			catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+
 }

@@ -102,7 +102,32 @@ namespace yunjr
 		}
 
 		void pressAnyKey(void) {} //??
-		void updateScreen(void) {} //??
+
+		//! 백버퍼의 내용을 실제 화면에 반영한다.
+		void updateScreen(void)
+		{
+			/* code snippet in case of SDL version
+			 *
+			 * p_gfx_device->endDraw();
+			 * p_gfx_device->flip();
+			 * p_gfx_device->beginDraw();
+			 *
+			 */
+			yunjr::ControlWindow* p_main_window = yunjr::resource::getMainWindow();
+			const BufferDesc* p_buffer_desc = yunjr::resource::getFrameBuffer();
+
+			if (p_main_window && p_buffer_desc)
+			{
+				const BufferDesc& buffer_desc = *p_buffer_desc;
+				int dest_buffer_pitch = (buffer_desc.bytes_per_line << 3) / buffer_desc.bits_per_pixel;
+				FlatBoard32 dest_board((FlatBoard32::Pixel*)buffer_desc.p_start_address, buffer_desc.width, buffer_desc.height, dest_buffer_pitch);
+
+				p_main_window->invalidate();
+				p_main_window->render(dest_board);
+
+				target::updateScreen();
+			}
+		}
 
 		namespace map
 		{
