@@ -116,6 +116,7 @@ namespace target
 	namespace system
 	{
 		unsigned long getTicks(void);
+		void log(const char* sz_message);
 	}
 
 	////////////////////////////////////////////////////////////////////////////

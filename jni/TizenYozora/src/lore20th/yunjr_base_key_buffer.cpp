@@ -10,10 +10,10 @@
 namespace
 {
 	// KeyBuffer는 싱글톤이므로 그에 맞는 위치가 필요할지도..
-	static bool           s_isKeyPressed = false;
-	static unsigned short s_pressedKey;
-	static unsigned long  s_repeatTime;
-	const  unsigned long  c_delayTime = 75;
+	static bool           s_is_key_pressed = false;
+	static unsigned short s_pressed_key;
+	static unsigned long  s_repeat_time;
+	const  unsigned long  c_delay_time = 75;
 }
 
 namespace
@@ -94,11 +94,11 @@ yunjr::KeyBuffer::~KeyBuffer(void)
 bool yunjr::KeyBuffer::setKeyDown(Key key)
 {
 	// auto pressed key 구현
-	if (!s_isKeyPressed)
+	if (!s_is_key_pressed)
 	{
-		s_isKeyPressed = true;
-		s_pressedKey   = key;
-		s_repeatTime   = target::system::getTicks() + c_delayTime*3;
+		s_is_key_pressed = true;
+		s_pressed_key   = key;
+		s_repeat_time   = target::system::getTicks() + c_delay_time*3;
 	}
 
 	if (key < KEY_MAX)
@@ -110,9 +110,9 @@ bool yunjr::KeyBuffer::setKeyDown(Key key)
 bool yunjr::KeyBuffer::setKeyUp(Key key)
 {
 	// auto pressed key 구현
-	if (s_isKeyPressed)
+	if (s_is_key_pressed)
 	{
-		s_isKeyPressed = false;
+		s_is_key_pressed = false;
 	}
 
 	if (key < KEY_MAX)
@@ -155,13 +155,13 @@ void yunjr::KeyBuffer::processAutoRepeat(void)
 {
 	unsigned long current_tick = target::system::getTicks();
 
-	if (s_isKeyPressed)
+	if (s_is_key_pressed)
 	{
-		if (s_repeatTime <= current_tick)
+		if (s_repeat_time <= current_tick)
 		{
-			yunjr::KeyBuffer::getKeyBuffer().setKeyUp(s_pressedKey);
-			yunjr::KeyBuffer::getKeyBuffer().setKeyDown(s_pressedKey);
-			s_repeatTime = current_tick + c_delayTime;
+			yunjr::KeyBuffer::getKeyBuffer().setKeyUp(s_pressed_key);
+			yunjr::KeyBuffer::getKeyBuffer().setKeyDown(s_pressed_key);
+			s_repeat_time = current_tick + c_delay_time;
 		}
 	}
 }

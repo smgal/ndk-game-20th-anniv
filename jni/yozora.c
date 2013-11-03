@@ -37,6 +37,7 @@ struct zip* g_p_zip_file;
 static JNIEnv* s_p_env = 0;
 static jclass s_native_class = 0;
 static jmethodID s_fn_updateScreen = 0;
+static jmethodID s_fn_getTicks = 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -44,6 +45,14 @@ static jmethodID s_fn_updateScreen = 0;
 void g_printLog(const char* sz_log)
 {
 	LOGI("%s", sz_log);
+}
+
+unsigned long g_getTicks(void)
+{
+	if (s_fn_getTicks)
+	{
+		return (*s_p_env)->CallStaticIntMethod(s_p_env, s_native_class, s_fn_getTicks);
+	}
 }
 
 void g_updateScreen(void)
@@ -144,11 +153,12 @@ JNIEXPORT void JNICALL Java_com_avej_lore20th_YozoraView_initYozora(JNIEnv* p_en
 	if (s_native_class)
 	{
 		s_fn_updateScreen = (*p_env)->GetStaticMethodID(p_env, s_native_class, "updateScreen", "()V");
+		s_fn_getTicks = (*p_env)->GetStaticMethodID(p_env, s_native_class, "getTicks", "()I");
 
 		if (s_fn_updateScreen)
-		{
-			g_printLog("[SMGAL] Callback function 'updateScreen()' found");
-		}
+			g_printLog("[SMGAL] Callback function 'void updateScreen()' found");
+		if (s_fn_getTicks)
+			g_printLog("[SMGAL] Callback function 'int getTicks()' found");
 	}
 
 	// open package file as zip file

@@ -28,29 +28,33 @@ class GameConfig
 	// 1280x720 and 6400x360 will be supported finally 
 	final static int BUFFER_WIDTH = 1280;
 	final static int BUFFER_HEIGHT = 720;
-	
+
 	static boolean is_terminating = false;
 	// Atomic operation is guaranteed.
 	static boolean is_rendering_queue_empty = true;
-	
-	static int    touch_x = 0;
-	static int    touch_y = 0;
-	
+
+	static boolean just_touch = false;
+	static int    touch_x = -1;
+	static int    touch_y = -1;
+
 	static int    prev_canvas_w = BUFFER_WIDTH;
 	static int    prev_canvas_h = BUFFER_HEIGHT;
-	
+
 	static Bitmap src_bitmap;
 	static Rect   src_rect = new Rect(0, 0, GameConfig.BUFFER_WIDTH, GameConfig.BUFFER_HEIGHT);
 	static Rect   dst_rect = new Rect();
 	static double scaling_factor_x = 1.0;
 	static double scaling_factor_y = 1.0;
 	static long   start_time = 0;
-	
+
 	static GameTask game_task;
 	static MediaPlayer media_player;
-	
+
 	public static void processTouchEvent()
 	{
+		if (!GameConfig.just_touch)
+			return;
+
 		int result = 0;
 		
 		if (GameConfig.touch_x >= 0 && GameConfig.touch_y >= 0)
@@ -74,6 +78,8 @@ class GameConfig
 			result = YozoraView.processYozora(System.currentTimeMillis() - GameConfig.start_time, GameConfig.touch_x, GameConfig.touch_y);
 		}
 		
+		GameConfig.just_touch = false;
+
 		if (result == 0)
 			GameConfig.is_terminating = true;
 	}
@@ -96,6 +102,10 @@ public class Lore20th extends Activity
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		
 		GameConfig.is_terminating = false;
+
+		GameConfig.just_touch = false;
+		GameConfig.touch_x = -1;
+		GameConfig.touch_y = -1;
 		
 		YozoraView yozoraView = new YozoraView(this);
 		setContentView(yozoraView);
@@ -165,6 +175,7 @@ public class Lore20th extends Activity
 
 			GameConfig.touch_x = ax;
 			GameConfig.touch_y = ay;
+			GameConfig.just_touch = true;
 		}
 		else if (motion_event == MotionEvent.ACTION_MOVE)
 		{
@@ -173,11 +184,13 @@ public class Lore20th extends Activity
 
 			GameConfig.touch_x = ax;
 			GameConfig.touch_y = ay;
+			GameConfig.just_touch = true;
 		}
 		else if (motion_event == MotionEvent.ACTION_UP)
 		{
 			GameConfig.touch_x = -1;
 			GameConfig.touch_y = -1;
+			GameConfig.just_touch = true;
 		}
 
 		return true;
@@ -263,11 +276,15 @@ class GameTask extends AsyncTask<Void, Void, Void>
 {
 	private Activity activity;
 	private View view;
-	
+
+	private static long base_tick;
+
 	GameTask(Activity activity, View view)
 	{
 		this.activity = activity;
 		this.view = view;
+		
+		base_tick = System.currentTimeMillis();
 	}
 	
 	@Override
@@ -351,7 +368,15 @@ class GameTask extends AsyncTask<Void, Void, Void>
 		this.activity.finish();
 		//??System.exit(0);
 	}
-	
+
+	@SuppressWarnings("unused")
+	private static int getTicks()
+	{
+		long tick = System.currentTimeMillis() - base_tick;
+		return (int)tick;
+	}
+
+	@SuppressWarnings("unused")
 	private static void updateScreen()
 	{
 		if (GameConfig.USE_LOG_LIFE_CICLE)

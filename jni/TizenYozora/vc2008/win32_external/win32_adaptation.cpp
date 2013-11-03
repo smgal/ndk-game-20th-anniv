@@ -329,8 +329,6 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdL
 		if (!MAIN_APP::loop(buffer_desc))
 			break;
 
-		//OutputDebugString("*");
-
 		updateScreen();
 	}
 
