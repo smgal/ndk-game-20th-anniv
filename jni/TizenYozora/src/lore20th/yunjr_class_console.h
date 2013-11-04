@@ -34,7 +34,7 @@ namespace yunjr
 		void setTextAlign(TEXTALIGN align);
 		void write(const char* sz_text);
 		void write(const wchar_t* sz_text);
-		void write(const smutil::string text);
+		void write(const smutil::string& text);
 		void display(void);
 
 		bool setRegion(int x, int y, int w, int h);

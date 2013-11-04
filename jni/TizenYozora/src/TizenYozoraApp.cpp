@@ -69,9 +69,13 @@ TizenYozoraApp::OnAppInitialized(void)
 
 	TizenYozoraFrame* pTizenYozoraFrame = new (std::nothrow) TizenYozoraFrame;
 	TryReturn(pTizenYozoraFrame != null, false, "The memory is insufficient.");
+
 	pTizenYozoraFrame->Construct();
 	pTizenYozoraFrame->SetName(L"TizenYozora");
+
 	AddFrame(*pTizenYozoraFrame);
+
+	pTizenYozoraFrame->SetOrientation(Tizen::Ui::ORIENTATION_LANDSCAPE);
 
 	s_p_timer = new Tizen::Base::Runtime::Timer;
 	CHECK_COND(s_p_timer);

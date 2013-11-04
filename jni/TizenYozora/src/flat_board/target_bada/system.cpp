@@ -4,6 +4,7 @@
 #include <FUiControl.h>
 
 extern void* g_h_native_window;
+extern void UpdateScreen(void);
 
 
 unsigned long target::system::getTicks(void)
@@ -34,4 +35,9 @@ int target::getScreenHeight(void)
 {
 	Tizen::Ui::Control* p_control = (Tizen::Ui::Control*)g_h_native_window;
 	return (p_control) ? p_control->GetHeight() : 0;
+}
+
+void target::updateScreen(void)
+{
+	UpdateScreen();
 }

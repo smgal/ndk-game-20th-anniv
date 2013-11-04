@@ -29,8 +29,11 @@ extern bool g_is_terminating;
 
 namespace
 {
-	Bitmap* s_pFrameBuffer = 0;
+	Bitmap* s_p_frame_buffer = 0;
+	Canvas* s_p_current_canvas = 0;
 }
+
+void UpdateScreen(void);
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -40,8 +43,8 @@ TizenYozoraForm::TizenYozoraForm(void)
 
 TizenYozoraForm::~TizenYozoraForm(void)
 {
-	delete s_pFrameBuffer;
-	s_pFrameBuffer = 0;
+	delete s_p_frame_buffer;
+	s_p_frame_buffer = 0;
 }
 
 bool
@@ -61,10 +64,10 @@ TizenYozoraForm::OnInitializing(void)
 	// Setup back event listener
 	SetFormBackEventListener(this);
 
-	s_pFrameBuffer = new Bitmap;
-	s_pFrameBuffer->Construct(Dimension(CoordinateSystem::ConvertToLogicalX(720), CoordinateSystem::ConvertToLogicalY(1280)), BITMAP_PIXEL_FORMAT_ARGB8888);
+	s_p_frame_buffer = new Bitmap;
+	s_p_frame_buffer->Construct(Dimension(CoordinateSystem::ConvertToLogicalX(1280), CoordinateSystem::ConvertToLogicalY(720)), BITMAP_PIXEL_FORMAT_ARGB8888);
 
-	yozora::init("akiyu");
+	yozora::init("lore20th");
 
 	return r;
 }
@@ -95,14 +98,13 @@ TizenYozoraForm::OnDraw(void)
 
 	Canvas* p_canvas = GetCanvasN();
 
-	p_canvas->SetBackgroundColor(Color(0xFF000000));
-	p_canvas->Clear();
-
-#if 1
+	if (p_canvas)
 	{
+		s_p_current_canvas = p_canvas;
+
 		BufferInfo buffer_info;
 
-		Bitmap& bitmap = *s_pFrameBuffer;
+		Bitmap& bitmap = *s_p_frame_buffer;
 
 		if (bitmap.Lock(buffer_info) == E_SUCCESS)
 		{
@@ -118,31 +120,24 @@ TizenYozoraForm::OnDraw(void)
 		}
 		bitmap.Unlock();
 
+		p_canvas->SetBackgroundColor(Color(0xFF000000));
+		p_canvas->Clear();
 		p_canvas->DrawBitmap(p_canvas->GetBounds(), bitmap);
 	}
-#else
-	{
-		BufferInfo buffer_info;
 
-		if (p_canvas->Lock(buffer_info) == E_SUCCESS)
-		{
-			dokyu::BufferDesc buffer_desc;
+	s_p_current_canvas = null;
 
-			buffer_desc.p_start_address = buffer_info.pPixels;
-			buffer_desc.width           = buffer_info.width;
-			buffer_desc.height          = buffer_info.height;
-			buffer_desc.bytes_per_line  = buffer_info.pitch;
-			buffer_desc.bits_per_pixel  = buffer_info.bitsPerPixel;
-
-			dokyu::Do(buffer_desc);
-		}
-		p_canvas->Unlock();
-	}
-#endif
 
 	delete p_canvas;
 
 	return E_SUCCESS;
 }
 
+void UpdateScreen(void)
+{
+	s_p_current_canvas->SetBackgroundColor(Color(0xFF000000));
+	s_p_current_canvas->Clear();
+	s_p_current_canvas->DrawBitmap(s_p_current_canvas->GetBounds(), *s_p_frame_buffer);
 
+	s_p_current_canvas->Show();
+}

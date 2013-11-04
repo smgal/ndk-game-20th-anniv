@@ -155,4 +155,54 @@ target::InputDevice* target::getInputDevice(void)
 
 void target::processMessage(EventCallback s_callback)
 {
+	static bool s_first = true;
+	static unsigned long prev_tick = 0;
+	static int step = 0;
+
+	unsigned long tick;
+
+	if (s_first)
+	{
+		prev_tick = system::getTicks();
+		tick = 0;
+		step = 0;
+
+		s_first = false;
+	}
+	else
+	{
+		tick = system::getTicks() - prev_tick;
+	}
+
+	if (step == 0 && tick >= 1000)
+	{
+		s_callback.FnOnKeyDown(KEY_DOWN, 0);
+		step++;
+	}
+
+	if (step == 1 && tick >= 1200)
+	{
+		s_callback.FnOnKeyUp(KEY_DOWN, 0);
+		step++;
+	}
+
+	if (step == 2 && tick >= 2000)
+	{
+		s_callback.FnOnKeyDown(KEY_UP, 0);
+		step++;
+	}
+
+	if (step == 3 && tick >= 2200)
+	{
+		s_callback.FnOnKeyUp(KEY_UP, 0);
+		step++;
+	}
+
+	if (step == 4 && tick >= 4000)
+	{
+		s_callback.FnOnKeyDown(KEY_B, 0);
+		step++;
+
+		s_first = true;
+	}
 }

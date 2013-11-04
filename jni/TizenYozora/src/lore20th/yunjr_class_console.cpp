@@ -129,7 +129,7 @@ void yunjr::LoreConsole::setTextAlign(TEXTALIGN align)
 	m_align = align;
 }
 
-void yunjr::LoreConsole::write(const smutil::string text)
+void yunjr::LoreConsole::write(const smutil::string& text)
 {
 	this->write(text.operator const wchar_t*());
 }

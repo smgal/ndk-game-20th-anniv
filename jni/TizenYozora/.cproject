@@ -27,28 +27,28 @@
 								<option id="gnu.cpp.compiler.option.optimization.level.1373729199" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="sbi.gnu.cpp.compiler.option.debugging.level.1563199772" name="Debug level" superClass="sbi.gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="sbi.gnu.cpp.compiler.option.debug.applog.433419383" name="Enable application logging (-D_APP_LOG)" superClass="sbi.gnu.cpp.compiler.option.debug.applog" value="true" valueType="boolean"/>
-								<option id="sbi.gnu.cpp.compiler.option.1221990421" superClass="sbi.gnu.cpp.compiler.option" valueType="userObjs">
-									<listOptionValue builtIn="false" value="tizen-emulator-2.2.native_llvm31.i386.cpp.app"/>
+								<option id="sbi.gnu.cpp.compiler.option.1221990421" name="Tizen-Target" superClass="sbi.gnu.cpp.compiler.option" valueType="userObjs">
+									<listOptionValue builtIn="false" value="tizen-device-2.2.native_llvm31.armel.cpp.app"/>
 								</option>
-								<option id="sbi.gnu.cpp.compiler.option.frameworks_inc.cpp.1501835756" superClass="sbi.gnu.cpp.compiler.option.frameworks_inc.cpp" valueType="includePath">
+								<option id="sbi.gnu.cpp.compiler.option.frameworks_inc.cpp.1501835756" name="Tizen-Frameworks-Include-Path" superClass="sbi.gnu.cpp.compiler.option.frameworks_inc.cpp" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include/libxml2&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;/home/ykahn/tizen-sdk/library&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include/osp&quot;"/>
 								</option>
-								<option id="sbi.gnu.cpp.compiler.option.frameworks_cflags.cpp.1659043518" superClass="sbi.gnu.cpp.compiler.option.frameworks_cflags.cpp" valueType="stringList">
-									<listOptionValue builtIn="false" value="-target i386-tizen-linux-gnueabi -gcc-toolchain /home/ykahn/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu"/>
+								<option id="sbi.gnu.cpp.compiler.option.frameworks_cflags.cpp.1659043518" name="Tizen-Frameworks-Other-Cflags" superClass="sbi.gnu.cpp.compiler.option.frameworks_cflags.cpp" valueType="stringList">
+									<listOptionValue builtIn="false" value="-target arm-tizen-linux-gnueabi -gcc-toolchain /home/ykahn/tizen-sdk/tools/smart-build-interface/../arm-linux-gnueabi-gcc-4.5/ -ccc-gcc-name arm-linux-gnueabi-g++ -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -mtune=cortex-a8 -Wno-gnu"/>
 									<listOptionValue builtIn="false" value=" -fPIE"/>
 									<listOptionValue builtIn="false" value="--sysroot=&quot;${SBI_SYSROOT}&quot;"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.include.paths.211492715" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+								<option id="gnu.cpp.compiler.option.include.paths.211492715" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/akiyu/freetype2/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/lore20th/freetype2/include}&quot;"/>
 								</option>
-								<option id="sbi.gnu.cpp.compiler.option.frameworks.cpp.85386423" superClass="sbi.gnu.cpp.compiler.option.frameworks.cpp" valueType="userObjs">
+								<option id="sbi.gnu.cpp.compiler.option.frameworks.cpp.85386423" name="Tizen-Frameworks" superClass="sbi.gnu.cpp.compiler.option.frameworks.cpp" valueType="userObjs">
 									<listOptionValue builtIn="false" value="osp"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.preprocessor.def.1876689741" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
+								<option id="gnu.cpp.compiler.option.preprocessor.def.1876689741" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_DEBUG"/>
 									<listOptionValue builtIn="false" value="FT_DEBUG_LEVEL_ERROR"/>
 									<listOptionValue builtIn="false" value="FT_DEBUG_LEVEL_TRACE"/>
@@ -60,28 +60,28 @@
 								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.option.optimization.level.1891072317" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
 								<option id="sbi.gnu.c.compiler.option.debugging.level.1461660731" name="Debug level" superClass="sbi.gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="sbi.gnu.c.compiler.option.debug.applog.2047530846" name="Enable application logging (-D_APP_LOG)" superClass="sbi.gnu.c.compiler.option.debug.applog" value="true" valueType="boolean"/>
-								<option id="sbi.gnu.c.compiler.option.1404429452" superClass="sbi.gnu.c.compiler.option" valueType="userObjs">
-									<listOptionValue builtIn="false" value="tizen-emulator-2.2.native_llvm31.i386.cpp.app"/>
+								<option id="sbi.gnu.c.compiler.option.1404429452" name="Tizen-Target" superClass="sbi.gnu.c.compiler.option" valueType="userObjs">
+									<listOptionValue builtIn="false" value="tizen-device-2.2.native_llvm31.armel.cpp.app"/>
 								</option>
-								<option id="sbi.gnu.c.compiler.option.frameworks_inc.cpp.152403882" superClass="sbi.gnu.c.compiler.option.frameworks_inc.cpp" valueType="includePath">
+								<option id="sbi.gnu.c.compiler.option.frameworks_inc.cpp.152403882" name="Tizen-Frameworks-Include-Path" superClass="sbi.gnu.c.compiler.option.frameworks_inc.cpp" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include/libxml2&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;/home/ykahn/tizen-sdk/library&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include/osp&quot;"/>
 								</option>
-								<option id="sbi.gnu.c.compiler.option.frameworks_cflags.cpp.1700456998" superClass="sbi.gnu.c.compiler.option.frameworks_cflags.cpp" valueType="stringList">
-									<listOptionValue builtIn="false" value="-target i386-tizen-linux-gnueabi -gcc-toolchain /home/ykahn/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu"/>
+								<option id="sbi.gnu.c.compiler.option.frameworks_cflags.cpp.1700456998" name="Tizen-Frameworks-Other-Cflags" superClass="sbi.gnu.c.compiler.option.frameworks_cflags.cpp" valueType="stringList">
+									<listOptionValue builtIn="false" value="-target arm-tizen-linux-gnueabi -gcc-toolchain /home/ykahn/tizen-sdk/tools/smart-build-interface/../arm-linux-gnueabi-gcc-4.5/ -ccc-gcc-name arm-linux-gnueabi-g++ -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -mtune=cortex-a8 -Wno-gnu"/>
 									<listOptionValue builtIn="false" value=" -fPIE"/>
 									<listOptionValue builtIn="false" value="--sysroot=&quot;${SBI_SYSROOT}&quot;"/>
 								</option>
-								<option id="gnu.c.compiler.option.include.paths.1241889862" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+								<option id="gnu.c.compiler.option.include.paths.1241889862" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/akiyu/freetype2/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/lore20th/freetype2/include}&quot;"/>
 								</option>
-								<option id="sbi.gnu.c.compiler.option.frameworks.cpp.1141844086" superClass="sbi.gnu.c.compiler.option.frameworks.cpp" valueType="userObjs">
+								<option id="sbi.gnu.c.compiler.option.frameworks.cpp.1141844086" name="Tizen-Frameworks" superClass="sbi.gnu.c.compiler.option.frameworks.cpp" valueType="userObjs">
 									<listOptionValue builtIn="false" value="osp"/>
 								</option>
-								<option id="gnu.c.compiler.option.preprocessor.def.symbols.433495641" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
+								<option id="gnu.c.compiler.option.preprocessor.def.symbols.433495641" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_DEBUG"/>
 									<listOptionValue builtIn="false" value="FT_DEBUG_LEVEL_ERROR"/>
 									<listOptionValue builtIn="false" value="FT_DEBUG_LEVEL_TRACE"/>
@@ -91,8 +91,8 @@
 							</tool>
 							<tool id="org.tizen.nativeide.tool.sbi.gnu.c.linker.base.1745040645" name="C Linker" superClass="org.tizen.nativeide.tool.sbi.gnu.c.linker.base"/>
 							<tool command="clang++" id="org.tizen.nativecpp.tool.sbi.gnu.cpp.linker.1370232792" name="C++ Linker" superClass="org.tizen.nativecpp.tool.sbi.gnu.cpp.linker">
-								<option id="sbi.gnu.cpp.linker.option.frameworks_lflags.cpp.1997243101" superClass="sbi.gnu.cpp.linker.option.frameworks_lflags.cpp" valueType="stringList">
-									<listOptionValue builtIn="false" value="-target i386-tizen-linux-gnueabi -gcc-toolchain /home/ykahn/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Xlinker --as-needed"/>
+								<option id="sbi.gnu.cpp.linker.option.frameworks_lflags.cpp.1997243101" name="Tizen-Frameworks-Other-Lflags" superClass="sbi.gnu.cpp.linker.option.frameworks_lflags.cpp" valueType="stringList">
+									<listOptionValue builtIn="false" value="-target arm-tizen-linux-gnueabi -gcc-toolchain /home/ykahn/tizen-sdk/tools/smart-build-interface/../arm-linux-gnueabi-gcc-4.5/ -ccc-gcc-name arm-linux-gnueabi-g++ -march=armv7-a -mfloat-abi=softfp -mfpu=vfpv3-d16 -mtune=cortex-a8 -Xlinker --as-needed"/>
 									<listOptionValue builtIn="false" value="-pie -lpthread "/>
 									<listOptionValue builtIn="false" value="-Xlinker -rpath=&quot;/opt/usr/apps/dGoQei5Rbe/lib&quot;"/>
 									<listOptionValue builtIn="false" value="-Xlinker -rpath=&quot;/home/developer/sdk_tools/lib&quot;"/>
@@ -118,16 +118,17 @@
 									<listOptionValue builtIn="false" value="-losp-bluetooth"/>
 									<listOptionValue builtIn="false" value="-losp-nfc"/>
 									<listOptionValue builtIn="false" value="-losp-face"/>
+									<listOptionValue builtIn="false" value="-losp-secure-element"/>
 									<listOptionValue builtIn="false" value="-losp-speech-tts"/>
-									<listOptionValue builtIn="false" value="-losp-speech-stt"/>
 									<listOptionValue builtIn="false" value="-losp-shell"/>
 									<listOptionValue builtIn="false" value="-losp-shell-core"/>
+									<listOptionValue builtIn="false" value="-losp-speech-stt"/>
 									<listOptionValue builtIn="false" value="-losp-vision"/>
 									<listOptionValue builtIn="false" value="-lxml2"/>
 									<listOptionValue builtIn="false" value="-lalut"/>
 									<listOptionValue builtIn="false" value="-lopenal"/>
 								</option>
-								<option id="gnu.cpp.link.option.paths.334802086" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
+								<option id="gnu.cpp.link.option.paths.334802086" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lib}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.355404525" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
@@ -135,7 +136,7 @@
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
 								</inputType>
 							</tool>
-							<tool command="i386-linux-gnueabi-as" id="org.tizen.nativeapp.tool.sbi.gnu.assembler.base.1579111485" name="Assembler" superClass="org.tizen.nativeapp.tool.sbi.gnu.assembler.base">
+							<tool command="arm-linux-gnueabi-as" id="org.tizen.nativeapp.tool.sbi.gnu.assembler.base.1579111485" name="Assembler" superClass="org.tizen.nativeapp.tool.sbi.gnu.assembler.base">
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.1540393324" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 							<tool id="org.tizen.nativecpp.tool.sbi.po.compiler.746684272" name="PO Resource Compiler" superClass="org.tizen.nativecpp.tool.sbi.po.compiler"/>
@@ -143,7 +144,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="akiyu/freetype2/src/type42/t42parse.c|akiyu/freetype2/src/type42/t42objs.c|akiyu/freetype2/src/type42/t42drivr.c|akiyu/freetype2/src/type1/t1parse.c|akiyu/freetype2/src/type1/t1objs.c|akiyu/freetype2/src/type1/t1load.c|akiyu/freetype2/src/type1/t1gload.c|akiyu/freetype2/src/type1/t1driver.c|akiyu/freetype2/src/type1/t1afm.c|akiyu/freetype2/src/truetype/ttpload.c|akiyu/freetype2/src/truetype/ttpic.c|akiyu/freetype2/src/truetype/ttobjs.c|akiyu/freetype2/src/truetype/ttinterp.c|akiyu/freetype2/src/truetype/ttgxvar.c|akiyu/freetype2/src/truetype/ttgload.c|akiyu/freetype2/src/truetype/ttdriver.c|akiyu/freetype2/src/tools|akiyu/freetype2/src/smooth/ftspic.c|akiyu/freetype2/src/smooth/ftsmooth.c|akiyu/freetype2/src/smooth/ftgrays.c|akiyu/freetype2/src/sfnt/ttsbit0.c|akiyu/freetype2/src/sfnt/ttsbit.c|akiyu/freetype2/src/sfnt/ttpost.c|akiyu/freetype2/src/sfnt/ttmtx.c|akiyu/freetype2/src/sfnt/ttload.c|akiyu/freetype2/src/sfnt/ttkern.c|akiyu/freetype2/src/sfnt/ttcmap.c|akiyu/freetype2/src/sfnt/ttbdf.c|akiyu/freetype2/src/sfnt/sfobjs.c|akiyu/freetype2/src/sfnt/sfntpic.c|akiyu/freetype2/src/sfnt/sfdriver.c|akiyu/freetype2/src/raster/rastpic.c|akiyu/freetype2/src/raster/ftrend1.c|akiyu/freetype2/src/raster/ftraster.c|akiyu/freetype2/src/psnames/pspic.c|akiyu/freetype2/src/psnames/psnames.c|akiyu/freetype2/src/pshinter/pshrec.c|akiyu/freetype2/src/pshinter/pshpic.c|akiyu/freetype2/src/pshinter/pshmod.c|akiyu/freetype2/src/pshinter/pshglob.c|akiyu/freetype2/src/pshinter/pshalgo.c|akiyu/freetype2/src/psaux/t1decode.c|akiyu/freetype2/src/psaux/t1cmap.c|akiyu/freetype2/src/psaux/psobjs.c|akiyu/freetype2/src/psaux/psconv.c|akiyu/freetype2/src/psaux/psauxmod.c|akiyu/freetype2/src/psaux/afmparse.c|akiyu/freetype2/src/pfr/pfrsbit.c|akiyu/freetype2/src/pfr/pfrobjs.c|akiyu/freetype2/src/pfr/pfrload.c|akiyu/freetype2/src/pfr/pfrgload.c|akiyu/freetype2/src/pfr/pfrdrivr.c|akiyu/freetype2/src/pfr/pfrcmap.c|akiyu/freetype2/src/pcf/pcfutil.c|akiyu/freetype2/src/pcf/pcfread.c|akiyu/freetype2/src/pcf/pcfdrivr.c|akiyu/freetype2/src/otvalid|akiyu/freetype2/src/lzw/ftzopen.c|akiyu/freetype2/src/gzip/zutil.c|akiyu/freetype2/src/gzip/infutil.c|akiyu/freetype2/src/gzip/inftrees.c|akiyu/freetype2/src/gzip/inflate.c|akiyu/freetype2/src/gzip/infcodes.c|akiyu/freetype2/src/gzip/infblock.c|akiyu/freetype2/src/gzip/adler32.c|akiyu/freetype2/src/gxvalid|akiyu/freetype2/src/cid/cidriver.c|akiyu/freetype2/src/cid/cidparse.c|akiyu/freetype2/src/cid/cidobjs.c|akiyu/freetype2/src/cid/cidload.c|akiyu/freetype2/src/cid/cidgload.c|akiyu/freetype2/src/cff/cffpic.c|akiyu/freetype2/src/cff/cffparse.c|akiyu/freetype2/src/cff/cffobjs.c|akiyu/freetype2/src/cff/cffload.c|akiyu/freetype2/src/cff/cffgload.c|akiyu/freetype2/src/cff/cffdrivr.c|akiyu/freetype2/src/cff/cffcmap.c|akiyu/freetype2/src/cache/ftcsbits.c|akiyu/freetype2/src/cache/ftcmru.c|akiyu/freetype2/src/cache/ftcmanag.c|akiyu/freetype2/src/cache/ftcimage.c|akiyu/freetype2/src/cache/ftcglyph.c|akiyu/freetype2/src/cache/ftccmap.c|akiyu/freetype2/src/cache/ftccache.c|akiyu/freetype2/src/cache/ftcbasic.c|akiyu/freetype2/src/bzip2/ftbzip2.c|akiyu/freetype2/src/bdf/bdflib.c|akiyu/freetype2/src/bdf/bdfdrivr.c|akiyu/freetype2/src/base/ftutil.c|akiyu/freetype2/src/base/fttrigon.c|akiyu/freetype2/src/base/ftstream.c|akiyu/freetype2/src/base/ftsnames.c|akiyu/freetype2/src/base/ftrfork.c|akiyu/freetype2/src/base/ftpic.c|akiyu/freetype2/src/base/ftoutln.c|akiyu/freetype2/src/base/ftobjs.c|akiyu/freetype2/src/base/ftgloadr.c|akiyu/freetype2/src/base/ftdbgmem.c|akiyu/freetype2/src/base/ftcid.c|akiyu/freetype2/src/base/ftcalc.c|akiyu/freetype2/src/base/ftbdf.c|akiyu/freetype2/src/base/ftapi.c|akiyu/freetype2/src/autofit/afmodule.c|akiyu/freetype2/src/autofit/afloader.c|akiyu/freetype2/src/autofit/aflatin.c|akiyu/freetype2/src/autofit/afindic.c|akiyu/freetype2/src/autofit/afhints.c|akiyu/freetype2/src/autofit/afglobal.c|akiyu/freetype2/src/autofit/afdummy.c|akiyu/freetype2/src/autofit/afcjk.c|akiyu/freetype2/src/autofit/afangles.c|akiyu/freetype2/src/autofit/afwarp.c|akiyu/freetype2/src/autofit/afpic.c|akiyu/freetype2/src/base/ftadvanc.c|akiyu/freetype2/src/base/basepic.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="lore20th/freetype2/src/type42/t42parse.c|lore20th/freetype2/src/type42/t42objs.c|lore20th/freetype2/src/type42/t42drivr.c|lore20th/freetype2/src/type1/t1parse.c|lore20th/freetype2/src/type1/t1objs.c|lore20th/freetype2/src/type1/t1load.c|lore20th/freetype2/src/type1/t1gload.c|lore20th/freetype2/src/type1/t1driver.c|lore20th/freetype2/src/type1/t1afm.c|lore20th/freetype2/src/truetype/ttpload.c|lore20th/freetype2/src/truetype/ttpic.c|lore20th/freetype2/src/truetype/ttobjs.c|lore20th/freetype2/src/truetype/ttinterp.c|lore20th/freetype2/src/truetype/ttgxvar.c|lore20th/freetype2/src/truetype/ttgload.c|lore20th/freetype2/src/truetype/ttdriver.c|lore20th/freetype2/src/tools|lore20th/freetype2/src/smooth/ftspic.c|lore20th/freetype2/src/smooth/ftsmooth.c|lore20th/freetype2/src/smooth/ftgrays.c|lore20th/freetype2/src/sfnt/ttsbit0.c|lore20th/freetype2/src/sfnt/ttsbit.c|lore20th/freetype2/src/sfnt/ttpost.c|lore20th/freetype2/src/sfnt/ttmtx.c|lore20th/freetype2/src/sfnt/ttload.c|lore20th/freetype2/src/sfnt/ttkern.c|lore20th/freetype2/src/sfnt/ttcmap.c|lore20th/freetype2/src/sfnt/ttbdf.c|lore20th/freetype2/src/sfnt/sfobjs.c|lore20th/freetype2/src/sfnt/sfntpic.c|lore20th/freetype2/src/sfnt/sfdriver.c|lore20th/freetype2/src/raster/rastpic.c|lore20th/freetype2/src/raster/ftrend1.c|lore20th/freetype2/src/raster/ftraster.c|lore20th/freetype2/src/psnames/pspic.c|lore20th/freetype2/src/psnames/psnames.c|lore20th/freetype2/src/pshinter/pshrec.c|lore20th/freetype2/src/pshinter/pshpic.c|lore20th/freetype2/src/pshinter/pshmod.c|lore20th/freetype2/src/pshinter/pshglob.c|lore20th/freetype2/src/pshinter/pshalgo.c|lore20th/freetype2/src/psaux/t1decode.c|lore20th/freetype2/src/psaux/t1cmap.c|lore20th/freetype2/src/psaux/psobjs.c|lore20th/freetype2/src/psaux/psconv.c|lore20th/freetype2/src/psaux/psauxmod.c|lore20th/freetype2/src/psaux/afmparse.c|lore20th/freetype2/src/pfr/pfrsbit.c|lore20th/freetype2/src/pfr/pfrobjs.c|lore20th/freetype2/src/pfr/pfrload.c|lore20th/freetype2/src/pfr/pfrgload.c|lore20th/freetype2/src/pfr/pfrdrivr.c|lore20th/freetype2/src/pfr/pfrcmap.c|lore20th/freetype2/src/pcf/pcfutil.c|lore20th/freetype2/src/pcf/pcfread.c|lore20th/freetype2/src/pcf/pcfdrivr.c|lore20th/freetype2/src/otvalid|lore20th/freetype2/src/lzw/ftzopen.c|lore20th/freetype2/src/gzip/zutil.c|lore20th/freetype2/src/gzip/infutil.c|lore20th/freetype2/src/gzip/inftrees.c|lore20th/freetype2/src/gzip/inflate.c|lore20th/freetype2/src/gzip/infcodes.c|lore20th/freetype2/src/gzip/infblock.c|lore20th/freetype2/src/gzip/adler32.c|lore20th/freetype2/src/gxvalid|lore20th/freetype2/src/cid/cidriver.c|lore20th/freetype2/src/cid/cidparse.c|lore20th/freetype2/src/cid/cidobjs.c|lore20th/freetype2/src/cid/cidload.c|lore20th/freetype2/src/cid/cidgload.c|lore20th/freetype2/src/cff/cffpic.c|lore20th/freetype2/src/cff/cffparse.c|lore20th/freetype2/src/cff/cffobjs.c|lore20th/freetype2/src/cff/cffload.c|lore20th/freetype2/src/cff/cffgload.c|lore20th/freetype2/src/cff/cffdrivr.c|lore20th/freetype2/src/cff/cffcmap.c|lore20th/freetype2/src/cache/ftcsbits.c|lore20th/freetype2/src/cache/ftcmru.c|lore20th/freetype2/src/cache/ftcmanag.c|lore20th/freetype2/src/cache/ftcimage.c|lore20th/freetype2/src/cache/ftcglyph.c|lore20th/freetype2/src/cache/ftccmap.c|lore20th/freetype2/src/cache/ftccache.c|lore20th/freetype2/src/cache/ftcbasic.c|lore20th/freetype2/src/bzip2/ftbzip2.c|lore20th/freetype2/src/bdf/bdflib.c|lore20th/freetype2/src/bdf/bdfdrivr.c|lore20th/freetype2/src/base/ftutil.c|lore20th/freetype2/src/base/fttrigon.c|lore20th/freetype2/src/base/ftstream.c|lore20th/freetype2/src/base/ftsnames.c|lore20th/freetype2/src/base/ftrfork.c|lore20th/freetype2/src/base/ftpic.c|lore20th/freetype2/src/base/ftoutln.c|lore20th/freetype2/src/base/ftobjs.c|lore20th/freetype2/src/base/ftgloadr.c|lore20th/freetype2/src/base/ftdbgmem.c|lore20th/freetype2/src/base/ftcid.c|lore20th/freetype2/src/base/ftcalc.c|lore20th/freetype2/src/base/ftbdf.c|lore20th/freetype2/src/base/ftapi.c|lore20th/freetype2/src/autofit/afmodule.c|lore20th/freetype2/src/autofit/afloader.c|lore20th/freetype2/src/autofit/aflatin.c|lore20th/freetype2/src/autofit/afindic.c|lore20th/freetype2/src/autofit/afhints.c|lore20th/freetype2/src/autofit/afglobal.c|lore20th/freetype2/src/autofit/afdummy.c|lore20th/freetype2/src/autofit/afcjk.c|lore20th/freetype2/src/autofit/afangles.c|lore20th/freetype2/src/autofit/afwarp.c|lore20th/freetype2/src/autofit/afpic.c|lore20th/freetype2/src/base/ftadvanc.c|lore20th/freetype2/src/base/basepic.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="inc"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="res"/>
 					</sourceEntries>
@@ -175,24 +176,24 @@
 								<option id="gnu.cpp.compiler.option.optimization.level.374722672" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated"/>
 								<option id="sbi.gnu.cpp.compiler.option.debugging.level.1455146688" name="Debug level" superClass="sbi.gnu.cpp.compiler.option.debugging.level"/>
 								<option id="sbi.gnu.cpp.compiler.option.debug.applog.1870796476" name="Enable application logging (-D_APP_LOG)" superClass="sbi.gnu.cpp.compiler.option.debug.applog"/>
-								<option id="sbi.gnu.cpp.compiler.option.281143265" superClass="sbi.gnu.cpp.compiler.option" valueType="userObjs">
+								<option id="sbi.gnu.cpp.compiler.option.281143265" name="Tizen-Target" superClass="sbi.gnu.cpp.compiler.option" valueType="userObjs">
 									<listOptionValue builtIn="false" value="tizen-emulator-2.2.native_llvm31.i386.cpp.app"/>
 								</option>
-								<option id="sbi.gnu.cpp.compiler.option.frameworks_inc.cpp.11291399" superClass="sbi.gnu.cpp.compiler.option.frameworks_inc.cpp" valueType="includePath">
+								<option id="sbi.gnu.cpp.compiler.option.frameworks_inc.cpp.11291399" name="Tizen-Frameworks-Include-Path" superClass="sbi.gnu.cpp.compiler.option.frameworks_inc.cpp" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include/libxml2&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;/home/ykahn/tizen-sdk/library&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include/osp&quot;"/>
 								</option>
-								<option id="sbi.gnu.cpp.compiler.option.frameworks_cflags.cpp.618001498" superClass="sbi.gnu.cpp.compiler.option.frameworks_cflags.cpp" valueType="stringList">
+								<option id="sbi.gnu.cpp.compiler.option.frameworks_cflags.cpp.618001498" name="Tizen-Frameworks-Other-Cflags" superClass="sbi.gnu.cpp.compiler.option.frameworks_cflags.cpp" valueType="stringList">
 									<listOptionValue builtIn="false" value="-target i386-tizen-linux-gnueabi -gcc-toolchain /home/ykahn/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu"/>
 									<listOptionValue builtIn="false" value=" -fPIE"/>
 									<listOptionValue builtIn="false" value="--sysroot=&quot;${SBI_SYSROOT}&quot;"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.include.paths.82593495" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+								<option id="gnu.cpp.compiler.option.include.paths.82593495" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
 								</option>
-								<option id="sbi.gnu.cpp.compiler.option.frameworks.cpp.882335829" superClass="sbi.gnu.cpp.compiler.option.frameworks.cpp" valueType="userObjs">
+								<option id="sbi.gnu.cpp.compiler.option.frameworks.cpp.882335829" name="Tizen-Frameworks" superClass="sbi.gnu.cpp.compiler.option.frameworks.cpp" valueType="userObjs">
 									<listOptionValue builtIn="false" value="osp"/>
 								</option>
 								<inputType id="sbi.gnu.cpp.compiler.tizen.inputType.999625436" superClass="sbi.gnu.cpp.compiler.tizen.inputType"/>
@@ -201,31 +202,31 @@
 								<option defaultValue="gnu.c.optimization.level.most" id="gnu.c.compiler.option.optimization.level.780776267" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
 								<option id="sbi.gnu.c.compiler.option.debugging.level.1983595506" name="Debug level" superClass="sbi.gnu.c.compiler.option.debugging.level"/>
 								<option id="sbi.gnu.c.compiler.option.debug.applog.1004487288" name="Enable application logging (-D_APP_LOG)" superClass="sbi.gnu.c.compiler.option.debug.applog"/>
-								<option id="sbi.gnu.c.compiler.option.565494123" superClass="sbi.gnu.c.compiler.option" valueType="userObjs">
+								<option id="sbi.gnu.c.compiler.option.565494123" name="Tizen-Target" superClass="sbi.gnu.c.compiler.option" valueType="userObjs">
 									<listOptionValue builtIn="false" value="tizen-emulator-2.2.native_llvm31.i386.cpp.app"/>
 								</option>
-								<option id="sbi.gnu.c.compiler.option.frameworks_inc.cpp.663565077" superClass="sbi.gnu.c.compiler.option.frameworks_inc.cpp" valueType="includePath">
+								<option id="sbi.gnu.c.compiler.option.frameworks_inc.cpp.663565077" name="Tizen-Frameworks-Include-Path" superClass="sbi.gnu.c.compiler.option.frameworks_inc.cpp" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include/libxml2&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;/home/ykahn/tizen-sdk/library&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include/osp&quot;"/>
 								</option>
-								<option id="sbi.gnu.c.compiler.option.frameworks_cflags.cpp.1990657060" superClass="sbi.gnu.c.compiler.option.frameworks_cflags.cpp" valueType="stringList">
+								<option id="sbi.gnu.c.compiler.option.frameworks_cflags.cpp.1990657060" name="Tizen-Frameworks-Other-Cflags" superClass="sbi.gnu.c.compiler.option.frameworks_cflags.cpp" valueType="stringList">
 									<listOptionValue builtIn="false" value="-target i386-tizen-linux-gnueabi -gcc-toolchain /home/ykahn/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu"/>
 									<listOptionValue builtIn="false" value=" -fPIE"/>
 									<listOptionValue builtIn="false" value="--sysroot=&quot;${SBI_SYSROOT}&quot;"/>
 								</option>
-								<option id="gnu.c.compiler.option.include.paths.619490654" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+								<option id="gnu.c.compiler.option.include.paths.619490654" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
 								</option>
-								<option id="sbi.gnu.c.compiler.option.frameworks.cpp.1254065366" superClass="sbi.gnu.c.compiler.option.frameworks.cpp" valueType="userObjs">
+								<option id="sbi.gnu.c.compiler.option.frameworks.cpp.1254065366" name="Tizen-Frameworks" superClass="sbi.gnu.c.compiler.option.frameworks.cpp" valueType="userObjs">
 									<listOptionValue builtIn="false" value="osp"/>
 								</option>
 								<inputType id="sbi.gnu.c.compiler.tizen.inputType.865989244" superClass="sbi.gnu.c.compiler.tizen.inputType"/>
 							</tool>
 							<tool id="org.tizen.nativeide.tool.sbi.gnu.c.linker.base.2039634593" name="C Linker" superClass="org.tizen.nativeide.tool.sbi.gnu.c.linker.base"/>
 							<tool command="clang++" id="org.tizen.nativecpp.tool.sbi.gnu.cpp.linker.2115862520" name="C++ Linker" superClass="org.tizen.nativecpp.tool.sbi.gnu.cpp.linker">
-								<option id="sbi.gnu.cpp.linker.option.frameworks_lflags.cpp.1459538770" superClass="sbi.gnu.cpp.linker.option.frameworks_lflags.cpp" valueType="stringList">
+								<option id="sbi.gnu.cpp.linker.option.frameworks_lflags.cpp.1459538770" name="Tizen-Frameworks-Other-Lflags" superClass="sbi.gnu.cpp.linker.option.frameworks_lflags.cpp" valueType="stringList">
 									<listOptionValue builtIn="false" value="-target i386-tizen-linux-gnueabi -gcc-toolchain /home/ykahn/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Xlinker --as-needed"/>
 									<listOptionValue builtIn="false" value="-pie -lpthread "/>
 									<listOptionValue builtIn="false" value="-Xlinker -rpath=&quot;/opt/usr/apps/dGoQei5Rbe/lib&quot;"/>
@@ -252,6 +253,7 @@
 									<listOptionValue builtIn="false" value="-losp-bluetooth"/>
 									<listOptionValue builtIn="false" value="-losp-nfc"/>
 									<listOptionValue builtIn="false" value="-losp-face"/>
+									<listOptionValue builtIn="false" value="-losp-secure-element"/>
 									<listOptionValue builtIn="false" value="-losp-speech-tts"/>
 									<listOptionValue builtIn="false" value="-losp-speech-stt"/>
 									<listOptionValue builtIn="false" value="-losp-shell"/>
@@ -261,7 +263,7 @@
 									<listOptionValue builtIn="false" value="-lalut"/>
 									<listOptionValue builtIn="false" value="-lopenal"/>
 								</option>
-								<option id="gnu.cpp.link.option.paths.1862762484" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
+								<option id="gnu.cpp.link.option.paths.1862762484" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lib}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1785162269" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
@@ -277,7 +279,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="akiyu/freetype2/src/type42/t42parse.c|akiyu/freetype2/src/type42/t42objs.c|akiyu/freetype2/src/type42/t42drivr.c|akiyu/freetype2/src/type1/t1parse.c|akiyu/freetype2/src/type1/t1objs.c|akiyu/freetype2/src/type1/t1load.c|akiyu/freetype2/src/type1/t1gload.c|akiyu/freetype2/src/type1/t1driver.c|akiyu/freetype2/src/type1/t1afm.c|akiyu/freetype2/src/truetype/ttpload.c|akiyu/freetype2/src/truetype/ttpic.c|akiyu/freetype2/src/truetype/ttobjs.c|akiyu/freetype2/src/truetype/ttinterp.c|akiyu/freetype2/src/truetype/ttgxvar.c|akiyu/freetype2/src/truetype/ttgload.c|akiyu/freetype2/src/truetype/ttdriver.c|akiyu/freetype2/src/tools|akiyu/freetype2/src/smooth/ftspic.c|akiyu/freetype2/src/smooth/ftsmooth.c|akiyu/freetype2/src/smooth/ftgrays.c|akiyu/freetype2/src/sfnt/ttsbit0.c|akiyu/freetype2/src/sfnt/ttsbit.c|akiyu/freetype2/src/sfnt/ttpost.c|akiyu/freetype2/src/sfnt/ttmtx.c|akiyu/freetype2/src/sfnt/ttload.c|akiyu/freetype2/src/sfnt/ttkern.c|akiyu/freetype2/src/sfnt/ttcmap.c|akiyu/freetype2/src/sfnt/ttbdf.c|akiyu/freetype2/src/sfnt/sfobjs.c|akiyu/freetype2/src/sfnt/sfntpic.c|akiyu/freetype2/src/sfnt/sfdriver.c|akiyu/freetype2/src/raster/rastpic.c|akiyu/freetype2/src/raster/ftrend1.c|akiyu/freetype2/src/raster/ftraster.c|akiyu/freetype2/src/psnames/pspic.c|akiyu/freetype2/src/psnames/psnames.c|akiyu/freetype2/src/pshinter/pshrec.c|akiyu/freetype2/src/pshinter/pshpic.c|akiyu/freetype2/src/pshinter/pshmod.c|akiyu/freetype2/src/pshinter/pshglob.c|akiyu/freetype2/src/pshinter/pshalgo.c|akiyu/freetype2/src/psaux/t1decode.c|akiyu/freetype2/src/psaux/t1cmap.c|akiyu/freetype2/src/psaux/psobjs.c|akiyu/freetype2/src/psaux/psconv.c|akiyu/freetype2/src/psaux/psauxmod.c|akiyu/freetype2/src/psaux/afmparse.c|akiyu/freetype2/src/pfr/pfrsbit.c|akiyu/freetype2/src/pfr/pfrobjs.c|akiyu/freetype2/src/pfr/pfrload.c|akiyu/freetype2/src/pfr/pfrgload.c|akiyu/freetype2/src/pfr/pfrdrivr.c|akiyu/freetype2/src/pfr/pfrcmap.c|akiyu/freetype2/src/pcf/pcfutil.c|akiyu/freetype2/src/pcf/pcfread.c|akiyu/freetype2/src/pcf/pcfdrivr.c|akiyu/freetype2/src/otvalid|akiyu/freetype2/src/lzw/ftzopen.c|akiyu/freetype2/src/gzip/zutil.c|akiyu/freetype2/src/gzip/infutil.c|akiyu/freetype2/src/gzip/inftrees.c|akiyu/freetype2/src/gzip/inflate.c|akiyu/freetype2/src/gzip/infcodes.c|akiyu/freetype2/src/gzip/infblock.c|akiyu/freetype2/src/gzip/adler32.c|akiyu/freetype2/src/gxvalid|akiyu/freetype2/src/cid/cidriver.c|akiyu/freetype2/src/cid/cidparse.c|akiyu/freetype2/src/cid/cidobjs.c|akiyu/freetype2/src/cid/cidload.c|akiyu/freetype2/src/cid/cidgload.c|akiyu/freetype2/src/cff/cffpic.c|akiyu/freetype2/src/cff/cffparse.c|akiyu/freetype2/src/cff/cffobjs.c|akiyu/freetype2/src/cff/cffload.c|akiyu/freetype2/src/cff/cffgload.c|akiyu/freetype2/src/cff/cffdrivr.c|akiyu/freetype2/src/cff/cffcmap.c|akiyu/freetype2/src/cache/ftcsbits.c|akiyu/freetype2/src/cache/ftcmru.c|akiyu/freetype2/src/cache/ftcmanag.c|akiyu/freetype2/src/cache/ftcimage.c|akiyu/freetype2/src/cache/ftcglyph.c|akiyu/freetype2/src/cache/ftccmap.c|akiyu/freetype2/src/cache/ftccache.c|akiyu/freetype2/src/cache/ftcbasic.c|akiyu/freetype2/src/bzip2/ftbzip2.c|akiyu/freetype2/src/bdf/bdflib.c|akiyu/freetype2/src/bdf/bdfdrivr.c|akiyu/freetype2/src/base/ftutil.c|akiyu/freetype2/src/base/fttrigon.c|akiyu/freetype2/src/base/ftstream.c|akiyu/freetype2/src/base/ftsnames.c|akiyu/freetype2/src/base/ftrfork.c|akiyu/freetype2/src/base/ftpic.c|akiyu/freetype2/src/base/ftoutln.c|akiyu/freetype2/src/base/ftobjs.c|akiyu/freetype2/src/base/ftgloadr.c|akiyu/freetype2/src/base/ftdbgmem.c|akiyu/freetype2/src/base/ftcid.c|akiyu/freetype2/src/base/ftcalc.c|akiyu/freetype2/src/base/ftbdf.c|akiyu/freetype2/src/base/ftapi.c|akiyu/freetype2/src/autofit/afmodule.c|akiyu/freetype2/src/autofit/afloader.c|akiyu/freetype2/src/autofit/aflatin.c|akiyu/freetype2/src/autofit/afindic.c|akiyu/freetype2/src/autofit/afhints.c|akiyu/freetype2/src/autofit/afglobal.c|akiyu/freetype2/src/autofit/afdummy.c|akiyu/freetype2/src/autofit/afcjk.c|akiyu/freetype2/src/autofit/afangles.c|akiyu/freetype2/src/autofit/afwarp.c|akiyu/freetype2/src/autofit/afpic.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="lore20th/freetype2/src/type42/t42parse.c|lore20th/freetype2/src/type42/t42objs.c|lore20th/freetype2/src/type42/t42drivr.c|lore20th/freetype2/src/type1/t1parse.c|lore20th/freetype2/src/type1/t1objs.c|lore20th/freetype2/src/type1/t1load.c|lore20th/freetype2/src/type1/t1gload.c|lore20th/freetype2/src/type1/t1driver.c|lore20th/freetype2/src/type1/t1afm.c|lore20th/freetype2/src/truetype/ttpload.c|lore20th/freetype2/src/truetype/ttpic.c|lore20th/freetype2/src/truetype/ttobjs.c|lore20th/freetype2/src/truetype/ttinterp.c|lore20th/freetype2/src/truetype/ttgxvar.c|lore20th/freetype2/src/truetype/ttgload.c|lore20th/freetype2/src/truetype/ttdriver.c|lore20th/freetype2/src/tools|lore20th/freetype2/src/smooth/ftspic.c|lore20th/freetype2/src/smooth/ftsmooth.c|lore20th/freetype2/src/smooth/ftgrays.c|lore20th/freetype2/src/sfnt/ttsbit0.c|lore20th/freetype2/src/sfnt/ttsbit.c|lore20th/freetype2/src/sfnt/ttpost.c|lore20th/freetype2/src/sfnt/ttmtx.c|lore20th/freetype2/src/sfnt/ttload.c|lore20th/freetype2/src/sfnt/ttkern.c|lore20th/freetype2/src/sfnt/ttcmap.c|lore20th/freetype2/src/sfnt/ttbdf.c|lore20th/freetype2/src/sfnt/sfobjs.c|lore20th/freetype2/src/sfnt/sfntpic.c|lore20th/freetype2/src/sfnt/sfdriver.c|lore20th/freetype2/src/raster/rastpic.c|lore20th/freetype2/src/raster/ftrend1.c|lore20th/freetype2/src/raster/ftraster.c|lore20th/freetype2/src/psnames/pspic.c|lore20th/freetype2/src/psnames/psnames.c|lore20th/freetype2/src/pshinter/pshrec.c|lore20th/freetype2/src/pshinter/pshpic.c|lore20th/freetype2/src/pshinter/pshmod.c|lore20th/freetype2/src/pshinter/pshglob.c|lore20th/freetype2/src/pshinter/pshalgo.c|lore20th/freetype2/src/psaux/t1decode.c|lore20th/freetype2/src/psaux/t1cmap.c|lore20th/freetype2/src/psaux/psobjs.c|lore20th/freetype2/src/psaux/psconv.c|lore20th/freetype2/src/psaux/psauxmod.c|lore20th/freetype2/src/psaux/afmparse.c|lore20th/freetype2/src/pfr/pfrsbit.c|lore20th/freetype2/src/pfr/pfrobjs.c|lore20th/freetype2/src/pfr/pfrload.c|lore20th/freetype2/src/pfr/pfrgload.c|lore20th/freetype2/src/pfr/pfrdrivr.c|lore20th/freetype2/src/pfr/pfrcmap.c|lore20th/freetype2/src/pcf/pcfutil.c|lore20th/freetype2/src/pcf/pcfread.c|lore20th/freetype2/src/pcf/pcfdrivr.c|lore20th/freetype2/src/otvalid|lore20th/freetype2/src/lzw/ftzopen.c|lore20th/freetype2/src/gzip/zutil.c|lore20th/freetype2/src/gzip/infutil.c|lore20th/freetype2/src/gzip/inftrees.c|lore20th/freetype2/src/gzip/inflate.c|lore20th/freetype2/src/gzip/infcodes.c|lore20th/freetype2/src/gzip/infblock.c|lore20th/freetype2/src/gzip/adler32.c|lore20th/freetype2/src/gxvalid|lore20th/freetype2/src/cid/cidriver.c|lore20th/freetype2/src/cid/cidparse.c|lore20th/freetype2/src/cid/cidobjs.c|lore20th/freetype2/src/cid/cidload.c|lore20th/freetype2/src/cid/cidgload.c|lore20th/freetype2/src/cff/cffpic.c|lore20th/freetype2/src/cff/cffparse.c|lore20th/freetype2/src/cff/cffobjs.c|lore20th/freetype2/src/cff/cffload.c|lore20th/freetype2/src/cff/cffgload.c|lore20th/freetype2/src/cff/cffdrivr.c|lore20th/freetype2/src/cff/cffcmap.c|lore20th/freetype2/src/cache/ftcsbits.c|lore20th/freetype2/src/cache/ftcmru.c|lore20th/freetype2/src/cache/ftcmanag.c|lore20th/freetype2/src/cache/ftcimage.c|lore20th/freetype2/src/cache/ftcglyph.c|lore20th/freetype2/src/cache/ftccmap.c|lore20th/freetype2/src/cache/ftccache.c|lore20th/freetype2/src/cache/ftcbasic.c|lore20th/freetype2/src/bzip2/ftbzip2.c|lore20th/freetype2/src/bdf/bdflib.c|lore20th/freetype2/src/bdf/bdfdrivr.c|lore20th/freetype2/src/base/ftutil.c|lore20th/freetype2/src/base/fttrigon.c|lore20th/freetype2/src/base/ftstream.c|lore20th/freetype2/src/base/ftsnames.c|lore20th/freetype2/src/base/ftrfork.c|lore20th/freetype2/src/base/ftpic.c|lore20th/freetype2/src/base/ftoutln.c|lore20th/freetype2/src/base/ftobjs.c|lore20th/freetype2/src/base/ftgloadr.c|lore20th/freetype2/src/base/ftdbgmem.c|lore20th/freetype2/src/base/ftcid.c|lore20th/freetype2/src/base/ftcalc.c|lore20th/freetype2/src/base/ftbdf.c|lore20th/freetype2/src/base/ftapi.c|lore20th/freetype2/src/autofit/afmodule.c|lore20th/freetype2/src/autofit/afloader.c|lore20th/freetype2/src/autofit/aflatin.c|lore20th/freetype2/src/autofit/afindic.c|lore20th/freetype2/src/autofit/afhints.c|lore20th/freetype2/src/autofit/afglobal.c|lore20th/freetype2/src/autofit/afdummy.c|lore20th/freetype2/src/autofit/afcjk.c|lore20th/freetype2/src/autofit/afangles.c|lore20th/freetype2/src/autofit/afwarp.c|lore20th/freetype2/src/autofit/afpic.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="inc"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="res"/>
 					</sourceEntries>
@@ -309,29 +311,29 @@
 								<option id="gnu.cpp.compiler.option.optimization.level.9194174" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="sbi.gnu.cpp.compiler.option.debugging.level.719292488" name="Debug level" superClass="sbi.gnu.cpp.compiler.option.debugging.level" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="sbi.gnu.cpp.compiler.option.debug.applog.984447848" name="Enable application logging (-D_APP_LOG)" superClass="sbi.gnu.cpp.compiler.option.debug.applog" value="true" valueType="boolean"/>
-								<option id="sbi.gnu.cpp.compiler.option.1794735090" superClass="sbi.gnu.cpp.compiler.option" valueType="userObjs">
+								<option id="sbi.gnu.cpp.compiler.option.1794735090" name="Tizen-Target" superClass="sbi.gnu.cpp.compiler.option" valueType="userObjs">
 									<listOptionValue builtIn="false" value="tizen-emulator-2.2.native_llvm31.i386.cpp.app"/>
 								</option>
-								<option id="sbi.gnu.cpp.compiler.option.frameworks_inc.cpp.1688158247" superClass="sbi.gnu.cpp.compiler.option.frameworks_inc.cpp" valueType="includePath">
+								<option id="sbi.gnu.cpp.compiler.option.frameworks_inc.cpp.1688158247" name="Tizen-Frameworks-Include-Path" superClass="sbi.gnu.cpp.compiler.option.frameworks_inc.cpp" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include/libxml2&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;/home/ykahn/tizen-sdk/library&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include/osp&quot;"/>
 								</option>
-								<option id="sbi.gnu.cpp.compiler.option.frameworks_cflags.cpp.560828861" superClass="sbi.gnu.cpp.compiler.option.frameworks_cflags.cpp" valueType="stringList">
+								<option id="sbi.gnu.cpp.compiler.option.frameworks_cflags.cpp.560828861" name="Tizen-Frameworks-Other-Cflags" superClass="sbi.gnu.cpp.compiler.option.frameworks_cflags.cpp" valueType="stringList">
 									<listOptionValue builtIn="false" value="-target i386-tizen-linux-gnueabi -gcc-toolchain /home/ykahn/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu"/>
 									<listOptionValue builtIn="false" value=" -fPIE"/>
 									<listOptionValue builtIn="false" value="--sysroot=&quot;${SBI_SYSROOT}&quot;"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.include.paths.1554961353" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
+								<option id="gnu.cpp.compiler.option.include.paths.1554961353" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${SDK_INSTALL_PATH}/library&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
 								</option>
-								<option id="gnu.cpp.compiler.option.preprocessor.def.820166771" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
+								<option id="gnu.cpp.compiler.option.preprocessor.def.820166771" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_USE_DA_"/>
 									<listOptionValue builtIn="false" value="_DEBUG"/>
 								</option>
-								<option id="sbi.gnu.cpp.compiler.option.frameworks.cpp.627302653" superClass="sbi.gnu.cpp.compiler.option.frameworks.cpp" valueType="userObjs">
+								<option id="sbi.gnu.cpp.compiler.option.frameworks.cpp.627302653" name="Tizen-Frameworks" superClass="sbi.gnu.cpp.compiler.option.frameworks.cpp" valueType="userObjs">
 									<listOptionValue builtIn="false" value="osp"/>
 								</option>
 								<inputType id="sbi.gnu.cpp.compiler.tizen.inputType.1576133996" superClass="sbi.gnu.cpp.compiler.tizen.inputType"/>
@@ -340,36 +342,36 @@
 								<option defaultValue="gnu.c.optimization.level.none" id="gnu.c.compiler.option.optimization.level.171579634" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" valueType="enumerated"/>
 								<option id="sbi.gnu.c.compiler.option.debugging.level.1292482236" name="Debug level" superClass="sbi.gnu.c.compiler.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="sbi.gnu.c.compiler.option.debug.applog.2147094053" name="Enable application logging (-D_APP_LOG)" superClass="sbi.gnu.c.compiler.option.debug.applog" value="true" valueType="boolean"/>
-								<option id="sbi.gnu.c.compiler.option.1953795704" superClass="sbi.gnu.c.compiler.option" valueType="userObjs">
+								<option id="sbi.gnu.c.compiler.option.1953795704" name="Tizen-Target" superClass="sbi.gnu.c.compiler.option" valueType="userObjs">
 									<listOptionValue builtIn="false" value="tizen-emulator-2.2.native_llvm31.i386.cpp.app"/>
 								</option>
-								<option id="sbi.gnu.c.compiler.option.frameworks_inc.cpp.1819110294" superClass="sbi.gnu.c.compiler.option.frameworks_inc.cpp" valueType="includePath">
+								<option id="sbi.gnu.c.compiler.option.frameworks_inc.cpp.1819110294" name="Tizen-Frameworks-Include-Path" superClass="sbi.gnu.c.compiler.option.frameworks_inc.cpp" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include/libxml2&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;/home/ykahn/tizen-sdk/library&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${SBI_SYSROOT}/usr/include/osp&quot;"/>
 								</option>
-								<option id="sbi.gnu.c.compiler.option.frameworks_cflags.cpp.2098364529" superClass="sbi.gnu.c.compiler.option.frameworks_cflags.cpp" valueType="stringList">
+								<option id="sbi.gnu.c.compiler.option.frameworks_cflags.cpp.2098364529" name="Tizen-Frameworks-Other-Cflags" superClass="sbi.gnu.c.compiler.option.frameworks_cflags.cpp" valueType="stringList">
 									<listOptionValue builtIn="false" value="-target i386-tizen-linux-gnueabi -gcc-toolchain /home/ykahn/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Wno-gnu"/>
 									<listOptionValue builtIn="false" value=" -fPIE"/>
 									<listOptionValue builtIn="false" value="--sysroot=&quot;${SBI_SYSROOT}&quot;"/>
 								</option>
-								<option id="gnu.c.compiler.option.include.paths.1263533465" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+								<option id="gnu.c.compiler.option.include.paths.1263533465" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${SDK_INSTALL_PATH}/library&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
 								</option>
-								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1179799924" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
+								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1179799924" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_USE_DA_"/>
 									<listOptionValue builtIn="false" value="_DEBUG"/>
 								</option>
-								<option id="sbi.gnu.c.compiler.option.frameworks.cpp.430684995" superClass="sbi.gnu.c.compiler.option.frameworks.cpp" valueType="userObjs">
+								<option id="sbi.gnu.c.compiler.option.frameworks.cpp.430684995" name="Tizen-Frameworks" superClass="sbi.gnu.c.compiler.option.frameworks.cpp" valueType="userObjs">
 									<listOptionValue builtIn="false" value="osp"/>
 								</option>
 								<inputType id="sbi.gnu.c.compiler.tizen.inputType.1988721765" superClass="sbi.gnu.c.compiler.tizen.inputType"/>
 							</tool>
 							<tool id="org.tizen.nativeide.tool.sbi.gnu.c.linker.base.312901611" name="C Linker" superClass="org.tizen.nativeide.tool.sbi.gnu.c.linker.base"/>
 							<tool command="clang++" id="org.tizen.nativecpp.tool.sbi.gnu.cpp.linker.da.691616806" name="C++ Linker" superClass="org.tizen.nativecpp.tool.sbi.gnu.cpp.linker.da">
-								<option id="sbi.gnu.cpp.linker.option.frameworks_lflags.cpp.1468261973" superClass="sbi.gnu.cpp.linker.option.frameworks_lflags.cpp" valueType="stringList">
+								<option id="sbi.gnu.cpp.linker.option.frameworks_lflags.cpp.1468261973" name="Tizen-Frameworks-Other-Lflags" superClass="sbi.gnu.cpp.linker.option.frameworks_lflags.cpp" valueType="stringList">
 									<listOptionValue builtIn="false" value="-target i386-tizen-linux-gnueabi -gcc-toolchain /home/ykahn/tizen-sdk/tools/smart-build-interface/../i386-linux-gnueabi-gcc-4.5/ -ccc-gcc-name i386-linux-gnueabi-g++ -march=i386 -Xlinker --as-needed"/>
 									<listOptionValue builtIn="false" value="-pie -lpthread "/>
 									<listOptionValue builtIn="false" value="-Xlinker -rpath=&quot;/opt/usr/apps/dGoQei5Rbe/lib&quot;"/>
@@ -396,6 +398,7 @@
 									<listOptionValue builtIn="false" value="-losp-bluetooth"/>
 									<listOptionValue builtIn="false" value="-losp-nfc"/>
 									<listOptionValue builtIn="false" value="-losp-face"/>
+									<listOptionValue builtIn="false" value="-losp-secure-element"/>
 									<listOptionValue builtIn="false" value="-losp-speech-tts"/>
 									<listOptionValue builtIn="false" value="-losp-speech-stt"/>
 									<listOptionValue builtIn="false" value="-losp-shell"/>
@@ -405,10 +408,10 @@
 									<listOptionValue builtIn="false" value="-lalut"/>
 									<listOptionValue builtIn="false" value="-lopenal"/>
 								</option>
-								<option id="gnu.cpp.link.option.libs.746665397" superClass="gnu.cpp.link.option.libs" valueType="libs">
+								<option id="gnu.cpp.link.option.libs.746665397" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="daprobe"/>
 								</option>
-								<option id="gnu.cpp.link.option.paths.601184176" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
+								<option id="gnu.cpp.link.option.paths.601184176" name="Library search path (-L)" superClass="gnu.cpp.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${SDK_INSTALL_PATH}/library/da/x86&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/lib}&quot;"/>
 								</option>
@@ -425,7 +428,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="akiyu/freetype2/src/type42/t42parse.c|akiyu/freetype2/src/type42/t42objs.c|akiyu/freetype2/src/type42/t42drivr.c|akiyu/freetype2/src/type1/t1parse.c|akiyu/freetype2/src/type1/t1objs.c|akiyu/freetype2/src/type1/t1load.c|akiyu/freetype2/src/type1/t1gload.c|akiyu/freetype2/src/type1/t1driver.c|akiyu/freetype2/src/type1/t1afm.c|akiyu/freetype2/src/truetype/ttpload.c|akiyu/freetype2/src/truetype/ttpic.c|akiyu/freetype2/src/truetype/ttobjs.c|akiyu/freetype2/src/truetype/ttinterp.c|akiyu/freetype2/src/truetype/ttgxvar.c|akiyu/freetype2/src/truetype/ttgload.c|akiyu/freetype2/src/truetype/ttdriver.c|akiyu/freetype2/src/tools|akiyu/freetype2/src/smooth/ftspic.c|akiyu/freetype2/src/smooth/ftsmooth.c|akiyu/freetype2/src/smooth/ftgrays.c|akiyu/freetype2/src/sfnt/ttsbit0.c|akiyu/freetype2/src/sfnt/ttsbit.c|akiyu/freetype2/src/sfnt/ttpost.c|akiyu/freetype2/src/sfnt/ttmtx.c|akiyu/freetype2/src/sfnt/ttload.c|akiyu/freetype2/src/sfnt/ttkern.c|akiyu/freetype2/src/sfnt/ttcmap.c|akiyu/freetype2/src/sfnt/ttbdf.c|akiyu/freetype2/src/sfnt/sfobjs.c|akiyu/freetype2/src/sfnt/sfntpic.c|akiyu/freetype2/src/sfnt/sfdriver.c|akiyu/freetype2/src/raster/rastpic.c|akiyu/freetype2/src/raster/ftrend1.c|akiyu/freetype2/src/raster/ftraster.c|akiyu/freetype2/src/psnames/pspic.c|akiyu/freetype2/src/psnames/psnames.c|akiyu/freetype2/src/pshinter/pshrec.c|akiyu/freetype2/src/pshinter/pshpic.c|akiyu/freetype2/src/pshinter/pshmod.c|akiyu/freetype2/src/pshinter/pshglob.c|akiyu/freetype2/src/pshinter/pshalgo.c|akiyu/freetype2/src/psaux/t1decode.c|akiyu/freetype2/src/psaux/t1cmap.c|akiyu/freetype2/src/psaux/psobjs.c|akiyu/freetype2/src/psaux/psconv.c|akiyu/freetype2/src/psaux/psauxmod.c|akiyu/freetype2/src/psaux/afmparse.c|akiyu/freetype2/src/pfr/pfrsbit.c|akiyu/freetype2/src/pfr/pfrobjs.c|akiyu/freetype2/src/pfr/pfrload.c|akiyu/freetype2/src/pfr/pfrgload.c|akiyu/freetype2/src/pfr/pfrdrivr.c|akiyu/freetype2/src/pfr/pfrcmap.c|akiyu/freetype2/src/pcf/pcfutil.c|akiyu/freetype2/src/pcf/pcfread.c|akiyu/freetype2/src/pcf/pcfdrivr.c|akiyu/freetype2/src/otvalid|akiyu/freetype2/src/lzw/ftzopen.c|akiyu/freetype2/src/gzip/zutil.c|akiyu/freetype2/src/gzip/infutil.c|akiyu/freetype2/src/gzip/inftrees.c|akiyu/freetype2/src/gzip/inflate.c|akiyu/freetype2/src/gzip/infcodes.c|akiyu/freetype2/src/gzip/infblock.c|akiyu/freetype2/src/gzip/adler32.c|akiyu/freetype2/src/gxvalid|akiyu/freetype2/src/cid/cidriver.c|akiyu/freetype2/src/cid/cidparse.c|akiyu/freetype2/src/cid/cidobjs.c|akiyu/freetype2/src/cid/cidload.c|akiyu/freetype2/src/cid/cidgload.c|akiyu/freetype2/src/cff/cffpic.c|akiyu/freetype2/src/cff/cffparse.c|akiyu/freetype2/src/cff/cffobjs.c|akiyu/freetype2/src/cff/cffload.c|akiyu/freetype2/src/cff/cffgload.c|akiyu/freetype2/src/cff/cffdrivr.c|akiyu/freetype2/src/cff/cffcmap.c|akiyu/freetype2/src/cache/ftcsbits.c|akiyu/freetype2/src/cache/ftcmru.c|akiyu/freetype2/src/cache/ftcmanag.c|akiyu/freetype2/src/cache/ftcimage.c|akiyu/freetype2/src/cache/ftcglyph.c|akiyu/freetype2/src/cache/ftccmap.c|akiyu/freetype2/src/cache/ftccache.c|akiyu/freetype2/src/cache/ftcbasic.c|akiyu/freetype2/src/bzip2/ftbzip2.c|akiyu/freetype2/src/bdf/bdflib.c|akiyu/freetype2/src/bdf/bdfdrivr.c|akiyu/freetype2/src/base/ftutil.c|akiyu/freetype2/src/base/fttrigon.c|akiyu/freetype2/src/base/ftstream.c|akiyu/freetype2/src/base/ftsnames.c|akiyu/freetype2/src/base/ftrfork.c|akiyu/freetype2/src/base/ftpic.c|akiyu/freetype2/src/base/ftoutln.c|akiyu/freetype2/src/base/ftobjs.c|akiyu/freetype2/src/base/ftgloadr.c|akiyu/freetype2/src/base/ftdbgmem.c|akiyu/freetype2/src/base/ftcid.c|akiyu/freetype2/src/base/ftcalc.c|akiyu/freetype2/src/base/ftbdf.c|akiyu/freetype2/src/base/ftapi.c|akiyu/freetype2/src/autofit/afmodule.c|akiyu/freetype2/src/autofit/afloader.c|akiyu/freetype2/src/autofit/aflatin.c|akiyu/freetype2/src/autofit/afindic.c|akiyu/freetype2/src/autofit/afhints.c|akiyu/freetype2/src/autofit/afglobal.c|akiyu/freetype2/src/autofit/afdummy.c|akiyu/freetype2/src/autofit/afcjk.c|akiyu/freetype2/src/autofit/afangles.c|akiyu/freetype2/src/autofit/afwarp.c|akiyu/freetype2/src/autofit/afpic.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="lore20th/freetype2/src/type42/t42parse.c|lore20th/freetype2/src/type42/t42objs.c|lore20th/freetype2/src/type42/t42drivr.c|lore20th/freetype2/src/type1/t1parse.c|lore20th/freetype2/src/type1/t1objs.c|lore20th/freetype2/src/type1/t1load.c|lore20th/freetype2/src/type1/t1gload.c|lore20th/freetype2/src/type1/t1driver.c|lore20th/freetype2/src/type1/t1afm.c|lore20th/freetype2/src/truetype/ttpload.c|lore20th/freetype2/src/truetype/ttpic.c|lore20th/freetype2/src/truetype/ttobjs.c|lore20th/freetype2/src/truetype/ttinterp.c|lore20th/freetype2/src/truetype/ttgxvar.c|lore20th/freetype2/src/truetype/ttgload.c|lore20th/freetype2/src/truetype/ttdriver.c|lore20th/freetype2/src/tools|lore20th/freetype2/src/smooth/ftspic.c|lore20th/freetype2/src/smooth/ftsmooth.c|lore20th/freetype2/src/smooth/ftgrays.c|lore20th/freetype2/src/sfnt/ttsbit0.c|lore20th/freetype2/src/sfnt/ttsbit.c|lore20th/freetype2/src/sfnt/ttpost.c|lore20th/freetype2/src/sfnt/ttmtx.c|lore20th/freetype2/src/sfnt/ttload.c|lore20th/freetype2/src/sfnt/ttkern.c|lore20th/freetype2/src/sfnt/ttcmap.c|lore20th/freetype2/src/sfnt/ttbdf.c|lore20th/freetype2/src/sfnt/sfobjs.c|lore20th/freetype2/src/sfnt/sfntpic.c|lore20th/freetype2/src/sfnt/sfdriver.c|lore20th/freetype2/src/raster/rastpic.c|lore20th/freetype2/src/raster/ftrend1.c|lore20th/freetype2/src/raster/ftraster.c|lore20th/freetype2/src/psnames/pspic.c|lore20th/freetype2/src/psnames/psnames.c|lore20th/freetype2/src/pshinter/pshrec.c|lore20th/freetype2/src/pshinter/pshpic.c|lore20th/freetype2/src/pshinter/pshmod.c|lore20th/freetype2/src/pshinter/pshglob.c|lore20th/freetype2/src/pshinter/pshalgo.c|lore20th/freetype2/src/psaux/t1decode.c|lore20th/freetype2/src/psaux/t1cmap.c|lore20th/freetype2/src/psaux/psobjs.c|lore20th/freetype2/src/psaux/psconv.c|lore20th/freetype2/src/psaux/psauxmod.c|lore20th/freetype2/src/psaux/afmparse.c|lore20th/freetype2/src/pfr/pfrsbit.c|lore20th/freetype2/src/pfr/pfrobjs.c|lore20th/freetype2/src/pfr/pfrload.c|lore20th/freetype2/src/pfr/pfrgload.c|lore20th/freetype2/src/pfr/pfrdrivr.c|lore20th/freetype2/src/pfr/pfrcmap.c|lore20th/freetype2/src/pcf/pcfutil.c|lore20th/freetype2/src/pcf/pcfread.c|lore20th/freetype2/src/pcf/pcfdrivr.c|lore20th/freetype2/src/otvalid|lore20th/freetype2/src/lzw/ftzopen.c|lore20th/freetype2/src/gzip/zutil.c|lore20th/freetype2/src/gzip/infutil.c|lore20th/freetype2/src/gzip/inftrees.c|lore20th/freetype2/src/gzip/inflate.c|lore20th/freetype2/src/gzip/infcodes.c|lore20th/freetype2/src/gzip/infblock.c|lore20th/freetype2/src/gzip/adler32.c|lore20th/freetype2/src/gxvalid|lore20th/freetype2/src/cid/cidriver.c|lore20th/freetype2/src/cid/cidparse.c|lore20th/freetype2/src/cid/cidobjs.c|lore20th/freetype2/src/cid/cidload.c|lore20th/freetype2/src/cid/cidgload.c|lore20th/freetype2/src/cff/cffpic.c|lore20th/freetype2/src/cff/cffparse.c|lore20th/freetype2/src/cff/cffobjs.c|lore20th/freetype2/src/cff/cffload.c|lore20th/freetype2/src/cff/cffgload.c|lore20th/freetype2/src/cff/cffdrivr.c|lore20th/freetype2/src/cff/cffcmap.c|lore20th/freetype2/src/cache/ftcsbits.c|lore20th/freetype2/src/cache/ftcmru.c|lore20th/freetype2/src/cache/ftcmanag.c|lore20th/freetype2/src/cache/ftcimage.c|lore20th/freetype2/src/cache/ftcglyph.c|lore20th/freetype2/src/cache/ftccmap.c|lore20th/freetype2/src/cache/ftccache.c|lore20th/freetype2/src/cache/ftcbasic.c|lore20th/freetype2/src/bzip2/ftbzip2.c|lore20th/freetype2/src/bdf/bdflib.c|lore20th/freetype2/src/bdf/bdfdrivr.c|lore20th/freetype2/src/base/ftutil.c|lore20th/freetype2/src/base/fttrigon.c|lore20th/freetype2/src/base/ftstream.c|lore20th/freetype2/src/base/ftsnames.c|lore20th/freetype2/src/base/ftrfork.c|lore20th/freetype2/src/base/ftpic.c|lore20th/freetype2/src/base/ftoutln.c|lore20th/freetype2/src/base/ftobjs.c|lore20th/freetype2/src/base/ftgloadr.c|lore20th/freetype2/src/base/ftdbgmem.c|lore20th/freetype2/src/base/ftcid.c|lore20th/freetype2/src/base/ftcalc.c|lore20th/freetype2/src/base/ftbdf.c|lore20th/freetype2/src/base/ftapi.c|lore20th/freetype2/src/autofit/afmodule.c|lore20th/freetype2/src/autofit/afloader.c|lore20th/freetype2/src/autofit/aflatin.c|lore20th/freetype2/src/autofit/afindic.c|lore20th/freetype2/src/autofit/afhints.c|lore20th/freetype2/src/autofit/afglobal.c|lore20th/freetype2/src/autofit/afdummy.c|lore20th/freetype2/src/autofit/afcjk.c|lore20th/freetype2/src/autofit/afangles.c|lore20th/freetype2/src/autofit/afwarp.c|lore20th/freetype2/src/autofit/afpic.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="inc"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="res"/>
 					</sourceEntries>
@@ -450,4 +453,8 @@
 		</scannerConfigBuildInfo>
 	</storageModule>
 	<storageModule moduleId="com.samsung.tizen.nativeapp.projectInfo" version="1.0.0"/>
+	<storageModule moduleId="refreshScope" versionNumber="1">
+		<resource resourceType="PROJECT" workspacePath="/TizenYozora"/>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>

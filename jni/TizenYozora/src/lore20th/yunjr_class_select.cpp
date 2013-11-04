@@ -57,53 +57,6 @@ yunjr::MenuSelection::MenuSelection(const MenuList& menu, int num_enabled, int i
 
 	while (this->loop())
 		;
-/*
-	do
-	{
-		m_display(menu, num_menu, num_enabled, selected);
-
-		bool has_been_updated = false;
-
-		do
-		{
-			unsigned short key;
-			while ((key = KeyBuffer::getKeyBuffer().getKey()) < 0)
-				;
-
-			switch (key)
-			{
-			case KEY_DIR_UP:
-			case KEY_DIR_DOWN:
-				{
-					int dy = (key == KEY_DIR_UP) ? -1 : +1;
-					selected += dy;
-
-					if (selected <= 0)
-						selected = num_enabled;
-					if (selected > num_enabled)
-						selected = 1;
-
-					has_been_updated = true;
-				}
-				break;
-			case KEY_BTN_A:
-				selected = 0;
-				// pass through
-			case KEY_BTN_B:
-				{
-					LoreConsole& console = LoreConsole::getConsole();
-					console.clear();
-					console.display();
-				}
-
-				m_selected = selected;
-
-				return;
-			}
-		} while (!has_been_updated);
-
-	} while (1);
-*/
 }
 
 bool yunjr::MenuSelection::loop(void)
@@ -111,7 +64,7 @@ bool yunjr::MenuSelection::loop(void)
 	bool has_been_updated = false;
 
 	unsigned short key;
-	while ((key = KeyBuffer::getKeyBuffer().getKey()) < 0)
+	while (short(key = KeyBuffer::getKeyBuffer().getKey()) < 0L)
 		;
 
 	switch (key)
