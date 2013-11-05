@@ -35,6 +35,41 @@ namespace yunjr
 			{
 				current_input_info = p_input_device->update();
 				current_input_info.key_down_flag = 0;
+
+				if (current_input_info.is_touched)
+				{
+					const int TOUCH_W = 125;
+					const int TOUCH_H = 125;
+
+					static const struct TouchToKey
+					{
+						int x, y;
+						target::KEY key;
+					} TOUCH_TO_KEY[] =
+					{
+						{        0,                    0, target::KEY_MENU  },
+						{     1120, 720-int(TOUCH_H*3.5), target::KEY_A     },
+						{     1120,                    0, target::KEY_B     },
+						{     1120,        720-TOUCH_H*2, target::KEY_UP    },
+						{     1120,        720-TOUCH_H*1, target::KEY_DOWN  },
+						{ 50+125*0,            720-125*1, target::KEY_LEFT  },
+						{ 50+125*1,            720-125*1, target::KEY_RIGHT }
+					};
+
+					const TouchToKey* p = &TOUCH_TO_KEY[0];
+					const TouchToKey* p_end = p + sizeof(TOUCH_TO_KEY) / sizeof(TOUCH_TO_KEY[0]);
+
+					int x = current_input_info.touch_pos.x;
+					int y = current_input_info.touch_pos.y;
+
+					for ( ; p < p_end; ++p)
+					{
+						if (x >= p->x && x < p->x + TOUCH_W && y >= p->y && y < p->y + TOUCH_H)
+						{
+							current_input_info.key_pressed_flag |= p->key;
+						}
+					}
+				}
 			}
 			else
 			{

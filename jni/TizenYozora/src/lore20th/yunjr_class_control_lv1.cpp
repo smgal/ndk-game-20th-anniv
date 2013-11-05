@@ -485,12 +485,8 @@ yunjr::ControlPanel* yunjr::ControlPanel::newInstance(void)
 	struct AttributePanel: public Visible::Attribute
 	{
 		struct { int x, y; } pos;
-		const FlatBoard32& src_ui;
-		const FlatBoard32& src_ui_mask;
 
 		AttributePanel()
-			: src_ui(resource::getResimage(ResId(ResId::TAG_TYPE_IMAGE, ResId::TAG_TYPE_IMAGE_UI, 0)))
-			, src_ui_mask(resource::getResimage(ResId(ResId::TAG_TYPE_IMAGE, ResId::TAG_TYPE_IMAGE_UI, 1)))
 		{
 			pos.x = 0;
 			pos.y = 0;
@@ -512,88 +508,6 @@ yunjr::ControlPanel* yunjr::ControlPanel::newInstance(void)
 
 			GameState& game_state = GameState::getMutableInstance();
 			target::InputUpdateInfo& touch_info = game_state.current_input_info;
-
-			if (touch_info.is_touched)
-			{
-				int x_rel = touch_info.touch_pos.x - attribute.pos.x;
-				int y_rel = touch_info.touch_pos.y - attribute.pos.y;
-
-				if ((x_rel >= 0 && x_rel < attribute.src_ui_mask.getBufferDesc().width)
-					&& (x_rel >= 0 && x_rel < attribute.src_ui_mask.getBufferDesc().width))
-				{
-					FlatBoard32::Pixel detect_buffer = 0xFFFFFFFF;
-					FlatBoard32 dest_board((FlatBoard32::Pixel*)&detect_buffer, 1, 1, 1);
-
-					dest_board.bitBlt(0, 0, const_cast<FlatBoard32*>(&attribute.src_ui_mask), x_rel, y_rel, 1, 1);
-
-					if (detect_buffer != 0xFFFFFFFF)
-					{
-					#if !defined(PIXELFORMAT_ABGR)
-						int r = (detect_buffer >> 16) & 0xFF;
-						int g = (detect_buffer >> 8) & 0xFF;
-						int b = (detect_buffer) & 0xFF;
-					#else
-						int b = (detect_buffer >> 16) & 0xFF;
-						int g = (detect_buffer >> 8) & 0xFF;
-						int r = (detect_buffer) & 0xFF;
-					#endif
-
-						int i = (r == 255) | (g == 255) | (b == 255);
-						r     = (r > 0) ? 1 : 0;
-						g     = (g > 0) ? 1 : 0;
-						b     = (b > 0) ? 1 : 0;
-
-						int index = i << 3 | r << 2 | g << 1 | b;
-
-						switch (index)
-						{
-/*
-						case 0: // CANCEL
-							{
-								const Resource& resource = Resource::getInstance();
-
-								ControlConsole* p_console = (ControlConsole*)resource.getMainWindow()->findControl("CONSOL");
-
-								if (p_console)
-								{
-									p_console->setText(yunjr::res::TEST_STRING4, yunjr::res::TEST_STRING5, yunjr::res::TEST_STRING6);
-								}
-							}
-							break;
-						case 1: // OK
-							{
-								const Resource& resource = Resource::getInstance();
-
-								ControlConsole* p_console = (ControlConsole*)resource.getMainWindow()->findControl("CONSOL");
-
-								if (p_console)
-								{
-									p_console->setText(yunjr::res::TEST_STRING1, yunjr::res::TEST_STRING2, yunjr::res::TEST_STRING3);
-								}
-							}
-							break;
-*/
-						case 2: // MENU
-							game_state.setKeyPressed(target::KEY_MENU);
-							break;
-						case 3: // RET
-							break;
-						case 4: // UP
-							game_state.setKeyPressed(target::KEY_UP);
-							break;
-						case 5: // LEFT
-							game_state.setKeyPressed(target::KEY_LEFT);
-							break;
-						case 6: // DOWN
-							game_state.setKeyPressed(target::KEY_DOWN);
-							break;
-						case 7: // RIGHT
-							game_state.setKeyPressed(target::KEY_RIGHT);
-							break;
-						}
-					}
-				}
-			}
 
 			if (game_state.checkKeyPressed(target::KEY_MENU))
 				game_state.terminate();

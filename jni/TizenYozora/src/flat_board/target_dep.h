@@ -54,17 +54,6 @@ namespace target
 	InputDevice* getInputDevice(void);
 
 	////////////////////////////////////////////////////////////////////////////
-	// Event
-
-	struct EventCallback
-	{
-		bool (*FnOnKeyDown)(unsigned short target_key, unsigned long state);
-		bool (*FnOnKeyUp)(unsigned short target_key, unsigned long state);
-	};
-
-	void processMessage(EventCallback s_callback);
-
-	////////////////////////////////////////////////////////////////////////////
 	// File I/O
 
 	namespace file_io

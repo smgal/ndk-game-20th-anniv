@@ -96,6 +96,8 @@ namespace yunjr
 		Key  m_key_buffer[MAX_KEY_BUFFER];
 		int  m_key_map[KEY_MAX];
 
+		void m_processMessage(void);
+
 		int  m_increasePtr(int ptr);
 		bool m_pushKeyChar(Key key);
 

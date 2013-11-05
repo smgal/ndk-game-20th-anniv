@@ -39,13 +39,13 @@ namespace
 
 	struct ResImage
 	{
-		FlatBoard32 res_ui[2];
+		FlatBoard32 res_ui[1];
 		FlatBoard32 res_movable[1];
 		FlatBoard32 res_tile[2];
 
-		auto_deletor<FlatBoard32::Pixel> auto_release_ui[2];
+		auto_deletor<FlatBoard32::Pixel> auto_release_ui[1];
 		auto_deletor<FlatBoard32::Pixel> auto_release_movable[1];
-		auto_deletor<FlatBoard32::Pixel> auto_release_tile[1];
+		auto_deletor<FlatBoard32::Pixel> auto_release_tile[2];
 
 		ResImage()
 		{
@@ -60,8 +60,7 @@ namespace
 				{
 					{ "lore20th/lore_tile_8.tga", res_tile[0], auto_release_tile[0] },
 					{ "lore20th/lore_sprite_8.tga", res_movable[0], auto_release_movable[0] },
-					{ "lore20th/lore_waku.tga", res_ui[0], auto_release_ui[0] },
-					{ "lore20th/lore_waku_mask.tga", res_ui[1], auto_release_ui[1] },
+					{ "lore20th/lore_waku.tga", res_ui[0], auto_release_ui[0] }
 				};
 
 				for (unsigned long index = 0; index < sizeof(RES_LIST) / sizeof(RES_LIST[0]); index++)

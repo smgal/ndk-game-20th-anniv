@@ -1,6 +1,8 @@
 
 #include "yunjr_base_key_buffer.h"
 
+#include "yunjr_class_game_state.h"
+
 #include "util/sm_util_sena.h"
 
 #include "../flat_board/target_dep.h"
@@ -53,27 +55,6 @@ namespace
 
 		return key;
 	}
-
-	bool OnKeyDown(unsigned short avej_key, unsigned long state)
-	{
-		yunjr::KEY key = convertTargetToYunjr(target::KEY(avej_key));
-
-		return yunjr::KeyBuffer::getKeyBuffer().setKeyDown(key);
-	}
-
-	bool OnKeyUp(unsigned short avej_key, unsigned long state)
-	{
-		yunjr::KEY key = convertTargetToYunjr(target::KEY(avej_key));
-
-		return yunjr::KeyBuffer::getKeyBuffer().setKeyUp(key);
-	}
-
-	target::EventCallback s_callback =
-	{
-		OnKeyDown,
-		OnKeyUp,
-	};
-
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -125,7 +106,7 @@ bool yunjr::KeyBuffer::isKeyPressed(void)
 {
 	this->processAutoRepeat();
 
-	target::processMessage(s_callback);
+	this->m_processMessage();
 
 	return  (m_key_head_ptr != m_key_tail_ptr);
 }
@@ -166,6 +147,42 @@ void yunjr::KeyBuffer::processAutoRepeat(void)
 	}
 }
 
+void yunjr::KeyBuffer::m_processMessage(void)
+{
+	//?? update key event forcingly in Android
+	target::updateScreen();
+
+	#define PROCESS_KEY(target_key) \
+		pressing = (game_state.checkKeyPressed(target_key)) ? target_key : 0; \
+		if ((rescent_pressed & target_key) && (pressing == 0)) \
+		{ \
+			setKeyUp(convertTargetToYunjr(target::KEY(target_key))); \
+			rescent_pressed &= ~target_key; \
+		} \
+		if (!(rescent_pressed & target_key) && pressing) \
+		{ \
+			setKeyDown(convertTargetToYunjr(target::KEY(target_key))); \
+			rescent_pressed |= target_key; \
+		}
+
+	static unsigned long rescent_pressed = 0;
+
+	yunjr::GameState& game_state = yunjr::GameState::getMutableInstance();
+
+	game_state.update(0);
+
+	unsigned long pressing = 0;
+
+	PROCESS_KEY(target::KEY_A);
+	PROCESS_KEY(target::KEY_B);
+	PROCESS_KEY(target::KEY_UP);
+	PROCESS_KEY(target::KEY_DOWN);
+	PROCESS_KEY(target::KEY_LEFT);
+	PROCESS_KEY(target::KEY_RIGHT);
+
+	#undef PROCESS_KEY
+}
+
 int yunjr::KeyBuffer::m_increasePtr(int ptr)
 {
 	if (++ptr >= 100)
@@ -204,20 +221,3 @@ yunjr::KeyBuffer& yunjr::KeyBuffer::getKeyBuffer(void)
 
 	return *s_p_key_buffer.get();
 }
-
-
-#if 0 //??
-#include "util/sm_util_sena.h"
-#include "util/sm_util.h"
-
-#include "hd_base_config.h"
-#include "hd_base_key_buffer.h"
-
-#include <avej.h>
-
-#define CLEAR_MEMORY(var) memset(var, 0, sizeof(var));
-
-
-
-
-#endif
