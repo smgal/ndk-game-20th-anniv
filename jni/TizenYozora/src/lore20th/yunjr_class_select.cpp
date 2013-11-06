@@ -83,10 +83,10 @@ bool yunjr::MenuSelection::loop(void)
 			has_been_updated = true;
 		}     
 		break;
-	case KEY_BTN_A:
+	case KEY_BTN_B:
 		m_currrent = 0;
 		// pass through
-	case KEY_BTN_B:
+	case KEY_BTN_A:
 		{
 			LoreConsole& console = LoreConsole::getConsole();
 			console.clear();

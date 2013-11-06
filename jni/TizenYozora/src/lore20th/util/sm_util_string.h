@@ -61,6 +61,61 @@ public:
 	}
 };
 
+template <typename CHAR>
+void convertIntToStr(CHAR **pp_buffer, int value)
+{
+    if (value == 0)
+    {
+        *((*pp_buffer)++) = CHAR('0');
+    }
+    else
+    {
+        if (value < 0)
+        {
+            *((*pp_buffer)++) = CHAR('-');
+            value = -value;
+        }
+
+        int n_num = 0;
+        int temp = value;
+        while (temp)
+        {
+            temp = temp / 10;
+            ++n_num;
+        }
+
+        int n_loop = n_num;
+        while (n_loop-- > 0)
+        {
+            (*pp_buffer)[n_loop] = (value % 10) + CHAR('0');
+            value = value / 10;
+        }
+        *pp_buffer += n_num;
+    }
+}
+
+template <typename CHAR>
+void composeString(CHAR p_buffer[], const CHAR* sz_format, const int data...)
+{
+    if (p_buffer == 0)
+        return;
+
+    const int* p_data = &data;
+
+    while (*sz_format)
+    {
+        if (*sz_format != CHAR('@'))
+        {
+            *p_buffer++ = *sz_format++;
+            continue;
+        }
+        ++sz_format;
+        convertIntToStr(&p_buffer, *p_data++);
+    }
+
+    *p_buffer = 0;
+}
+
 template <typename CHAR, unsigned int _MAX_STRLEN>
 class basic_string
 {
@@ -77,6 +132,11 @@ public:
 	basic_string(const CHAR* lpsz)
 	{      
 		sena::strncpy(m_string, lpsz, MAX_STRLEN);
+	}
+
+	const CHAR* c_str(void) const
+	{
+		return m_string;
 	}
 
 	operator const CHAR*() const
@@ -97,10 +157,17 @@ public:
 	}
 
 	template <typename T, unsigned int MAX_STRLEN>
-//	friend bool operator==(const basic_string<T, MAX_STRLEN>& str1, const basic_string<T, MAX_STRLEN>& str2)
 	friend bool operator==(const basic_string& str1, const basic_string& str2)
 	{      
 		return sena::strndiff(str1.m_string, str2.m_string, MAX_STRLEN);
+	}
+
+	template <typename T, unsigned int MAX_STRLEN>
+	friend basic_string operator+(const basic_string& str1, const basic_string& str2)
+	{
+		basic_string s(str1);
+		s += str2;
+		return s;
 	}
 
 	template <typename T, unsigned int MAX_STRLEN>
@@ -109,9 +176,9 @@ public:
 		return sena::strndiff(m_string, str.m_string, MAX_STRLEN);
 	}
 
-	bool operator<(const CHAR* lpsz) const
+	bool operator<(const basic_string& lpsz) const
 	{
-		return (sena::strncmp(m_string, lpsz, MAX_STRLEN) < 0);
+		return (sena::strncmp(m_string, lpsz.c_str(), MAX_STRLEN) < 0);
 	}
 
 	void copyToFront(const basic_string& lpsz)

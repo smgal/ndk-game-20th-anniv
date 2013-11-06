@@ -173,6 +173,7 @@ void yunjr::KeyBuffer::m_processMessage(void)
 
 	unsigned long pressing = 0;
 
+	PROCESS_KEY(target::KEY_SELECT);
 	PROCESS_KEY(target::KEY_A);
 	PROCESS_KEY(target::KEY_B);
 	PROCESS_KEY(target::KEY_UP);

@@ -47,13 +47,13 @@ namespace yunjr
 						target::KEY key;
 					} TOUCH_TO_KEY[] =
 					{
-						{        0,                    0, target::KEY_MENU  },
-						{     1120, 720-int(TOUCH_H*3.5), target::KEY_A     },
-						{     1120,                    0, target::KEY_B     },
-						{     1120,        720-TOUCH_H*2, target::KEY_UP    },
-						{     1120,        720-TOUCH_H*1, target::KEY_DOWN  },
-						{ 50+125*0,            720-125*1, target::KEY_LEFT  },
-						{ 50+125*1,            720-125*1, target::KEY_RIGHT }
+						{        0,                    0, target::KEY_SELECT },
+						{     1120, 720-int(TOUCH_H*3.5), target::KEY_A      },
+						{     1120,                    0, target::KEY_B      },
+						{     1120,        720-TOUCH_H*2, target::KEY_UP     },
+						{     1120,        720-TOUCH_H*1, target::KEY_DOWN   },
+						{ 50+125*0,            720-125*1, target::KEY_LEFT   },
+						{ 50+125*1,            720-125*1, target::KEY_RIGHT  }
 					};
 
 					const TouchToKey* p = &TOUCH_TO_KEY[0];
