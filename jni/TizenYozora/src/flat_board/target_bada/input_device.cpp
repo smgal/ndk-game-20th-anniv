@@ -72,6 +72,7 @@ namespace
 
 				if (p_touch_info && p_touch_info->status == Tizen::Ui::TOUCH_PRESSED)
 				{
+
 					int x = p_touch_info->position.x;
 					int y = p_touch_info->position.y;
 
@@ -100,6 +101,13 @@ namespace
 	}
 }
 
+void target_setTouchPos(int x, int y)
+{
+	s_is_pressed = (s_pressed_x >= 0);
+	s_pressed_x  = x;
+	s_pressed_y  = y;
+}
+
 namespace target
 {
 	class CInputDevice: public InputDevice
@@ -120,7 +128,7 @@ namespace target
 
 		virtual const InputUpdateInfo& update(void)
 		{
-			m_update_info.key_pressed_flag = s_GetButtons();
+			//m_update_info.key_pressed_flag = s_GetButtons();
 			m_update_info.is_touched       = s_is_pressed;
 			m_update_info.touch_pos.x      = s_pressed_x;
 			m_update_info.touch_pos.y      = s_pressed_y;

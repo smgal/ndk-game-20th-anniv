@@ -12,8 +12,9 @@ namespace
 	enum { TIME_OUT = 10 };
 
 	Tizen::Base::Runtime::Timer* s_p_timer = null;
-	Tizen::Ui::Controls::Form*   s_p_ref_form = null;
 }
+
+Tizen::Ui::Controls::Form* s_p_ref_form = null;
 
 bool g_is_terminating = false;
 extern void* g_h_native_window;
