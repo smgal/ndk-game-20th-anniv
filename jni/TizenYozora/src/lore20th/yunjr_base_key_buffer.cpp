@@ -72,6 +72,17 @@ yunjr::KeyBuffer::~KeyBuffer(void)
 {
 }
 
+void yunjr::KeyBuffer::clear(void)
+{
+	m_key_head_ptr = 0;
+	m_key_tail_ptr = 0;
+
+	sena::memclear(m_key_buffer, sizeof(m_key_buffer));
+	sena::memclear(m_key_map, sizeof(m_key_map));
+
+	s_is_key_pressed = false;
+}
+
 bool yunjr::KeyBuffer::setKeyDown(Key key)
 {
 	// auto pressed key ±¸Çö

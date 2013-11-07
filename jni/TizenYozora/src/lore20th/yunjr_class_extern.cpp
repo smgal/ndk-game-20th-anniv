@@ -1,6 +1,9 @@
 
 #include "yunjr_class_extern.h"
 
+#include "yunjr_base_serialized.h"
+
+#include "yunjr_class_console.h"
 #include "yunjr_class_map.h"
 #include "yunjr_class_pc_party.h"
 #include "yunjr_class_pc_player.h"
@@ -9,11 +12,13 @@
 #include "yunjr_class_map_event.h"
 #include "yunjr_class_control_lv1.h"
 #include "yunjr_class_select.h"
+
 #include "yunjr_res.h"
 
 #include "../flat_board/target_dep.h"
 
 #include <cassert>
+#include <stdarg.h>
 
 #define ASSERT(cond) assert(cond)
 
@@ -23,6 +28,7 @@ namespace
 	yunjr::PcParty                        s_party;
 	sena::vector<yunjr::shared::PcPlayer> s_player;
 	sena::vector<yunjr::shared::PcEnemy>  s_enemy;
+	sena::vector<yunjr::Serialized*>      s_save_list;
 	yunjr::GameOption                     s_game_option;
 
 	template <typename Dst, typename Src>
@@ -54,6 +60,11 @@ namespace yunjr
 {
 	namespace data
 	{
+		const sena::vector<Serialized*>& getSaveList(void)
+		{
+			return s_save_list;
+		}
+
 		const sena::vector<shared::PcPlayer>& getPlayerList(void)
 		{
 			return s_player;
@@ -244,8 +255,39 @@ namespace yunjr
 
 		namespace console
 		{
-			void writeConsole(unsigned long index, int num_arg, ...) {} //??
-			void showMessage(unsigned long index, const wchar_t* sz_message) {} //??
+			//! 콘솔 창에, 명시한 컬러의 명시한 가변 파라미터의 문자열 집합을 출력한다.
+			void writeConsole(unsigned long index, int num_arg, ...)
+			{
+				yunjr::LoreConsole& console = yunjr::LoreConsole::getConsole();
+
+				console.setTextColorIndex(index);
+
+				smutil::string s;
+				{
+					va_list argptr;
+					va_start(argptr, num_arg);
+
+					for (int i = 0; i < num_arg; i++)
+						s += va_arg(argptr, wchar_t*);
+
+					va_end(argptr);
+				}
+
+				console.write(s);
+				//@@ 성능 문제
+				console.display();
+			}
+
+			//! 콘솔 창에, 명시한 컬러의 명시한 문자열을 새로 출력한다.
+			void showMessage(unsigned long index, const wchar_t* sz_message)
+			{
+				LoreConsole& console = LoreConsole::getConsole();
+
+				console.clear();
+				console.setTextColorIndex(index);
+				console.write(sz_message);
+				console.display();
+			}
 
 			void clear(void)
 			{
@@ -302,6 +344,11 @@ namespace yunjr
 
 		namespace object
 		{
+			sena::vector<Serialized*>& getSaveList(void)
+			{
+				return s_save_list;
+			}
+
 			//! 아군 리스트를 vector 형식으로 돌려 준다.
 			sena::vector<shared::PcPlayer>& getPlayerList(void)
 			{

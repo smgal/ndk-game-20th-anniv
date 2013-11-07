@@ -98,7 +98,7 @@ void yunjr::gfx::TextBoard::renderTextFx(int pos_x, int pos_y, const Text& text,
 	const yunjr::Text::Impl* p_text_impl = yunjr::Text::Impl::getImpl(text);
 
 	const Color32 shadow_color1(0xFF000000); // 0xFF800000
-	const Color32 shadow_color2(0xFF400000); // 0xFF204060
+	const Color32 shadow_color2(0xFF000000); // 0xFF204060
 
 	this->renderText(pos_x, pos_y, p_text_impl->glyph_shadow, shadow_color1, shadow_color2);
 	this->renderText(pos_x, pos_y, p_text_impl->glyph_info, color1, color2);

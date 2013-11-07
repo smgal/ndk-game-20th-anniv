@@ -1,6 +1,6 @@
 
-#ifndef __YUNJR_CLASS_SERIALIZED_H__
-#define __YUNJR_CLASS_SERIALIZED_H__
+#ifndef __YUNJR_BASE_SERIALIZED_H__
+#define __YUNJR_BASE_SERIALIZED_H__
 
 #include "util/sm_util_stream.h"
 
@@ -37,4 +37,4 @@ namespace yunjr
 
 } // namespace yunjr
 
-#endif // #ifndef __YUNJR_CLASS_SERIALIZED_H__
+#endif // #ifndef __YUNJR_BASE_SERIALIZED_H__

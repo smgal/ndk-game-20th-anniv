@@ -4,6 +4,7 @@
 #include "yunjr_base_font.h"
 #include "yunjr_base_text.h"
 #include "yunjr_base_key_buffer.h"
+#include "yunjr_base_serialized.h"
 
 #include "yunjr_class.h"
 #include "yunjr_class_console.h"
@@ -84,12 +85,47 @@ namespace yunjr
 	smutil::composeString(sz_temp, format, var1, var2, var3, var4); \
 	console.write(sz_temp);
 
+#define NUM_OF_CONSCIOUS_PLAYER(player) sena::for_each(player.begin(), player.end(), FnNumOfConscious<yunjr::shared::PcPlayer>()).Result()
+#define NUM_OF_CONSCIOUS_ENEMY(enemy) sena::for_each(enemy.begin(), enemy.end(), FnNumOfConscious<yunjr::shared::PcEnemy>()).Result()
+
+namespace
+{
+	///////////////////////////////////////////////////////////////////////////////
+	// GetSaveFileName class;
+
+	const char* SAVE_FILE_NAME = "gamedat";
+	const char* SAVE_FILE_EXT = ".sav";
+
+	class GetSaveFileName
+	{
+	public:
+		GetSaveFileName(int index)
+		{
+			m_name += "./";
+			m_name += SAVE_FILE_NAME;
+			m_name += smutil::IntToStr<char>(index)();
+			m_name += SAVE_FILE_EXT;
+		}
+		~GetSaveFileName(void)
+		{
+			m_name += "./";
+		}
+		operator const char*(void)
+		{
+			return m_name;
+		}
+
+	private:
+		smutil::string8 m_name;
+
+	};
+}
 
 namespace
 {
 	yunjr::ControlWindow* s_p_main_window = 0;
 
-	int selectPlayer(const wchar_t* sz_title)
+	int selectPlayer(const wchar_t* sz_title = 0)
 	{
 		if (sz_title == NULL)
 			sz_title = L"한명을 고르시오 ---";
@@ -124,6 +160,103 @@ namespace
 		--selected;
 
 		return (selected >= 0) ? real_player[selected] : -1;
+	}
+
+	void encounterEnemy(void)
+	{
+	/* //??
+		if (map.getEncounteredEnemy() == 0)
+			return;
+
+		enemy.clear();
+
+		int nEnemy = (smutil::random(party.max_enemy) + 1);
+
+		int enemyAgility = 0;
+		for (int i = 0; i < nEnemy; i++)
+		{
+			int ix_enemy = map.getEncounteredEnemy();
+			ASSERT(ix_enemy > 0);
+
+			int index = registerEnemy(ix_enemy);
+			enemyAgility += enemy[index]->agility;
+		}
+
+		ASSERT(nEnemy > 0);
+		enemyAgility /= nEnemy;
+
+		LoreConsole& console = LoreConsole::getConsole();
+
+		console.clear();
+
+		console.setTextColorIndex(12);
+		console.write("적이 출현했다 !!!");
+		console.write("");
+
+		console.setTextColorIndex(11);
+		console.write("적의 평균 민첩성");
+		{
+			char sz_temp[256];
+			int avgAgility = sena::for_each(enemy.begin(), enemy.end(), FnAverageAgility<PcEnemy*>()).Result();
+			CONSOLE_WRITE(" : %d", avgAgility);
+		}
+
+		console.display();
+
+		changeWindowForBattle();
+
+		game::updateScreen();
+
+		// 위의 글자를 출력하기 위해서 임시로 console 창의 사이즈를 줄인다.
+		config::Rect savedRect;
+		int reducedSize = 4*config::DEFAULT_FONT_HEIGHT;
+
+		window[WINDOWTYPE_CONSOLE]->getRegion(&savedRect.x, &savedRect.y, &savedRect.w, &savedRect.h);
+		window[WINDOWTYPE_CONSOLE]->setRegion(savedRect.x, savedRect.y+reducedSize, savedRect.w, savedRect.h-reducedSize);
+
+		MenuList menu;
+
+		menu.reserve(3);
+		menu.push_back("");
+		menu.push_back("적과 교전한다");
+		menu.push_back("도망간다");
+
+		bool willingToAvoidBattle = (MenuSelection(menu)() != 1);
+
+		// console 창의 사이즈를 복귀시킨다.
+		window[WINDOWTYPE_CONSOLE]->setRegion(savedRect.x, savedRect.y, savedRect.w, savedRect.h);
+
+		// '도망간다'를 선택했을 때 전 영역을 bg color로 채우기 위함
+		console.clear();
+		console.display();
+
+		do
+		{
+			bool is_assualt_mode;
+
+			if (willingToAvoidBattle)
+			{
+				int avgLuck    = sena::for_each(player.begin(), player.end(), FnAverageLuck<PcPlayer*>()).Result();
+				int avgAgility = sena::for_each(enemy.begin(), enemy.end(), FnAverageAgility<PcEnemy*>()).Result();
+
+				if (avgLuck > avgAgility)
+					break; // 전투를 회피
+
+				is_assualt_mode = false;
+			}
+			else
+			{
+				int avgAgility1 = sena::for_each(player.begin(), player.end(), FnAverageAgility<PcPlayer*>()).Result();
+				int avgAgility2 = sena::for_each(enemy.begin(), enemy.end(), FnAverageAgility<PcEnemy*>()).Result();
+
+				is_assualt_mode = (avgAgility1 > avgAgility2);
+			}
+
+			runBattleMode(is_assualt_mode);
+		} while(0);
+
+		changeWindowForField();
+	*/
 	}
 
 	void showPartyStatus()
@@ -226,10 +359,7 @@ namespace
 
 	void showQuickView(void)
 	{
-/*??
-		char sz_temp[256];
-
-		LoreConsole& console = LoreConsole::getConsole();
+		yunjr::LoreConsole& console = yunjr::LoreConsole::getConsole();
 
 		console.clear();
 
@@ -238,18 +368,233 @@ namespace
 		console.write(L"");
 
 		console.setTextColorIndex(7);
-		for (sena::vector<PcPlayer*>::iterator obj = player.begin(); obj != player.end(); ++obj)
+
+		sena::vector<yunjr::shared::PcPlayer>& player_list = yunjr::game::object::getPlayerList();
+
+		sena::vector<yunjr::shared::PcPlayer>::iterator obj = player_list.begin();
+
+		for ( ; obj != player_list.end(); ++obj)
 		{
 			if ((*obj)->isValid())
 			{
-				CONSOLE_WRITE4("%20s   %5d %9d %7d", (*obj)->getName(), (*obj)->poison, (*obj)->unconscious, (*obj)->dead)
+				wchar_t sz_temp[256];
+
+				smutil::string s((*obj)->getName());
+				smutil::composeString(sz_temp, L"        @   @   @", (*obj)->poison, (*obj)->unconscious, (*obj)->dead);
+				s += sz_temp;
+
+				console.write(s);
 			}
 		}
 
 		console.display();
-*/
 	}
 
+	void castSpell(void)
+	{
+		int selected = selectPlayer();
+
+		if (selected < 0)
+			return;
+
+		sena::vector<yunjr::shared::PcPlayer>& player_list = yunjr::game::object::getPlayerList();
+
+		if (!player_list[selected]->isConscious())
+		{
+			yunjr::game::console::writeConsole(7, 2, player_list[selected]->get3rdPersonName(), L"는 마법을 사용할 수 있는 상태가 아닙니다.");
+			return;
+		}
+
+		yunjr::MenuList menu;
+
+		menu.reserve(4);
+		menu.push_back(L"사용할 마법의 종류 ===>");
+		menu.push_back(L"공격 마법");
+		menu.push_back(L"치료 마법");
+		menu.push_back(L"변화 마법");
+
+		switch (yunjr::MenuSelection(menu)())
+		{
+		case 1:
+			player_list[selected]->castAttackSpell();
+			break;
+		case 2:
+			player_list[selected]->castCureSpell();
+			break;
+		case 3:
+			player_list[selected]->castPhenominaSpell();
+			break;
+		default:
+			break;
+		}
+	}
+
+	void useExtrasense(void)
+	{
+		yunjr::LoreConsole::getConsole().clear();
+
+		int selected = selectPlayer();
+		if (selected < 0)
+			return;
+
+		sena::vector<yunjr::shared::PcPlayer>& player_list = yunjr::game::object::getPlayerList();
+
+		if (!player_list[selected]->isConscious())
+		{
+			yunjr::game::console::writeConsole(7, 2, player_list[selected]->get3rdPersonName(), L"는 초감각을 사용할수있는 상태가 아닙니다.");
+			return;
+		}
+
+		player_list[selected]->useESP();
+	}
+
+	void restHere(void)
+	{
+		yunjr::LoreConsole& console = yunjr::LoreConsole::getConsole();
+
+		console.clear();
+
+		yunjr::PcParty& party = yunjr::game::object::getParty();
+		sena::vector<yunjr::shared::PcPlayer>& player_list = yunjr::game::object::getPlayerList();
+
+		sena::for_each(player_list.begin(), player_list.end(), FnRestHere<yunjr::shared::PcPlayer>());
+
+		if (party.ability.magic_torch > 0)
+			--party.ability.magic_torch;
+
+		party.ability.levitation  = 0;
+		party.ability.walk_on_water = 0;
+		party.ability.walk_on_swamp = 0;
+		party.ability.mind_control = 0;
+
+		console.display();
+
+		INVALIDATE_STATUS;
+
+		yunjr::game::updateScreen();
+		//@@ 필요한가?
+		yunjr::game::pressAnyKey();
+	}
+
+	bool loadGame(int index)
+	{
+		yunjr::SerializedStream stream(GetSaveFileName(index), yunjr::SerializedStream::STREAMTYPE_READ);
+
+		sena::vector<yunjr::Serialized*>& save_list = yunjr::game::object::getSaveList();
+
+		for (sena::vector<yunjr::Serialized*>::iterator obj = save_list.begin(); obj != save_list.end(); ++obj)
+		{
+			stream >> *(*obj);
+		}
+/*??
+		map_event::registerEventFileName(game_option.script_file);
+*/
+		INVALIDATE_MAP;
+		INVALIDATE_SUB_MAP;
+		INVALIDATE_STATUS;
+
+		return true;
+	}
+
+	bool saveGame(int index)
+	{
+		yunjr::SerializedStream stream(GetSaveFileName(index), yunjr::SerializedStream::STREAMTYPE_WRITE);
+
+		sena::vector<yunjr::Serialized*>& save_list = yunjr::game::object::getSaveList();
+
+		for (sena::vector<yunjr::Serialized*>::iterator obj = save_list.begin(); obj != save_list.end(); ++obj)
+		{
+			stream << *(*obj);
+		}
+
+		return true;
+	}
+
+	bool selectLoadMenu(void)
+	{
+		yunjr::MenuList menu;
+
+		menu.push_back(L"불러 내고 싶은 게임을 선택하십시오.");
+		menu.push_back(L"없습니다");
+		menu.push_back(L"본 게임 데이타");
+		menu.push_back(L"게임 데이타 1 (부)");
+		menu.push_back(L"게임 데이타 2 (부)");
+		menu.push_back(L"게임 데이타 3 (부)");
+
+		int selected = yunjr::MenuSelection(menu)();
+
+		if (selected <= 1)
+			return false;
+
+		{
+			yunjr::LoreConsole& console = yunjr::LoreConsole::getConsole();
+
+			console.clear();
+			console.setTextColorIndex(11);
+			console.write(L"저장했던 게임을 다시 불러옵니다");
+			console.display();
+
+			// 0~3 사의 값
+			if (!loadGame(selected-2))
+			{
+				// 파일이 존재 하지 않음
+				//?? 관련된 메시지를 보내고 다시 메뉴를 선택하게 해야 함
+				//?? 또는 자동으로 데이터가 있는지를 확인하여 메뉴를 하이라이트를 시켜야 함
+				return false;
+			}
+
+			INVALIDATE_MAP;
+			INVALIDATE_SUB_MAP;
+			INVALIDATE_STATUS;
+
+			console.clear();
+			console.display();
+		}
+
+		return true;
+	}
+
+	bool selectSaveMenu(void)
+	{
+		yunjr::MenuList menu;
+
+		menu.push_back(L"게임의 저장 장소를 선택하십시오.");
+		menu.push_back(L"없습니다");
+		menu.push_back(L"본 게임 데이타");
+		menu.push_back(L"게임 데이타 1 (부)");
+		menu.push_back(L"게임 데이타 2 (부)");
+		menu.push_back(L"게임 데이타 3 (부)");
+
+		int selected = yunjr::MenuSelection(menu)();
+
+		if (selected <= 1)
+			return false;
+
+		{
+			yunjr::LoreConsole& console = yunjr::LoreConsole::getConsole();
+
+			console.clear();
+			console.setTextColorIndex(12);
+			console.write(L"현재의 게임을 저장합니다");
+			console.display();
+
+			// 0~3 사의 값
+			if (!saveGame(selected-2))
+			{
+				//?? 실패 했음을 알려 줘야 하나?
+				return false;
+			}
+
+			console.setTextColorIndex(7);
+			console.write("");
+			console.write("성공했습니다");
+			console.display();
+
+			yunjr::game::pressAnyKey();
+		}
+
+		return true;
+	}
 
 	void proccessGameOver(yunjr::EXITCODE code)
 	{
@@ -268,29 +613,25 @@ namespace
 			}
 			break;
 		case yunjr::EXITCODE_BY_ACCIDENT:
-	/* //??
 			{
-				LoreConsole& console = LoreConsole::getConsole();
+				yunjr::LoreConsole& console = yunjr::LoreConsole::getConsole();
 
 				console.clear();
 				console.setTextColorIndex(13);
-				console.write("일행은 모험중에 모두 목숨을 잃었다.");
+				console.write(L"일행은 모험중에 모두 목숨을 잃었다.");
 				console.display();
 
-				window[WINDOWTYPE_MAP]->display();
-				window[WINDOWTYPE_SUBMAP]->display();
+				INVALIDATE_MAP;
+				INVALIDATE_SUB_MAP;
+				INVALIDATE_STATUS;
 
-				window[WINDOWTYPE_STATUS]->setUpdateFlag();
-				window[WINDOWTYPE_STATUS]->display();
+				yunjr::game::updateScreen();
 
-				game::updateScreen();
-
-				game::pressAnyKey();
+				yunjr::game::pressAnyKey();
 
 				if (selectLoadMenu())
 					return;
 			}
-	*/
 			break;
 		case yunjr::EXITCODE_BY_ENEMY:
 			{
@@ -315,10 +656,8 @@ namespace
 
 				if (selected == 1)
 				{
-/*??
 					if (selectLoadMenu())
 						return;
-*/
 				}
 			}
 			break;
@@ -390,8 +729,8 @@ namespace
 				party.encounter = 6 - selected;
 			}
 			break;
-		case 2:
 /*??
+		case 2:
 			{
 				int  ix_player;
 				int  indexTable[6] = {0, };
@@ -526,13 +865,13 @@ namespace
 				window[WINDOWTYPE_STATUS]->display();
 			}
 			break;
+*/
 		case 4:
 			selectLoadMenu();
 			break;
 		case 5:
 			selectSaveMenu();
 			break;
-*/
 		case 6:
 			proccessGameOver(yunjr::EXITCODE_BY_USER);
 			break;
@@ -568,7 +907,6 @@ namespace
 		case 3:
 			showQuickView();
 			break;
-/*??
 		case 4:
 			castSpell();
 			break;
@@ -578,7 +916,6 @@ namespace
 		case 6:
 			restHere();
 			break;
-*/
 		case 7:
 			selectGameOption();
 			break;
@@ -593,13 +930,13 @@ namespace
 
 		// 전처리
 		sena::for_each(player_list.begin(), player_list.end(), FnCheckCondition<yunjr::shared::PcPlayer>());
-/*??
+
 		// 실제 생존해 있는 숫자를 확인
 		int num_alive = NUM_OF_CONSCIOUS_PLAYER(player_list);
 
 		if (num_alive == 0)
-			proccessGameOver(EXITCODE_BY_ACCIDENT);
-*/
+			proccessGameOver(yunjr::EXITCODE_BY_ACCIDENT);
+
 	}
 
 	struct MapCallback
@@ -615,17 +952,19 @@ namespace
 			yunjr::PcParty& party = yunjr::game::object::getParty();
 
 			party.move(x1, y1);
-/* //??
-			window[WINDOWTYPE_MAP]->setUpdateFlag();
+
+			INVALIDATE_MAP;
 
 			int num_updated;
 
-			num_updated = sena::for_each(player.begin(), player.end(), FnTimeGoes<PcPlayer*>()).Result();
+			sena::vector<yunjr::shared::PcPlayer>& player_list = yunjr::game::object::getPlayerList();
+
+			num_updated = sena::for_each(player_list.begin(), player_list.end(), FnTimeGoes<yunjr::shared::PcPlayer>()).Result();
 
 			// player의 디스플레이 된 수치에 변화가 생겼다면
 			if (num_updated > 0)
 			{
-				window[WINDOWTYPE_STATUS]->setUpdateFlag();
+				INVALIDATE_STATUS;
 			}
 
 			detectGameOver();
@@ -639,8 +978,6 @@ namespace
 				if (smutil::random(party.encounter*20) == 0)
 					encounterEnemy();
 			}
-*/
-
 		}
 		static void actEvent(int x1, int y1, bool bUseless)
 		{
@@ -648,7 +985,7 @@ namespace
 
 			party.move(x1, y1);
 
-//??			window[WINDOWTYPE_MAP]->setUpdateFlag();
+			INVALIDATE_MAP;
 
 			yunjr::LoreConsole::getConsole().clear();
 
@@ -680,12 +1017,13 @@ namespace
 		static void actWater(int x1, int y1, bool bUseless)
 		{
 			yunjr::PcParty& party = yunjr::game::object::getParty();
-/* //??
+
 			if (party.ability.walk_on_water > 0)
 			{
 				--party.ability.walk_on_water;
 				party.move(x1, y1);
-				window[WINDOWTYPE_MAP]->setUpdateFlag();
+
+				INVALIDATE_MAP;
 
 				if (smutil::random(party.encounter*30) == 0)
 					encounterEnemy();
@@ -694,7 +1032,6 @@ namespace
 			{
 				party.face(x1, y1);
 			}
-*/
 		}
 		static void actSwamp(int x1, int y1, bool bUseless)
 		{
@@ -863,8 +1200,8 @@ void yunjr::init(const char* sz_id)
 			p_player->setName(L"SMgal");
 			p_player->class_ = 8;
 			p_player->level[0] = 19;
-			p_player->level[1] = 1;
-			p_player->level[2] = 1;
+			p_player->level[1] = 19;
+			p_player->level[2] = 19;
 			p_player->hp = 190;
 			p_player->level[0] = 19;
 

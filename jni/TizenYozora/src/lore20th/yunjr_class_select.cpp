@@ -55,6 +55,8 @@ yunjr::MenuSelection::MenuSelection(const MenuList& menu, int num_enabled, int i
 
 	m_display(menu, num_menu, num_enabled, m_currrent);
 
+	KeyBuffer::getKeyBuffer().getKey();
+
 	while (this->loop())
 		;
 }

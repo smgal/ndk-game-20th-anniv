@@ -114,7 +114,7 @@ DEF_ii(sample, Occur)
 
 	ELSEIF ON(16,16) THEN
 		IF _Flag_IsSet(_FLAG_BATTLE) THEN
-/*
+
 			_Battle_Init()
 			_Battle_RegisterEnemy(69)
 			_Battle_RegisterEnemy(71)
@@ -123,9 +123,9 @@ DEF_ii(sample, Occur)
 			_Battle_RegisterEnemy(1)
 			_Battle_ShowEnemy()
 
-			_Talk("여기는 Necromancer를 만날 수 있는 이벤트다")
+			_Talk(L"여기는 Necromancer를 만날 수 있는 이벤트다")
 			_PressAnyKey()
-
+/*
 			_Battle_Start(true)
 
 			DECLARE(temp)

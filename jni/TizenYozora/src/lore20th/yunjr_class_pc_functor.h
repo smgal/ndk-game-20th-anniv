@@ -208,18 +208,18 @@ namespace
 
 				if (party.food <= 0)
 				{
-					yunjr::game::console::writeConsole(4, 1, "일행은 식량이 바닥났다");
+					yunjr::game::console::writeConsole(4, 1, L"일행은 식량이 바닥났다");
 				}
 				else if (obj->dead > 0)
 				{
-					yunjr::game::console::writeConsole(7, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " 죽었다");
+					yunjr::game::console::writeConsole(7, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), L" 죽었다");
 				}
 				else if ((obj->unconscious > 0) && (obj->poison == 0))
 				{
 					obj->unconscious -= (obj->level[0] + obj->level[1] + obj->level[2]);
 					if (obj->unconscious <= 0)
 					{
-						yunjr::game::console::writeConsole(15, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " 의식이 회복되었다");
+						yunjr::game::console::writeConsole(15, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), L" 의식이 회복되었다");
 
 						obj->unconscious = 0;
 						if (obj->hp <= 0)
@@ -229,16 +229,16 @@ namespace
 					}
 					else
 					{
-						yunjr::game::console::writeConsole(15, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " 여전히 의식 불명이다");
+						yunjr::game::console::writeConsole(15, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), L" 여전히 의식 불명이다");
 					}
 				}
 				else if ((obj->unconscious > 0) && (obj->poison > 0))
 				{
-					yunjr::game::console::writeConsole(7, 3, "독 때문에 ", obj->getName(yunjr::PcNameBase::JOSA_NONE), "의 의식은 회복되지 않았다");
+					yunjr::game::console::writeConsole(7, 3, L"독 때문에 ", obj->getName(yunjr::PcNameBase::JOSA_NONE), L"의 의식은 회복되지 않았다");
 				}
 				else if (obj->poison > 0)
 				{
-					yunjr::game::console::writeConsole(7, 3, "독 때문에 ", obj->getName(yunjr::PcNameBase::JOSA_NONE), "의 건강은 회복되지 않았다");
+					yunjr::game::console::writeConsole(7, 3, L"독 때문에 ", obj->getName(yunjr::PcNameBase::JOSA_NONE), L"의 건강은 회복되지 않았다");
 				}
 				else
 				{
@@ -253,11 +253,11 @@ namespace
 					if (obj->hp >= obj->endurance * obj->level[0])
 					{
 						obj->hp = obj->endurance * obj->level[0];
-						yunjr::game::console::writeConsole(15, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " 모든 건강이 회복되었다");
+						yunjr::game::console::writeConsole(15, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), L" 모든 건강이 회복되었다");
 					}
 					else
 					{
-						yunjr::game::console::writeConsole(15, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " 치료되었다");
+						yunjr::game::console::writeConsole(15, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), L" 치료되었다");
 					}
 					--party.food;
 				}

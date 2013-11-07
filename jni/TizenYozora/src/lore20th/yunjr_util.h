@@ -8,7 +8,9 @@
 #define SET_FONT_SIZE(size) ::yunjr::FontSizeTemporarily<size> _
 #define GET_RESIZED_FONT _()
 
-#define INVALIDATE_STATUS yunjr::resource::getMainWindow()->findControl("STATUS")->invalidate();
+#define INVALIDATE_MAP     yunjr::resource::getMainWindow()->findControl("MAP")->invalidate()
+#define INVALIDATE_SUB_MAP ; //??
+#define INVALIDATE_STATUS  yunjr::resource::getMainWindow()->findControl("STATUS")->invalidate()
 
 namespace yunjr
 {

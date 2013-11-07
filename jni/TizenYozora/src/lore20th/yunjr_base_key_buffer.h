@@ -69,6 +69,8 @@ namespace yunjr
 		//! KeyBuffer의 소멸자
 		~KeyBuffer(void);
 
+		void clear(void);
+
 		//! Key가 눌려졌다는 것을 알려준다.
 		bool setKeyDown(Key key);
 		//! Key가 떨어졌다는 것을 알려준다.

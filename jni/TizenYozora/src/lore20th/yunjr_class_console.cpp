@@ -51,6 +51,21 @@ namespace
 			delete[] obj;
 		}
 	};
+
+	unsigned long getColorFromIndexedColor(unsigned long index, unsigned long default_color)
+	{
+		enum { MAX_COLOR_TABLE = 16 };
+
+		static const unsigned long COLOR_TABLE[MAX_COLOR_TABLE] =
+		{
+			0xFF000000, 0xFF000080, 0xFF008000, 0xFF008080,
+			0xFF800000, 0xFF800080, 0xFF808000, 0xFF808080,
+			0xFF404040, 0xFF0000FF, 0xFF00FF00, 0xFF00FFFF,
+			0xFFFF0000, 0xFFFF00FF, 0xFFFFFF00, 0xFFFFFFFF
+		};
+
+		return (index < sizeof(COLOR_TABLE) / sizeof(COLOR_TABLE[0])) ? COLOR_TABLE[index] : default_color;
+	}
 }
 
 namespace yunjr
@@ -120,8 +135,7 @@ void yunjr::LoreConsole::setTextColor(unsigned long color)
 
 void yunjr::LoreConsole::setTextColorIndex(unsigned long index)
 {
-//??	m_text_color = gfx::getColorFromIndexedColor(index, 0xFFFFFFFF);
-	m_text_color = 0xFFFFFFFF;
+	m_text_color = getColorFromIndexedColor(index, 0xFFFFFFFF);
 }
 
 void yunjr::LoreConsole::setTextAlign(TEXTALIGN align)

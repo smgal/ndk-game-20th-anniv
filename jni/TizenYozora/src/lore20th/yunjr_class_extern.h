@@ -93,6 +93,7 @@ namespace yunjr
 
 		namespace object
 		{
+			sena::vector<Serialized*>& getSaveList(void);
 			sena::vector<shared::PcPlayer>& getPlayerList(void);
 			sena::vector<shared::PcEnemy>& getEnemyList(void);
 			PcParty& getParty(void);
