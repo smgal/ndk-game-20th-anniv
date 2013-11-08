@@ -1,4 +1,6 @@
 
+#if defined(YOZORA_ANDROID)
+
 #include "../target_dep.h"
 
 extern "C" void g_printLog(const char* sz_log);
@@ -22,3 +24,4 @@ void target::updateScreen(void)
 	g_updateScreen();
 }
 
+#endif // #if defined(YOZORA_ANDROID)

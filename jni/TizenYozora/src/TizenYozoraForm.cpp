@@ -251,6 +251,9 @@ TizenYozoraForm::OnTouchFocusOut(const Tizen::Ui::Control& source, const Tizen::
 
 void UpdateScreen(void)
 {
+	if (s_p_ref_form == 0)
+		return;
+
 	s_lock.Release();
 
 	{

@@ -1,4 +1,6 @@
 
+#if defined(YOZORA_ANDROID)
+
 #include "../target_dep.h"
 
 #ifdef USE_MEMORY_RESOURCE
@@ -289,3 +291,5 @@ namespace target
 }
 
 #endif
+
+#endif // #if defined(YOZORA_ANDROID)

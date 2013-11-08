@@ -1,4 +1,6 @@
 
+#if defined(YOZORA_ANDROID)
+
 #include "../target_dep.h"
 #include <stdio.h>
 
@@ -143,3 +145,5 @@ target::InputDevice* target::getInputDevice(void)
 
 	return &s_input_device;
 }
+
+#endif // #if defined(YOZORA_ANDROID)
