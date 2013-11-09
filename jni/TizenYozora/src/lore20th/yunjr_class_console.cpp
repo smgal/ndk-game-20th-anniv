@@ -328,6 +328,7 @@ void yunjr::LoreConsole::display(void)
 	game::updateScreen();
 }
 
+//??
 bool yunjr::LoreConsole::setRegion(int x, int y, int w, int h)
 {
 	if ((x < 0) || (y < 0))

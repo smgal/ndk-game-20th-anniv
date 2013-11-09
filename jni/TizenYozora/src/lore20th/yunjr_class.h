@@ -38,12 +38,15 @@ namespace yunjr
 		Attribute* p_attribute;
 		Shape* p_shape;
 		Update* p_update;
+
+		bool is_visible;
 		bool is_damaged;
 
 		Visible()
 			: p_attribute(0)
 			, p_shape(0)
 			, p_update(0)
+			, is_visible(true)
 			, is_damaged(true)
 		{
 		}
@@ -79,7 +82,7 @@ namespace yunjr
 			return *this;
 		}
 
-		Attribute* getAttribute(void)
+		Attribute* getAttribute(void) const
 		{
 			return p_attribute;
 		}
@@ -87,6 +90,16 @@ namespace yunjr
 		void invalidate(void)
 		{
 			is_damaged = true;
+		}
+
+		void show(void)
+		{
+			is_visible = true;
+		}
+
+		void hide(void)
+		{
+			is_visible = false;
 		}
 
 		void update(unsigned long tick)
@@ -97,7 +110,7 @@ namespace yunjr
 
 		void render(FlatBoard32& dest_board)
 		{
-			if (p_shape && is_damaged)
+			if (p_shape && is_visible && is_damaged)
 			{
 				p_shape->render(this, dest_board);
 				is_damaged = false;

@@ -11,7 +11,7 @@ namespace yunjr
 {
 	struct ControlWindow: public Control
 	{
-		std::vector<ControlId> child_list;
+		struct Attribute;
 
 	public:
 		virtual ~ControlWindow();
@@ -29,8 +29,10 @@ namespace yunjr
 
 	struct ControlWaku: public Control
 	{
+		struct Attribute;
+
 	public:
-		static   ControlWaku* newInstance(void);
+		static ControlWaku* newInstance(void);
 
 	private:
 		ControlWaku();
@@ -39,36 +41,19 @@ namespace yunjr
 
 	struct ControlConsole: public Control
 	{
-		std::vector<shared_ptr<Text> > text_line;
+		struct Attribute;
 
 	public:
 		virtual ~ControlConsole();
 
-		void clear(void)
-		{
-			text_line.clear();
+		void clear(void);
+		void add(Text& text);
 
-			this->invalidate();
-		}
+		void getRegion(int& x1, int& y1, int& x2, int& y2) const;
+		void setRegion(int x1, int y1, int x2, int y2);
 
-		void add(Text& text)
-		{
-			Text remaining;
-
-			//?? 700 is a temporary constant
-			text.split(620, remaining);
-
-			{
-				shared_ptr<Text> p_text(new Text());
-				text.split(0, *p_text);
-				text_line.push_back(p_text);
-			}
-
-			if (!remaining.isEmpty())
-				add(remaining);
-
-			this->invalidate();
-		}
+		void getMargin(int& left, int& top, int& right, int& bottom) const;
+		void setMargin(int left, int top, int right, int bottom);
 
 		static ControlConsole* newInstance(int x, int y, int width, int height, int margin_left, int margin_right, int margin_top, int margin_bottom);
 
@@ -79,6 +64,8 @@ namespace yunjr
 
 	struct ControlStatus: public Control
 	{
+		struct Attribute;
+
 	public:
 		virtual ~ControlStatus();
 
@@ -91,6 +78,8 @@ namespace yunjr
 
 	struct ControlPanel: public Control
 	{
+		struct Attribute;
+
 	public:
 		static   ControlPanel* newInstance(void);
 

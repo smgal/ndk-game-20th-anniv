@@ -767,14 +767,23 @@ namespace
 		changeWindowForBattle();
 
 		yunjr::game::updateScreen();
-/*??
-		// 위의 글자를 출력하기 위해서 임시로 console 창의 사이즈를 줄인다.
-		config::Rect savedRect;
-		int reducedSize = 4*config::DEFAULT_FONT_HEIGHT;
 
-		window[WINDOWTYPE_CONSOLE]->getRegion(&savedRect.x, &savedRect.y, &savedRect.w, &savedRect.h);
-		window[WINDOWTYPE_CONSOLE]->setRegion(savedRect.x, savedRect.y+reducedSize, savedRect.w, savedRect.h-reducedSize);
-*/
+		yunjr::ControlConsole* p_console = (yunjr::ControlConsole*)yunjr::resource::getMainWindow()->findControl("CONSOLE");
+
+		int saved_x1, saved_y1, saved_x2, saved_y2;
+		int saved_left, saved_top, saved_right, saved_bottom;
+
+		// 위의 글자를 출력하기 위해서 임시로 console 창의 사이즈를 줄인다.
+		{
+			p_console->getRegion(saved_x1, saved_y1, saved_x2, saved_y2);
+			p_console->getMargin(saved_left, saved_top, saved_right, saved_bottom);
+
+			int reduced_size = 4 * yunjr::DEFAULT_FONT_BTBD + saved_top;
+
+			p_console->setRegion(saved_x1, saved_y1 + reduced_size, saved_x2, saved_y2);
+			p_console->setMargin(saved_left, 0, saved_right, saved_bottom);
+		}
+
 		yunjr::MenuList menu;
 
 		menu.reserve(3);
@@ -783,10 +792,13 @@ namespace
 		menu.push_back(L"도망간다");
 
 		bool willing_to_avoid_battle = (yunjr::MenuSelection(menu)() != 1);
-/*??
+
 		// console 창의 사이즈를 복귀시킨다.
-		window[WINDOWTYPE_CONSOLE]->setRegion(savedRect.x, savedRect.y, savedRect.w, savedRect.h);
-*/
+		{
+			p_console->setMargin(saved_left, saved_top, saved_right, saved_bottom);
+			p_console->setRegion(saved_x1, saved_y1, saved_x2, saved_y2);
+		}
+
 		// '도망간다'를 선택했을 때 전 영역을 bg color로 채우기 위함
 		console.clear();
 		console.display();
@@ -1332,12 +1344,21 @@ namespace
 					break;
 				}
 
-				// 위의 글자를 출력하기 위해서 임시로 console 창의 사이즈를 줄인다.
-				config::Rect savedRect;
-				int reducedSize = 3*config::DEFAULT_FONT_HEIGHT;
+				yunjr::ControlConsole* p_console = (yunjr::ControlConsole*)yunjr::resource::getMainWindow()->findControl("CONSOLE");
 
-				window[WINDOWTYPE_CONSOLE]->getRegion(&savedRect.x, &savedRect.y, &savedRect.w, &savedRect.h);
-				window[WINDOWTYPE_CONSOLE]->setRegion(savedRect.x, savedRect.y+reducedSize, savedRect.w, savedRect.h-reducedSize);
+				int saved_x1, saved_y1, saved_x2, saved_y2;
+				int saved_left, saved_top, saved_right, saved_bottom;
+
+				// 위의 글자를 출력하기 위해서 임시로 console 창의 사이즈를 줄인다.
+				{
+					p_console->getRegion(saved_x1, saved_y1, saved_x2, saved_y2);
+					p_console->getMargin(saved_left, saved_top, saved_right, saved_bottom);
+
+					int reduced_size = 3 * yunjr::DEFAULT_FONT_BTBD + saved_top;
+
+					p_console->setRegion(saved_x1, saved_y1 + reduced_size, saved_x2, saved_y2);
+					p_console->setMargin(saved_left, 0, saved_right, saved_bottom);
+				}
 
 				do
 				{
@@ -1374,7 +1395,10 @@ namespace
 				} while(0);
 
 				// console 창의 사이즈를 복귀시킨다.
-				window[WINDOWTYPE_CONSOLE]->setRegion(savedRect.x, savedRect.y, savedRect.w, savedRect.h);
+				{
+					p_console->setMargin(saved_left, saved_top, saved_right, saved_bottom);
+					p_console->setRegion(saved_x1, saved_y1, saved_x2, saved_y2);
+				}
 
 				console.clear();
 			}
@@ -1520,6 +1544,7 @@ namespace
 
 			if (bEncounter)
 			{
+				//?? 이 이벤트는 tile 출발 시 발생하고 있으나 실제로는 타일 도착 시 발생해야 하는 이벤트이다.
 				if (smutil::random(party.encounter*20) == 0)
 					encounterEnemy();
 			}
@@ -1668,17 +1693,17 @@ void yunjr::init(const char* sz_id)
 	{
 		s_p_main_window = ControlWindow::newInstance(720, 1280);
 
-		s_p_main_window->addChild(std::make_pair("WAKU",   ControlWaku::newInstance()));
-		s_p_main_window->addChild(std::make_pair("MAP",    ControlMap::newInstance(20*2, 20*2, 216*2, 203*2)));
-		s_p_main_window->addChild(std::make_pair("CONSOL", ControlConsole::newInstance(267*2, 21*2, 350*2, 201*2, 20*2, 24*2, 26*2, 24*2)));
-		s_p_main_window->addChild(std::make_pair("STATUS", ControlStatus::newInstance(21*2, 251*2, 596*2, 90*2)));
-		s_p_main_window->addChild(std::make_pair("PANEL",  ControlPanel::newInstance()));
+		s_p_main_window->addChild(std::make_pair("WAKU",    ControlWaku::newInstance()));
+		s_p_main_window->addChild(std::make_pair("MAP",     ControlMap::newInstance(20*2, 20*2, 216*2, 203*2)));
+		s_p_main_window->addChild(std::make_pair("CONSOLE", ControlConsole::newInstance(267*2, 21*2, 350*2, 201*2, 20*2, 24*2, 26*2, 24*2)));
+		s_p_main_window->addChild(std::make_pair("STATUS",  ControlStatus::newInstance(21*2, 251*2, 596*2, 90*2)));
+		s_p_main_window->addChild(std::make_pair("PANEL",   ControlPanel::newInstance()));
 
 		resource::setMainWindow(s_p_main_window);
 	}
 
 	{
-		ControlConsole* p_console = (ControlConsole*)resource::getMainWindow()->findControl("CONSOL");
+		ControlConsole* p_console = (ControlConsole*)resource::getMainWindow()->findControl("CONSOLE");
 
 		if (p_console)
 		{

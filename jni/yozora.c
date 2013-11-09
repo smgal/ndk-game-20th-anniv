@@ -38,6 +38,7 @@ static JNIEnv* s_p_env = 0;
 static jclass s_native_class = 0;
 static jmethodID s_fn_updateScreen = 0;
 static jmethodID s_fn_getTicks = 0;
+static jmethodID s_fn_waitMillisecond = 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -52,6 +53,14 @@ unsigned long g_getTicks(void)
 	if (s_fn_getTicks)
 	{
 		return (*s_p_env)->CallStaticIntMethod(s_p_env, s_native_class, s_fn_getTicks);
+	}
+}
+
+void g_waitMillisecond(int msec)
+{
+	if (s_fn_waitMillisecond)
+	{
+		(*s_p_env)->CallStaticVoidMethod(s_p_env, s_native_class, s_fn_waitMillisecond, msec);
 	}
 }
 
@@ -152,13 +161,16 @@ JNIEXPORT void JNICALL Java_com_avej_lore20th_YozoraView_initYozora(JNIEnv* p_en
 
 	if (s_native_class)
 	{
-		s_fn_updateScreen = (*p_env)->GetStaticMethodID(p_env, s_native_class, "updateScreen", "()V");
 		s_fn_getTicks = (*p_env)->GetStaticMethodID(p_env, s_native_class, "getTicks", "()I");
+		s_fn_waitMillisecond = (*p_env)->GetStaticMethodID(p_env, s_native_class, "waitMillisecond", "(I)V");
+		s_fn_updateScreen = (*p_env)->GetStaticMethodID(p_env, s_native_class, "updateScreen", "()V");
 
-		if (s_fn_updateScreen)
-			g_printLog("[SMGAL] Callback function 'void updateScreen()' found");
 		if (s_fn_getTicks)
 			g_printLog("[SMGAL] Callback function 'int getTicks()' found");
+		if (s_fn_waitMillisecond)
+			g_printLog("[SMGAL] Callback function 'void waitMillisecond(int)' found");
+		if (s_fn_updateScreen)
+			g_printLog("[SMGAL] Callback function 'void updateScreen()' found");
 	}
 
 	// open package file as zip file

@@ -49,10 +49,13 @@ namespace yunjr
 			{
 			}
 		};
+/*??
+		virtual Pos  getPos(void) const = 0;
+		virtual void setPos(Pos pos) = 0;
 
-		//??
-		//virtual Pos getPos(void) const;
-		//virtual Size getSize(void) const;
+		virtual Size getSize(void) const = 0;
+		virtual void setSize(Size size) = 0;
+*/
 	};
 
 	typedef std::pair<ResId, Control*> ControlId;

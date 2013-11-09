@@ -16,6 +16,8 @@ namespace yunjr
 {
 	struct ControlMap: public Control
 	{
+		struct Attribute;
+
 	public:
 		static ControlMap* newInstance(int x, int y, int width, int height);
 

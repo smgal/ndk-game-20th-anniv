@@ -321,7 +321,7 @@ namespace yunjr
 
 			void clear(void)
 			{
-				ControlConsole* p_console = (ControlConsole*)resource::getMainWindow()->findControl("CONSOL");
+				ControlConsole* p_console = (ControlConsole*)resource::getMainWindow()->findControl("CONSOLE");
 
 				if (p_console)
 					p_console->clear();
@@ -329,7 +329,7 @@ namespace yunjr
 
 			void writeLine(const char* sz_text, unsigned long color) //??
 			{
-				ControlConsole* p_console = (ControlConsole*)resource::getMainWindow()->findControl("CONSOL");
+				ControlConsole* p_console = (ControlConsole*)resource::getMainWindow()->findControl("CONSOLE");
 
 				if (p_console)
 				{
@@ -343,7 +343,7 @@ namespace yunjr
 			} 
 			void writeLine(const wchar_t* sz_text, unsigned long color) //??
 			{
-				ControlConsole* p_console = (ControlConsole*)resource::getMainWindow()->findControl("CONSOL");
+				ControlConsole* p_console = (ControlConsole*)resource::getMainWindow()->findControl("CONSOLE");
 
 				if (p_console)
 				{

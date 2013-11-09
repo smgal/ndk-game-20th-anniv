@@ -68,21 +68,16 @@ namespace yunjr
 	};
 }
 
-
-yunjr::ControlMap::ControlMap()
-{
-}
-
-yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int height)
+namespace yunjr
 {
 	enum { SCALE = MAP_SCALE_RATIO };
-	
-	struct AttributeMap: public Visible::Attribute
+
+	struct ControlMap::Attribute: public Visible::Attribute
 	{
 		struct { int x, y; } pos;
 		struct { int width, height; } size;
 
-		AttributeMap(int x, int y, int width, int height)
+		Attribute(int x, int y, int width, int height)
 		{
 			pos.x = x;
 			pos.y = y;
@@ -99,12 +94,19 @@ yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int h
 		auto_ptr<FlatBoard32::Pixel[]> auto_buffer;
 		FlatBoard32 map_board;
 	};
+}
 
+yunjr::ControlMap::ControlMap()
+{
+}
+
+yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int height)
+{
 	struct ShapeMap: public Visible::Shape
 	{
 		virtual void render(Visible* p_this, FlatBoard32& dest_board) const
 		{
-			AttributeMap& attribute = *((AttributeMap*)p_this->getAttribute());
+			Attribute& attribute = *((Attribute*)p_this->getAttribute());
 
 			attribute.map_board << gfx::bitBlt;
 
@@ -210,7 +212,7 @@ yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int h
 
 	ControlMap* p_map = new ControlMap();
 
-	*p_map << new AttributeMap(x, y, width, height) << new ShapeMap() << new UpdateMap();
+	*p_map << new Attribute(x, y, width, height) << new ShapeMap() << new UpdateMap();
 
 	return p_map;
 }

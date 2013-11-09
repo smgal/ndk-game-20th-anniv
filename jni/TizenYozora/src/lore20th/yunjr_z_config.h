@@ -14,6 +14,7 @@ namespace yunjr
 	const int MAP_SCROLL_IN_PIXELS = 4;
 
 	const int DEFAULT_FONT_SIZE = 28;
+	const int DEFAULT_FONT_BTBD = (16 * 2); // Baseline to Baseline Distance
 
 	const int TILE_W = 24;
 	const int TILE_H = 24;

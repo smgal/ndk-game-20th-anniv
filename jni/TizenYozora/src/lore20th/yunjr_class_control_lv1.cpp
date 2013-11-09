@@ -43,27 +43,53 @@ namespace yunjr
 ////////////////////////////////////////////////////////////////////////////////
 // class ControlWindow
 
+namespace yunjr
+{
+	struct ControlWindow::Attribute: public Visible::Attribute
+	{
+		std::vector<ControlId> child_list;
+
+		Control::Pos pos;
+		Control::Size size;
+
+		Attribute(int width, int height)
+		{
+			pos.x = 0;
+			pos.y = 0;
+
+			size.width = width;
+			size.height = height;
+		}
+	};
+}
+
 yunjr::ControlWindow::ControlWindow()
 {
 }
 
 yunjr::ControlWindow::~ControlWindow()
 {
-	deleteVectorForPair<ResId, Control>(child_list);
+	Attribute* p_attribute = (Attribute*)this->getAttribute();
+	
+	deleteVectorForPair<ResId, Control>(p_attribute->child_list);
 }
 
 void yunjr::ControlWindow::addChild(ControlId control_id)
 {
-	child_list.push_back(control_id);
+	Attribute* p_attribute = (Attribute*)this->getAttribute();
+
+	p_attribute->child_list.push_back(control_id);
 }
 
 yunjr::Control* yunjr::ControlWindow::findControl(ResId res_id)
 {
 	assert((res_id.native_id & ResId::TAG_VERIFICATION_MASK) == ResId::TAG_VERIFICATION_STR);
 
-	std::vector<ControlId>::iterator p_control = child_list.begin();
+	Attribute* p_attribute = (Attribute*)this->getAttribute();
 
-	for ( ; p_control != child_list.end(); ++p_control)
+	std::vector<ControlId>::iterator p_control = p_attribute->child_list.begin();
+
+	for ( ; p_control != p_attribute->child_list.end(); ++p_control)
 	{
 		if (res_id == p_control->first)
 			return p_control->second;
@@ -74,33 +100,25 @@ yunjr::Control* yunjr::ControlWindow::findControl(ResId res_id)
 
 void yunjr::ControlWindow::invalidateBounds(Pos pos, Size size)
 {
-	//?? should apply the specified rectangle
-	std::vector<ControlId>::iterator p_control = child_list.begin();
+	Attribute* p_attribute = (Attribute*)this->getAttribute();
 
-	for ( ; p_control != child_list.end(); ++p_control)
+	//?? should apply the specified rectangle
+	std::vector<ControlId>::iterator p_control = p_attribute->child_list.begin();
+
+	for ( ; p_control != p_attribute->child_list.end(); ++p_control)
 		p_control->second->invalidate();
 }
 
 yunjr::ControlWindow* yunjr::ControlWindow::newInstance(int width, int height)
 {
-	struct AttributeWindow: public Visible::Attribute
-	{
-		struct { int width, height; } size;
-
-		AttributeWindow(int width, int height)
-		{
-			size.width = width;
-			size.height = height;
-		}
-	};
-
 	struct ShapeWindow: public Visible::Shape
 	{
 		virtual void render(Visible* p_this, FlatBoard32& dest_board) const
 		{
 			ControlWindow* p_window = (ControlWindow*)p_this;
+			Attribute* p_attribute = (Attribute*)p_window->getAttribute();
 
-			std::for_each(p_window->child_list.begin(), p_window->child_list.end(), Operator<ControlId, FlatBoard32*>(&dest_board));
+			std::for_each(p_attribute->child_list.begin(), p_attribute->child_list.end(), Operator<ControlId, FlatBoard32*>(&dest_board));
 		}
 	};
 
@@ -109,8 +127,9 @@ yunjr::ControlWindow* yunjr::ControlWindow::newInstance(int width, int height)
 		virtual bool update(Visible* p_this, unsigned long tick)
 		{
 			ControlWindow* p_window = (ControlWindow*)p_this;
+			Attribute* p_attribute = (Attribute*)p_window->getAttribute();
 
-			std::for_each(p_window->child_list.rbegin(), p_window->child_list.rend(), Operator<ControlId, unsigned long>(tick));
+			std::for_each(p_attribute->child_list.rbegin(), p_attribute->child_list.rend(), Operator<ControlId, unsigned long>(tick));
 
 			return true;
 		}
@@ -118,7 +137,7 @@ yunjr::ControlWindow* yunjr::ControlWindow::newInstance(int width, int height)
 
 	ControlWindow* p_window = new ControlWindow();
 
-	*p_window << new AttributeWindow(width, height) << new ShapeWindow() << new UpdateWindow();
+	*p_window << new Attribute(width, height) << new ShapeWindow() << new UpdateWindow();
 
 	return p_window;
 }
@@ -138,30 +157,33 @@ namespace
 	}
 }
 
-yunjr::ControlWaku::ControlWaku()
+namespace yunjr
 {
-}
-
-yunjr::ControlWaku* yunjr::ControlWaku::newInstance(void)
-{
-	struct AttributeWaku: public Visible::Attribute
+	struct ControlWaku::Attribute: public Visible::Attribute
 	{
-		struct { int x, y; } pos;
+		Control::Pos pos;
 		const FlatBoard32& src_ui;
 
-		AttributeWaku()
+		Attribute()
 			: src_ui(resource::getResimage(ResId(ResId::TAG_TYPE_IMAGE, ResId::TAG_TYPE_IMAGE_UI, 0)))
 		{
 			pos.x = 0;
 			pos.y = 0;
 		}
 	};
+}
 
+yunjr::ControlWaku::ControlWaku()
+{
+}
+
+yunjr::ControlWaku* yunjr::ControlWaku::newInstance(void)
+{
 	struct ShapeWaku: public Visible::Shape
 	{
 		virtual void render(Visible* p_this, FlatBoard32& dest_board) const
 		{
-			AttributeWaku& attribute = *((AttributeWaku*)p_this->getAttribute());
+			Attribute& attribute = *((Attribute*)p_this->getAttribute());
 			//dest_board.bitBlt(attribute.pos.x, attribute.pos.y, const_cast<FlatBoard32*>(&attribute.src_ui), 0, 0, attribute.src_ui.getBufferDesc().width, attribute.src_ui.getBufferDesc().height);
 
 			const BufferDesc* p_buffer_desc = resource::getFrameBuffer();
@@ -220,7 +242,7 @@ yunjr::ControlWaku* yunjr::ControlWaku::newInstance(void)
 
 	ControlWaku* p_waku = new ControlWaku();
 
-	*p_waku << new AttributeWaku() << new ShapeWaku() << new UpdateWaku();
+	*p_waku << new Attribute() << new ShapeWaku() << new UpdateWaku();
 
 	return p_waku;
 }
@@ -228,23 +250,18 @@ yunjr::ControlWaku* yunjr::ControlWaku::newInstance(void)
 ////////////////////////////////////////////////////////////////////////////////
 // class ControlConsole
 
-yunjr::ControlConsole::ControlConsole()
+namespace yunjr
 {
-}
-
-yunjr::ControlConsole::~ControlConsole()
-{
-}
-
-yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int width, int height, int margin_left, int margin_right, int margin_top, int margin_bottom)
-{
-	struct AttributeConsole: public Visible::Attribute
+	struct ControlConsole::Attribute: public Visible::Attribute
 	{
-		struct { int x, y; } pos;
-		struct { int width, height; } size;
+		Control::Pos  pos;
+		Control::Size size;
+
 		struct { int left, right, top, bottom; } margin;
 
-		AttributeConsole(int x, int y, int width, int height, int margin_left, int margin_right, int margin_top, int margin_bottom)
+		std::vector<shared_ptr<Text> > text_line;
+
+		Attribute(int x, int y, int width, int height, int margin_left, int margin_right, int margin_top, int margin_bottom)
 		{
 			pos.x = x;
 			pos.y = y;
@@ -257,12 +274,97 @@ yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int widt
 			margin.bottom = margin_bottom;
 		}
 	};
+}
 
+yunjr::ControlConsole::ControlConsole()
+{
+}
+
+yunjr::ControlConsole::~ControlConsole()
+{
+}
+
+void yunjr::ControlConsole::clear(void)
+{
+	Attribute* p_attribute = (Attribute*)this->getAttribute();
+	
+	p_attribute->text_line.clear();
+
+	this->invalidate();
+}
+
+void yunjr::ControlConsole::add(Text& text)
+{
+	Text remaining;
+
+	//?? 700 is a temporary constant
+	text.split(620, remaining);
+
+	{
+		Attribute* p_attribute = (Attribute*)this->getAttribute();
+
+		shared_ptr<Text> p_text(new Text());
+		text.split(0, *p_text);
+
+		p_attribute->text_line.push_back(p_text);
+	}
+
+	if (!remaining.isEmpty())
+		add(remaining);
+
+	this->invalidate();
+}
+
+void yunjr::ControlConsole::getRegion(int& x1, int& y1, int& x2, int& y2) const
+{
+	const Attribute& attribute = *((const Attribute*)this->getAttribute());
+
+	x1 = attribute.pos.x;
+	y1 = attribute.pos.y;
+	x2 = attribute.pos.x + attribute.size.width;
+	y2 = attribute.pos.y + attribute.size.height;
+}
+
+void yunjr::ControlConsole::setRegion(int x1, int y1, int x2, int y2)
+{
+	Attribute& attribute = *((Attribute*)this->getAttribute());
+
+	attribute.pos.x = x1;
+	attribute.pos.y = y1;
+
+	attribute.size.width = x2 - x1;
+	attribute.size.height = y2 - y1;
+
+	this->invalidate();
+}
+
+void yunjr::ControlConsole::getMargin(int& left, int& top, int& right, int& bottom) const
+{
+	const Attribute& attribute = *((const Attribute*)this->getAttribute());
+
+	left   = attribute.margin.left;
+	top    = attribute.margin.top;
+	right  = attribute.margin.right;
+	bottom = attribute.margin.bottom;
+}
+
+void yunjr::ControlConsole::setMargin(int left, int top, int right, int bottom)
+{
+	Attribute& attribute = *((Attribute*)this->getAttribute());
+
+	attribute.margin.left   = left;
+	attribute.margin.top    = top;
+	attribute.margin.right  = right;
+	attribute.margin.bottom = bottom;
+}
+
+yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int width, int height, int margin_left, int margin_right, int margin_top, int margin_bottom)
+{
 	struct ShapeConsole: public Visible::Shape
 	{
 		virtual void render(Visible* p_this, FlatBoard32& dest_board) const
 		{
-			AttributeConsole& attribute = *((AttributeConsole*)p_this->getAttribute());
+			Attribute& attribute = *((Attribute*)p_this->getAttribute());
 
 			dest_board.fillRect(attribute.pos.x, attribute.pos.y, attribute.size.width, attribute.size.height, 0xFF545454);
 
@@ -284,13 +386,14 @@ yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int widt
 
 				int text_x = attribute.margin.left;
 				int text_y = attribute.margin.top + 26;
-				int text_line_gap = 16 * 2;
+				int text_line_gap = DEFAULT_FONT_BTBD;
 
 				ControlConsole* _p_this = (ControlConsole*)p_this;
+				Attribute* p_attribute = (Attribute*)_p_this->getAttribute();
 
-				std::vector<shared_ptr<Text> >::iterator p_text = _p_this->text_line.begin();
+				std::vector<shared_ptr<Text> >::iterator p_text = p_attribute->text_line.begin();
 
-				for ( ; p_text != _p_this->text_line.end(); ++p_text)
+				for ( ; p_text != p_attribute->text_line.end(); ++p_text)
 				{
 					text_board.renderTextFx(text_x, text_y, **p_text, 0xFFFFFFFF, 0xFFFFFFFF);
 
@@ -314,21 +417,36 @@ yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int widt
 	{
 		virtual bool update(Visible* p_this, unsigned long tick)
 		{
-			AttributeConsole& attribute = *((AttributeConsole*)p_this->getAttribute());
-
 			return false;
 		}
 	};
 
 	ControlConsole* p_popup = new ControlConsole();
 
-	*p_popup << new AttributeConsole(x, y, width, height, margin_left, margin_right, margin_top, margin_bottom) << new ShapeConsole() << new UpdateConsole();
+	*p_popup << new Attribute(x, y, width, height, margin_left, margin_right, margin_top, margin_bottom) << new ShapeConsole() << new UpdateConsole();
 
 	return p_popup;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // class ControlStatus
+
+namespace yunjr
+{
+	struct ControlStatus::Attribute: public Visible::Attribute
+	{
+		Control::Pos pos;
+		Control::Size size;
+
+		Attribute(int x, int y, int width, int height)
+		{
+			pos.x = x;
+			pos.y = y;
+			size.width = width;
+			size.height = height;
+		}
+	};
+}
 
 yunjr::ControlStatus::ControlStatus()
 {
@@ -340,25 +458,11 @@ yunjr::ControlStatus::~ControlStatus()
 
 yunjr::ControlStatus* yunjr::ControlStatus::newInstance(int x, int y, int width, int height)
 {
-	struct AttributeConsole: public Visible::Attribute
-	{
-		struct { int x, y; } pos;
-		struct { int width, height; } size;
-
-		AttributeConsole(int x, int y, int width, int height)
-		{
-			pos.x = x;
-			pos.y = y;
-			size.width = width;
-			size.height = height;
-		}
-	};
-
 	struct ShapeConsole: public Visible::Shape
 	{
 		virtual void render(Visible* p_this, FlatBoard32& dest_board) const
 		{
-			AttributeConsole& attribute = *((AttributeConsole*)p_this->getAttribute());
+			Attribute& attribute = *((Attribute*)p_this->getAttribute());
 
 			dest_board.fillRect(attribute.pos.x, attribute.pos.y, attribute.size.width, attribute.size.height, 0xFF545454);
 
@@ -464,15 +568,13 @@ yunjr::ControlStatus* yunjr::ControlStatus::newInstance(int x, int y, int width,
 	{
 		virtual bool update(Visible* p_this, unsigned long tick)
 		{
-			AttributeConsole& attribute = *((AttributeConsole*)p_this->getAttribute());
-
 			return false;
 		}
 	};
 
 	ControlStatus* p_status = new ControlStatus();
 
-	*p_status << new AttributeConsole(x, y, width, height) << new ShapeConsole() << new UpdateConsole();
+	*p_status << new Attribute(x, y, width, height) << new ShapeConsole() << new UpdateConsole();
 
 	return p_status;
 }
@@ -480,23 +582,26 @@ yunjr::ControlStatus* yunjr::ControlStatus::newInstance(int x, int y, int width,
 ////////////////////////////////////////////////////////////////////////////////
 // class ControlPanel
 
+namespace yunjr
+{
+	struct ControlPanel::Attribute: public Visible::Attribute
+	{
+		struct { int x, y; } pos;
+
+		Attribute()
+		{
+			pos.x = 0;
+			pos.y = 0;
+		}
+	};
+}
+
 yunjr::ControlPanel::ControlPanel()
 {
 }
 
 yunjr::ControlPanel* yunjr::ControlPanel::newInstance(void)
 {
-	struct AttributePanel: public Visible::Attribute
-	{
-		struct { int x, y; } pos;
-
-		AttributePanel()
-		{
-			pos.x = 0;
-			pos.y = 0;
-		}
-	};
-
 	struct ShapePanel: public Visible::Shape
 	{
 		virtual void render(Visible* p_this, FlatBoard32& dest_board) const
@@ -508,7 +613,7 @@ yunjr::ControlPanel* yunjr::ControlPanel::newInstance(void)
 	{
 		virtual bool update(Visible* p_this, unsigned long tick)
 		{
-			AttributePanel& attribute = *((AttributePanel*)p_this->getAttribute());
+			Attribute& attribute = *((Attribute*)p_this->getAttribute());
 
 			GameState& game_state = GameState::getMutableInstance();
 			target::InputUpdateInfo& touch_info = game_state.current_input_info;
@@ -522,7 +627,7 @@ yunjr::ControlPanel* yunjr::ControlPanel::newInstance(void)
 
 	ControlPanel* p_panel = new ControlPanel();
 
-	*p_panel << new AttributePanel() << new ShapePanel() << new UpdatePanel();
+	*p_panel << new Attribute() << new ShapePanel() << new UpdatePanel();
 
 	return p_panel;
 }

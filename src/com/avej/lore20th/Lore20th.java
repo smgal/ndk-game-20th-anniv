@@ -375,6 +375,19 @@ class GameTask extends AsyncTask<Void, Void, Void>
 		long tick = System.currentTimeMillis() - base_tick;
 		return (int)tick;
 	}
+	
+	@SuppressWarnings("unused")
+	private static void waitMillisecond(int msec)
+	{
+		try
+		{
+			Thread.sleep(msec);
+		}
+		catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+	}
 
 	@SuppressWarnings("unused")
 	private static void updateScreen()
