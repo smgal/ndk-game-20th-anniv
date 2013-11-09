@@ -32,7 +32,6 @@ namespace yunjr
 		void setTextColor(unsigned long color);
 		void setTextColorIndex(unsigned long index);
 		void setTextAlign(TEXTALIGN align);
-		void write(const char* sz_text);
 		void write(const wchar_t* sz_text);
 		void write(const smutil::string& text);
 		void display(void);
@@ -41,6 +40,9 @@ namespace yunjr
 		void getRegion(int* pX, int* pY, int* pW, int* pH) const;
 
 		static LoreConsole& getConsole(void);
+
+		// deprecated
+		void write(const char* sz_text, int dummy);
 
 	private:
 		bool          m_is_modified;

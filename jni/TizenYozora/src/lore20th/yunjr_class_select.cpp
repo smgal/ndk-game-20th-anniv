@@ -18,7 +18,7 @@ void yunjr::MenuSelection::m_display(const MenuList& menu, int num_menu, int num
 	console.clear();
 	console.setTextColor(0xFFFF0000);
 	console.write(menu[0]);
-	console.write("");
+	console.write(L"");
 
 	for (int i = 1; i <= num_menu; ++i)
 	{

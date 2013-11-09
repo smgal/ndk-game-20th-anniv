@@ -1,6 +1,7 @@
 
 #include "yunjr_class_extern.h"
 
+#include "yunjr_base_key_buffer.h"
 #include "yunjr_base_serialized.h"
 
 #include "yunjr_class_console.h"
@@ -112,7 +113,36 @@ namespace yunjr
 			s_party.warp(PcParty::POS_PREV);
 		}
 
-		void pressAnyKey(void) {} //??
+		//! 아무 키나 누를 때까지 메시지를 출력하고 대기한다.
+		void pressAnyKey(void)
+		{
+/*??
+			//? 만약 글자가 끝까지 진행했다면 press any key를 표현하기 위해 스크롤이 되어야 한다.
+			int xRegion, yRegion, wRegion, hRegion;
+			s_p_game_main->window[GameMain::WINDOWTYPE_CONSOLE]->getRegion(&xRegion, &yRegion, &wRegion, &hRegion);
+
+			gfx::drawText(xRegion, yRegion+hRegion-(config::DEFAULT_FONT_HEIGHT-1), "아무키나 누르십시오 ...", game::getRealColor(14));
+*/
+			yunjr::game::updateScreen();
+
+			yunjr::KeyBuffer& key_buffer = yunjr::KeyBuffer::getKeyBuffer();
+
+			while (key_buffer.isKeyPressed())
+				key_buffer.getKey();
+
+			while (!key_buffer.isKeyPressed())
+				target::system::wait(20);
+
+			key_buffer.getKey();
+
+			// 화면 clear
+			LoreConsole& console = LoreConsole::getConsole();
+
+			console.clear();
+			console.display();
+
+			yunjr::game::updateScreen();
+		}
 
 		//! 백버퍼의 내용을 실제 화면에 반영한다.
 		void updateScreen(void)

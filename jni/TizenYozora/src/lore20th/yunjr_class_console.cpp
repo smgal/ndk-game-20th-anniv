@@ -59,7 +59,7 @@ namespace
 		static const unsigned long COLOR_TABLE[MAX_COLOR_TABLE] =
 		{
 			0xFF000000, 0xFF000080, 0xFF008000, 0xFF008080,
-			0xFF800000, 0xFF800080, 0xFF808000, 0xFF808080,
+			0xFF800000, 0xFF800080, 0xFF808000, 0xFFA0A0A0,
 			0xFF404040, 0xFF0000FF, 0xFF00FF00, 0xFF00FFFF,
 			0xFFFF0000, 0xFFFF00FF, 0xFFFFFF00, 0xFFFFFFFF
 		};
@@ -153,7 +153,7 @@ void yunjr::LoreConsole::write(const wchar_t* sz_text)
 	yunjr::game::console::writeLine(sz_text, m_text_color);
 }
 
-void yunjr::LoreConsole::write(const char* sz_text)
+void yunjr::LoreConsole::write(const char* sz_text, int dummy)
 {
 	if (sz_text == NULL)
 		return;

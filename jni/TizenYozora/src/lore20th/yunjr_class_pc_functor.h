@@ -72,7 +72,7 @@ namespace
 			{
 				if (smutil::random(20) + 1 >= obj->luck)
 				{
-					yunjr::game::console::writeConsole(13, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), " 중독되었다.");
+					yunjr::game::console::writeConsole(13, 2, obj->getName(yunjr::PcNameBase::JOSA_SUB), L" 중독되었다.");
 
 					if (obj->poison == 0)
 						obj->poison = 1;

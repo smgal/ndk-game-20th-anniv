@@ -25,6 +25,11 @@ unsigned long target::system::getTicks(void)
 	return (unsigned long)((int)(current_tick - s_guide));
 }
 
+void target::system::wait(int msec)
+{
+	//??
+}
+
 int target::getScreenWidth(void)
 {
 	Tizen::Ui::Control* p_control = (Tizen::Ui::Control*)g_h_native_window;

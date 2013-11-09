@@ -18,7 +18,7 @@ ENDDEF
 DEF_v(sample, Load)
 
 	_Map_Init(30, 30)
-	//_Map_SetEncounter(1, 10)
+	_Map_SetEncounter(1, 10)
 	_Map_SetStartPos(15, 15)
 
 	_Map_SetTileAsDefault(TILE_SET_TOWN)

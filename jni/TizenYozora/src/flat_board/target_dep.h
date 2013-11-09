@@ -105,6 +105,7 @@ namespace target
 	namespace system
 	{
 		unsigned long getTicks(void);
+		void wait(int ms);
 		void log(const char* sz_message);
 	}
 

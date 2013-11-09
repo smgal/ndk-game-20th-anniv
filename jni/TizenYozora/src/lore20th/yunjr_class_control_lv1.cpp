@@ -31,7 +31,11 @@ namespace yunjr
 	template <>
 	void Operator<Chara*, FlatBoard32*>::operator()(Chara* p_obj)
 	{
-		(p_obj) ? p_obj->render(*param) : (void)0;
+		if (p_obj)
+		{
+			p_obj->invalidate();
+			p_obj->render(*param);
+		}
 	}
 
 }
