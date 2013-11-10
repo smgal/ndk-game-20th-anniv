@@ -49,6 +49,8 @@ namespace yunjr
 		void clear(void);
 		void add(Text& text);
 
+		void drawText(int x, int y, const wchar_t* sz_text, unsigned long color);
+
 		void getRegion(int& x1, int& y1, int& x2, int& y2) const;
 		void setRegion(int x1, int y1, int x2, int y2);
 

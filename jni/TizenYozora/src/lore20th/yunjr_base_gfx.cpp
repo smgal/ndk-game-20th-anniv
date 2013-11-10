@@ -113,6 +113,10 @@ void yunjr::gfx::TextBoard::renderText(int pos_x, int pos_y, const Text& text, C
 
 void yunjr::gfx::TextBoard::renderText(int pos_x, int pos_y, const std::vector<yunjr::GlyphInfo*>& glyph_info, Color32 color1, Color32 color2)
 {
+	//?? 좀 더 정확한 clipping 계산이 필요
+	if (pos_y > this->m_height)
+		return;
+
 	typedef unsigned long DstPixel;
 	typedef unsigned char SrcPixel;
 	typedef signed long   TgtPixel;

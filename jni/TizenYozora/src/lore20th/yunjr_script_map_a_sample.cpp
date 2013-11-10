@@ -18,7 +18,7 @@ ENDDEF
 DEF_v(sample, Load)
 
 	_Map_Init(30, 30)
-	_Map_SetEncounter(1, 10)
+	// _Map_SetEncounter(1, 10)
 	_Map_SetStartPos(15, 15)
 
 	_Map_SetTileAsDefault(TILE_SET_TOWN)
@@ -116,6 +116,7 @@ DEF_ii(sample, Occur)
 		IF _Flag_IsSet(_FLAG_BATTLE) THEN
 
 			_Battle_Init()
+
 			_Battle_RegisterEnemy(69)
 			_Battle_RegisterEnemy(71)
 			_Battle_RegisterEnemy(75)
@@ -125,18 +126,18 @@ DEF_ii(sample, Occur)
 
 			_Talk(L"여기는 Necromancer를 만날 수 있는 이벤트다")
 			_PressAnyKey()
-/*
+
 			_Battle_Start(true)
 
 			DECLARE(temp)
 			ASSIGN(temp, _Battle_Result())
 
 			IF EQUAL(temp, 1) THEN
-				_Talk("정상적인 전투 종료")
+				_Talk(L"정상적인 전투 종료")
 			ELSE
-				_Talk("도망")
+				_Talk(L"도망")
 			END
-*/
+
 		ELSE
 			_Map_ChangeTile(17, 16, 7)
 			_Map_ChangeTile(17, 17, 7)

@@ -315,6 +315,33 @@ void yunjr::ControlConsole::add(Text& text)
 	this->invalidate();
 }
 
+void yunjr::ControlConsole::drawText(int x, int y, const wchar_t* sz_text, unsigned long color)
+{
+	Attribute& attribute = *((Attribute*)this->getAttribute());
+
+	const int DIALOG_WINDOW_X = attribute.pos.x;
+	const int DIALOG_WINDOW_Y = attribute.pos.y;
+	const int DIALOG_WINDOW_W = attribute.size.width;
+	const int DIALOG_WINDOW_H = attribute.size.height;
+
+	const BufferDesc* p_buffer_desc = resource::getFrameBuffer();
+
+	unsigned long* p = (unsigned long*)p_buffer_desc->p_start_address;
+	int ppl = (p_buffer_desc->bytes_per_line << 3) / p_buffer_desc->bits_per_pixel;
+
+	p += (ppl * DIALOG_WINDOW_Y);
+	p += DIALOG_WINDOW_X;
+
+	yunjr::gfx::TextBoard text_board(p, DIALOG_WINDOW_W, DIALOG_WINDOW_H, ppl);
+
+	int text_x = attribute.margin.left;
+	int text_y = attribute.margin.top + 26;
+
+	Typeface typeface;
+	Text text(typeface, sz_text);
+	text_board.renderTextFx(x, y, text, color, color);
+}
+
 void yunjr::ControlConsole::getRegion(int& x1, int& y1, int& x2, int& y2) const
 {
 	const Attribute& attribute = *((const Attribute*)this->getAttribute());
@@ -368,6 +395,14 @@ yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int widt
 
 			dest_board.fillRect(attribute.pos.x, attribute.pos.y, attribute.size.width, attribute.size.height, 0xFF545454);
 
+			/* display client area for debugging
+			dest_board.fillRect(attribute.pos.x + attribute.margin.left
+				, attribute.pos.y + attribute.margin.top
+				, attribute.size.width - (attribute.margin.left + attribute.margin.right)
+				, attribute.size.height - (attribute.margin.top + attribute.margin.bottom)
+				, 0xFF547054);
+			*/
+
 			const int DIALOG_WINDOW_X = attribute.pos.x;
 			const int DIALOG_WINDOW_Y = attribute.pos.y;
 			const int DIALOG_WINDOW_W = attribute.size.width;
@@ -385,7 +420,7 @@ yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int widt
 				yunjr::gfx::TextBoard text_board(p, DIALOG_WINDOW_W, DIALOG_WINDOW_H, ppl);
 
 				int text_x = attribute.margin.left;
-				int text_y = attribute.margin.top + 26;
+				int text_y = attribute.margin.top + DEFAULT_FONT_ASCENDER;
 				int text_line_gap = DEFAULT_FONT_BTBD;
 
 				ControlConsole* _p_this = (ControlConsole*)p_this;

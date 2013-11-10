@@ -972,6 +972,20 @@ void yunjr::PcPlayer::castPhenominaSpell(void)
 	game::window::displayStatus();
 }
 
+namespace
+{
+	bool isValidIndex(const sena::vector<yunjr::shared::PcEnemy>& enemy_list, int ix_enemy)
+	{
+		if (ix_enemy < 0 || ix_enemy >= enemy_list.size())
+			return false;
+
+		if (enemy_list[ix_enemy].get() == 0 || !enemy_list[ix_enemy]->isValid())
+			return false;
+
+		return true;
+	}
+}
+
 void yunjr::PcPlayer::attackWithWeapon(int ix_object, int ix_enemy)
 {
 	PcPlayer* p_player = this;
@@ -980,15 +994,18 @@ void yunjr::PcPlayer::attackWithWeapon(int ix_object, int ix_enemy)
 	if (num_enemy_alive == 0)
 		return;
 
-	sena::vector<shared::PcEnemy>& enemy = game::object::getEnemyList();
+	sena::vector<shared::PcEnemy>& enemy_list = game::object::getEnemyList();
 
-	while (enemy[ix_enemy]->dead > 0)
+	if (!isValidIndex(enemy_list, ix_enemy))
+		return;
+
+	while (enemy_list[ix_enemy]->dead > 0)
 	{
-		if (++ix_enemy > int(enemy.size()))
+		if (!isValidIndex(enemy_list, ++ix_enemy))
 			return;
 	}
 
-	shared::PcEnemy p_enemy = enemy[ix_enemy];
+	shared::PcEnemy p_enemy = enemy_list[ix_enemy];
 
 	assert(p_player != NULL);
 	assert(p_enemy.get()  != NULL);

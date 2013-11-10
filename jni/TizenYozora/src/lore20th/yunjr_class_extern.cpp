@@ -1,4 +1,4 @@
-
+ï»¿
 #include "yunjr_class_extern.h"
 
 #include "yunjr_base_key_buffer.h"
@@ -12,9 +12,11 @@
 #include "yunjr_class_game_option.h"
 #include "yunjr_class_map_event.h"
 #include "yunjr_class_control_lv1.h"
+#include "yunjr_class_control_lv2.h"
 #include "yunjr_class_select.h"
 
 #include "yunjr_res.h"
+#include "yunjr_util.h"
 
 #include "../flat_board/target_dep.h"
 
@@ -23,6 +25,17 @@
 
 #define ASSERT(cond) assert(cond)
 
+// forward
+namespace yunjr
+{
+	void changeWindowForBattle(void);
+	void changeWindowForField(void);
+
+	yunjr::BATTLERESULT runBattleMode(bool is_assualt_mode);
+	int registerEnemy(int index);
+}
+
+// local
 namespace
 {
 	yunjr::Map                            s_map;
@@ -89,8 +102,8 @@ namespace yunjr
 	{
 		// unnamed
 
-		//! ÀÎµ¦½º ÄÃ·¯¿¡ ´ëÇØ ½ÇÁ¦ ÄÃ·¯ °ªÀ» µ¹·Á ÁØ´Ù.
-		//! ÀÎµ¦½º ÄÃ·¯´Â ¹Ì¸® ¼³Á¤µÈ 16°³ÀÇ ÄÃ·¯ÀÌ´Ù.
+		//! ì¸ë±ìŠ¤ ì»¬ëŸ¬ì— ëŒ€í•´ ì‹¤ì œ ì»¬ëŸ¬ ê°’ì„ ëŒë ¤ ì¤€ë‹¤.
+		//! ì¸ë±ìŠ¤ ì»¬ëŸ¬ëŠ” ë¯¸ë¦¬ ì„¤ì •ëœ 16ê°œì˜ ì»¬ëŸ¬ì´ë‹¤.
 		unsigned long getRealColor(int index)
 		{
 			static const unsigned long s_COLOR_TABLE[16] =
@@ -107,22 +120,34 @@ namespace yunjr
 			return s_COLOR_TABLE[index];
 		}
 
-		//! ÀÌÀüÀÇ ¸Ê »óÀÇ À§Ä¡·Î º¹±ÍÇÑ´Ù.
+		//! ì´ì „ì˜ ë§µ ìƒì˜ ìœ„ì¹˜ë¡œ ë³µê·€í•œë‹¤.
 		void warpPrevPos(void)
 		{
 			s_party.warp(PcParty::POS_PREV);
 		}
 
-		//! ¾Æ¹« Å°³ª ´©¸¦ ¶§±îÁö ¸Ş½ÃÁö¸¦ Ãâ·ÂÇÏ°í ´ë±âÇÑ´Ù.
+		//! ì•„ë¬´ í‚¤ë‚˜ ëˆ„ë¥¼ ë•Œê¹Œì§€ ë©”ì‹œì§€ë¥¼ ì¶œë ¥í•˜ê³  ëŒ€ê¸°í•œë‹¤.
 		void pressAnyKey(void)
 		{
-/*??
-			//? ¸¸¾à ±ÛÀÚ°¡ ³¡±îÁö ÁøÇàÇß´Ù¸é press any key¸¦ Ç¥ÇöÇÏ±â À§ÇØ ½ºÅ©·ÑÀÌ µÇ¾î¾ß ÇÑ´Ù.
-			int xRegion, yRegion, wRegion, hRegion;
-			s_p_game_main->window[GameMain::WINDOWTYPE_CONSOLE]->getRegion(&xRegion, &yRegion, &wRegion, &hRegion);
+			ControlConsole* p_console = (ControlConsole*)resource::getMainWindow()->findControl("CONSOLE");
 
-			gfx::drawText(xRegion, yRegion+hRegion-(config::DEFAULT_FONT_HEIGHT-1), "¾Æ¹«Å°³ª ´©¸£½Ê½Ã¿À ...", game::getRealColor(14));
-*/
+			if (p_console)
+			{
+				// ì´ì „ì˜ ê¸°ë¡ì€ ë” ë¹¨ë¦¬ ì¶œë ¥ë˜ì–´ì•¼ í•œë‹¤
+				p_console->invalidate();
+				yunjr::game::updateScreen();
+
+				int saved_x1, saved_y1, saved_x2, saved_y2;
+				int saved_left, saved_top, saved_right, saved_bottom;
+
+				p_console->getRegion(saved_x1, saved_y1, saved_x2, saved_y2);
+				p_console->getMargin(saved_left, saved_top, saved_right, saved_bottom);
+
+				//? ë§Œì•½ ê¸€ìê°€ ëê¹Œì§€ ì§„í–‰í–ˆë‹¤ë©´ press any keyë¥¼ í‘œí˜„í•˜ê¸° ìœ„í•´ ìŠ¤í¬ë¡¤ì´ ë˜ì–´ì•¼ í•œë‹¤.
+				//? descent -> (DEFAULT_FONT_BTBD/2), 6 is magic key
+				p_console->drawText(saved_left, (saved_y2-saved_y1) - (DEFAULT_FONT_BTBD - DEFAULT_FONT_ASCENDER) - 6, L"ì•„ë¬´í‚¤ë‚˜ ëˆ„ë¥´ì‹­ì‹œì˜¤ ...", game::getRealColor(14));
+			}
+
 			yunjr::game::updateScreen();
 
 			yunjr::KeyBuffer& key_buffer = yunjr::KeyBuffer::getKeyBuffer();
@@ -135,7 +160,7 @@ namespace yunjr
 
 			key_buffer.getKey();
 
-			// È­¸é clear
+			// í™”ë©´ clear
 			LoreConsole& console = LoreConsole::getConsole();
 
 			console.clear();
@@ -144,7 +169,7 @@ namespace yunjr
 			yunjr::game::updateScreen();
 		}
 
-		//! ¹é¹öÆÛÀÇ ³»¿ëÀ» ½ÇÁ¦ È­¸é¿¡ ¹İ¿µÇÑ´Ù.
+		//! ë°±ë²„í¼ì˜ ë‚´ìš©ì„ ì‹¤ì œ í™”ë©´ì— ë°˜ì˜í•œë‹¤.
 		void updateScreen(void)
 		{
 			/* code snippet in case of SDL version
@@ -172,7 +197,7 @@ namespace yunjr
 
 		namespace map
 		{
-			//! ¸ÊÀ» ÃÊ±âÈ­ÇÏ°í ±× Å©±â¸¦ ÁöÁ¤ÇÑ´Ù.
+			//! ë§µì„ ì´ˆê¸°í™”í•˜ê³  ê·¸ í¬ê¸°ë¥¼ ì§€ì •í•œë‹¤.
 			void init(int width, int height)
 			{
 				s_map.setType(yunjr::Map::TYPE_TOWN);
@@ -185,19 +210,19 @@ namespace yunjr
 				sena::memclear(s_map.handicap_data, sizeof(s_map.handicap_data));
 			}
 
-			//! ÇöÀç ¸Ê¿¡¼­ ÀûÀÇ ÃâÇö ¹üÀ§¸¦ ÁöÁ¤ÇÑ´Ù.
+			//! í˜„ì¬ ë§µì—ì„œ ì ì˜ ì¶œí˜„ ë²”ìœ„ë¥¼ ì§€ì •í•œë‹¤.
 			void setType(TYPE _type)
 			{
 				s_map.setType(convert<yunjr::Map::TYPE, yunjr::game::map::TYPE>(_type));
 			}
 
-			//! ÇöÀç ¸Ê¿¡¼­ÀÇ ÇÚµğÄ¸À» ¼³Á¤ÇÑ´Ù.
+			//! í˜„ì¬ ë§µì—ì„œì˜ í•¸ë””ìº¡ì„ ì„¤ì •í•œë‹¤.
 			void setHandicap(int handicap)
 			{
 				s_map.setHandicap(yunjr::Map::HANDICAP(handicap));
 			}
 
-			//! ÇöÀç ¸Ê¿¡¼­ ÀûÀÇ ÃâÇö ¹üÀ§¸¦ ÁöÁ¤ÇÑ´Ù.
+			//! í˜„ì¬ ë§µì—ì„œ ì ì˜ ì¶œí˜„ ë²”ìœ„ë¥¼ ì§€ì •í•œë‹¤.
 			void setEncounter(int offset, int range)
 			{
 				ASSERT(offset > 0 && range >= 0);
@@ -206,14 +231,14 @@ namespace yunjr
 				s_map.encounter_range  = range;
 			}
 
-			//! ÇöÀç ¸Ê¿¡¼­ ½ÃÀÛ ÁöÁ¡À» ÁöÁ¤ÇÑ´Ù.
+			//! í˜„ì¬ ë§µì—ì„œ ì‹œì‘ ì§€ì ì„ ì§€ì •í•œë‹¤.
 			void setStartPos(int x, int y)
 			{
 				s_party.x = x;
 				s_party.y = y;
 			}
 
-			//! ¸Ê µ¥ÀÌÅÍ¸¦ Çà ´ÜÀ§·Î ÀÔ·ÂÇÑ´Ù.
+			//! ë§µ ë°ì´í„°ë¥¼ í–‰ ë‹¨ìœ„ë¡œ ì…ë ¥í•œë‹¤.
 			void push(int row, const unsigned char* p_data, int num_data)
 			{
 				if (row >= 0 && row < s_map.height)
@@ -226,7 +251,7 @@ namespace yunjr
 					sena::memcpy(&s_map.data[row][0], p_data, num_data);
 				}
 			}
-			//! ¸ÊÀÇ (x,y) ÁöÁ¡ÀÇ Å¸ÀÏ °ªÀ» º¯°æÇÑ´Ù.
+			//! ë§µì˜ (x,y) ì§€ì ì˜ íƒ€ì¼ ê°’ì„ ë³€ê²½í•œë‹¤.
 			void change(int x, int y, int tile)
 			{
 				s_map.changeMap(x, y, tile);
@@ -239,14 +264,14 @@ namespace yunjr
 			{
 				s_map.resetLight(x, y);
 			}
-			//! ¸ÊÀÇ (x,y) ÁöÁ¡ÀÌ ¿Ã¹Ù¸¥ ÀÌµ¿ ÁöÁ¡ÀÎÁö¸¦ ¾Ë·Á ÁØ´Ù.
+			//! ë§µì˜ (x,y) ì§€ì ì´ ì˜¬ë°”ë¥¸ ì´ë™ ì§€ì ì¸ì§€ë¥¼ ì•Œë ¤ ì¤€ë‹¤.
 			bool isValidWarpPos(int x, int y)
 			{
 				//??
 				//return ((x >= WindowMap::_X_RADIUS) && (x < map.width-WindowMap::_X_RADIUS) && (y >= WindowMap::_Y_RADIUS) && (y < map.height-WindowMap::_Y_RADIUS));
 				return true;
 			}
-			//! ÆÄÀÏ·ÎºÎÅÍ ¸ÊÀ» ÀĞ´Â´Ù.
+			//! íŒŒì¼ë¡œë¶€í„° ë§µì„ ì½ëŠ”ë‹¤.
 			bool loadFromFile(const char* sz_file_name)
 			{
 				target::file_io::StreamReadFile file(sz_file_name);
@@ -285,7 +310,7 @@ namespace yunjr
 
 		namespace console
 		{
-			//! ÄÜ¼Ö Ã¢¿¡, ¸í½ÃÇÑ ÄÃ·¯ÀÇ ¸í½ÃÇÑ °¡º¯ ÆÄ¶ó¹ÌÅÍÀÇ ¹®ÀÚ¿­ ÁıÇÕÀ» Ãâ·ÂÇÑ´Ù.
+			//! ì½˜ì†” ì°½ì—, ëª…ì‹œí•œ ì»¬ëŸ¬ì˜ ëª…ì‹œí•œ ê°€ë³€ íŒŒë¼ë¯¸í„°ì˜ ë¬¸ìì—´ ì§‘í•©ì„ ì¶œë ¥í•œë‹¤.
 			void writeConsole(unsigned long index, int num_arg, ...)
 			{
 				yunjr::LoreConsole& console = yunjr::LoreConsole::getConsole();
@@ -304,11 +329,11 @@ namespace yunjr
 				}
 
 				console.write(s);
-				//@@ ¼º´É ¹®Á¦
+				//@@ ì„±ëŠ¥ ë¬¸ì œ
 				console.display();
 			}
 
-			//! ÄÜ¼Ö Ã¢¿¡, ¸í½ÃÇÑ ÄÃ·¯ÀÇ ¸í½ÃÇÑ ¹®ÀÚ¿­À» »õ·Î Ãâ·ÂÇÑ´Ù.
+			//! ì½˜ì†” ì°½ì—, ëª…ì‹œí•œ ì»¬ëŸ¬ì˜ ëª…ì‹œí•œ ë¬¸ìì—´ì„ ìƒˆë¡œ ì¶œë ¥í•œë‹¤.
 			void showMessage(unsigned long index, const wchar_t* sz_message)
 			{
 				LoreConsole& console = LoreConsole::getConsole();
@@ -361,9 +386,27 @@ namespace yunjr
 
 		namespace window
 		{
-			void displayStatus(void) {} //??
-			void displayMap(void) {} //??
-			void displayBattle(int param1) {} //??
+			void displayStatus(void)
+			{
+				INVALIDATE_STATUS;
+				game::updateScreen();
+			}
+
+			void displayMap(void)
+			{
+				INVALIDATE_MAP;
+				INVALIDATE_SUB_MAP;
+				game::updateScreen();
+			}
+
+			void displayBattle(int param1)
+			{
+				ControlBattle* p_battle = (ControlBattle*)resource::getMainWindow()->findControl("BATTLE");
+				p_battle->display(param1 != 0);
+
+				game::updateScreen();
+			}
+
 			void getRegionForConsole(int* p_out_x, int* p_out_y, int* p_out_width, int* p_out_height) {} //??
 		}
 
@@ -379,22 +422,22 @@ namespace yunjr
 				return s_save_list;
 			}
 
-			//! ¾Æ±º ¸®½ºÆ®¸¦ vector Çü½ÄÀ¸·Î µ¹·Á ÁØ´Ù.
+			//! ì•„êµ° ë¦¬ìŠ¤íŠ¸ë¥¼ vector í˜•ì‹ìœ¼ë¡œ ëŒë ¤ ì¤€ë‹¤.
 			sena::vector<shared::PcPlayer>& getPlayerList(void)
 			{
 				return s_player;
 			}
-			//! ÀûÀÇ ¸®½ºÆ®¸¦ vector Çü½ÄÀ¸·Î µ¹·Á ÁØ´Ù.
+			//! ì ì˜ ë¦¬ìŠ¤íŠ¸ë¥¼ vector í˜•ì‹ìœ¼ë¡œ ëŒë ¤ ì¤€ë‹¤.
 			sena::vector<shared::PcEnemy>&  getEnemyList(void)
 			{
 				return s_enemy;
 			}
-			//! ÆÄÆ¼ÀÇ Á¤º¸¸¦ µ¹·Á ÁØ´Ù.
+			//! íŒŒí‹°ì˜ ì •ë³´ë¥¼ ëŒë ¤ ì¤€ë‹¤.
 			PcParty& getParty(void)
 			{
 				return s_party;
 			}
-			//! ÇöÀç ÁøÇà ÁßÀÎ ¸ÊÀÇ Á¤º¸¸¦ µ¹·Á ÁØ´Ù.
+			//! í˜„ì¬ ì§„í–‰ ì¤‘ì¸ ë§µì˜ ì •ë³´ë¥¼ ëŒë ¤ ì¤€ë‹¤.
 			Map& getMap(void)
 			{
 				return s_map;
@@ -405,7 +448,7 @@ namespace yunjr
 
 		namespace flag
 		{
-			//! ¸í½ÃÇÑ °ÔÀÓ ÇÃ·¡±×¸¦ ¼³Á¤ÇÑ´Ù.
+			//! ëª…ì‹œí•œ ê²Œì„ í”Œë˜ê·¸ë¥¼ ì„¤ì •í•œë‹¤.
 			void set(int index)
 			{
 				if ((index < 0) || (index >= s_game_option.MAX_FLAG))
@@ -416,7 +459,7 @@ namespace yunjr
 
 				s_game_option.flag[index] = true;
 			}
-			//! ¸í½ÃÇÑ °ÔÀÓ ÇÃ·¡±×¸¦ ÇØÁ¦ÇÑ´Ù.
+			//! ëª…ì‹œí•œ ê²Œì„ í”Œë˜ê·¸ë¥¼ í•´ì œí•œë‹¤.
 			void reset(int index)
 			{
 				if ((index < 0) || (index >= s_game_option.MAX_FLAG))
@@ -427,7 +470,7 @@ namespace yunjr
 
 				s_game_option.flag[index] = false;
 			}
-			//! ¸í½ÃÇÑ °ÔÀÓ ÇÃ·¡±×ÀÇ ¼³Á¤ ¿©ºÎ¸¦ µ¹·Á ÁØ´Ù.
+			//! ëª…ì‹œí•œ ê²Œì„ í”Œë˜ê·¸ì˜ ì„¤ì • ì—¬ë¶€ë¥¼ ëŒë ¤ ì¤€ë‹¤.
 			bool isSet(int index)
 			{
 				if ((index < 0) || (index >= s_game_option.MAX_FLAG))
@@ -442,38 +485,33 @@ namespace yunjr
 
 		namespace battle
 		{
-			//? ¿©±â¿¡ ÀüÅõ ÃÖÁ¾ °á°ú °ªÀ» ³Ö¾î¾ß ÇÑ´Ù.
+			//? ì—¬ê¸°ì— ì „íˆ¬ ìµœì¢… ê²°ê³¼ ê°’ì„ ë„£ì–´ì•¼ í•œë‹¤.
 			static BATTLERESULT s_result = BATTLERESULT_EVADE;
 
-			//! ÀüÅõ »óÈ²¿¡ µ¹ÀÔÇßÀ½À» ¾Ë·Á ÁØ´Ù.
+			//! ì „íˆ¬ ìƒí™©ì— ëŒì…í–ˆìŒì„ ì•Œë ¤ ì¤€ë‹¤.
 			void init(void)
 			{
 				game::object::getEnemyList().clear();
+				//game::object::getEnemyList().push_back(shared::PcEnemy(new PcEnemy));
 			}
-			//! ÇöÀçÀÇ µ¥ÀÌÅÍ·Î ÀüÅõ¸¦ ÇÑ´Ù.
+			//! í˜„ì¬ì˜ ë°ì´í„°ë¡œ ì „íˆ¬ë¥¼ í•œë‹¤.
 			void start(bool is_assualt_mode)
 			{
-				/*??
-				s_result = s_p_game_main->runBattleMode(is_assualt_mode);
-				s_p_game_main->changeWindowForField();
-				*/
+				s_result = yunjr::runBattleMode(is_assualt_mode);
+				yunjr::changeWindowForField();
 			}
-			//! ÀüÅõ¿¡ Âü°¡ÇÏ´Â ÀûÀ» Ãß°¡ÇÑ´Ù. ÀÔ·Â ¹æ½ÄÀº ÀûÀÇ index ¹øÈ£¸¦ ³Ñ°Ü ÁÖ´Â °ÍÀÌ´Ù.
+			//! ì „íˆ¬ì— ì°¸ê°€í•˜ëŠ” ì ì„ ì¶”ê°€í•œë‹¤. ì…ë ¥ ë°©ì‹ì€ ì ì˜ index ë²ˆí˜¸ë¥¼ ë„˜ê²¨ ì£¼ëŠ” ê²ƒì´ë‹¤.
 			void registerEnemy(int ix_enemy)
 			{
-				/*??
-				s_p_game_main->registerEnemy(ix_enemy);
-				*/
+				yunjr::registerEnemy(ix_enemy);
 			}
-			//! ÀüÅõ¿¡ Âü°¡ÇÏ´Â ÀûÀ» È­¸é¿¡ Ç¥½ÃÇÑ´Ù.
+			//! ì „íˆ¬ì— ì°¸ê°€í•˜ëŠ” ì ì„ í™”ë©´ì— í‘œì‹œí•œë‹¤.
 			void showEnemy(void)
 			{
-				/*??
-				s_p_game_main->changeWindowForBattle();
+				yunjr::changeWindowForBattle();
 				game::updateScreen();
-				*/
 			}
-			//! ÀüÅõÀÇ °á°ú¸¦ µ¹·ÁÁØ´Ù.
+			//! ì „íˆ¬ì˜ ê²°ê³¼ë¥¼ ëŒë ¤ì¤€ë‹¤.
 			int  getResult(void)
 			{
 				switch (s_result)
@@ -505,27 +543,27 @@ namespace yunjr
 
 		namespace select
 		{
-			//? MenuSelectionÀÇ default parameter¿¡ ´ëÇÑ º¯°æÀ» ÇÏ´Â °ÍÀÌ ÇÊ¿äÇÒÁöµµ ¸ğ¸§
+			//? MenuSelectionì˜ default parameterì— ëŒ€í•œ ë³€ê²½ì„ í•˜ëŠ” ê²ƒì´ í•„ìš”í• ì§€ë„ ëª¨ë¦„
 			static MenuList s_menu;
 			static int s_result = 0;
 
-			//! ¼±ÅÃ ¾ÆÀÌÅÛÀ» ÃÊ±âÈ­ ÇÑ´Ù.
+			//! ì„ íƒ ì•„ì´í…œì„ ì´ˆê¸°í™” í•œë‹¤.
 			void init(void)
 			{
 				s_menu.clear();
 				s_result = 0;
 			}
-			//! ¼±ÅÃ ¾ÆÀÌÅÛÀ» Ãß°¡ ÇÑ´Ù.
+			//! ì„ íƒ ì•„ì´í…œì„ ì¶”ê°€ í•œë‹¤.
 			void add(const wchar_t* sz_string)
 			{
 				s_menu.push_back(sz_string);
 			}
-			//! ÇöÀç ¼±ÅÃµÈ ¾ÆÀÌÅÛÀ¸·Î ¼±ÅÃÀ» ÇÑ´Ù.
+			//! í˜„ì¬ ì„ íƒëœ ì•„ì´í…œìœ¼ë¡œ ì„ íƒì„ í•œë‹¤.
 			void run(void)
 			{
 				s_result = MenuSelection(s_menu)();
 			}
-			//! ¼±ÅÃµÈ °á°ú¸¦ °¡Á® ¿Â´Ù.
+			//! ì„ íƒëœ ê²°ê³¼ë¥¼ ê°€ì ¸ ì˜¨ë‹¤.
 			int  getResult(void)
 			{
 				return s_result;
@@ -588,8 +626,8 @@ namespace hadar
 
 namespace game
 {
-	//! ÀÎµ¦½º ÄÃ·¯¿¡ ´ëÇØ ½ÇÁ¦ ÄÃ·¯ °ªÀ» µ¹·Á ÁØ´Ù.
-	//! ÀÎµ¦½º ÄÃ·¯´Â ¹Ì¸® ¼³Á¤µÈ 16°³ÀÇ ÄÃ·¯ÀÌ´Ù.
+	//! ì¸ë±ìŠ¤ ì»¬ëŸ¬ì— ëŒ€í•´ ì‹¤ì œ ì»¬ëŸ¬ ê°’ì„ ëŒë ¤ ì¤€ë‹¤.
+	//! ì¸ë±ìŠ¤ ì»¬ëŸ¬ëŠ” ë¯¸ë¦¬ ì„¤ì •ëœ 16ê°œì˜ ì»¬ëŸ¬ì´ë‹¤.
 	unsigned long getRealColor(int index)
 	{
 		static const unsigned long s_COLOR_TABLE[16] =
@@ -606,20 +644,20 @@ namespace game
 		return s_COLOR_TABLE[index];
 	}
 
-	//! ÀÌÀüÀÇ ¸Ê »óÀÇ À§Ä¡·Î º¹±ÍÇÑ´Ù.
+	//! ì´ì „ì˜ ë§µ ìƒì˜ ìœ„ì¹˜ë¡œ ë³µê·€í•œë‹¤.
 	void warpPrevPos(void)
 	{
 		s_p_game_main->party.warp(PcParty::POS_PREV);
 	}
 
-	//! ¾Æ¹« Å°³ª ´©¸¦ ¶§±îÁö ¸Ş½ÃÁö¸¦ Ãâ·ÂÇÏ°í ´ë±âÇÑ´Ù.
+	//! ì•„ë¬´ í‚¤ë‚˜ ëˆ„ë¥¼ ë•Œê¹Œì§€ ë©”ì‹œì§€ë¥¼ ì¶œë ¥í•˜ê³  ëŒ€ê¸°í•œë‹¤.
 	void pressAnyKey(void)
 	{
-		//? ¸¸¾à ±ÛÀÚ°¡ ³¡±îÁö ÁøÇàÇß´Ù¸é press any key¸¦ Ç¥ÇöÇÏ±â À§ÇØ ½ºÅ©·ÑÀÌ µÇ¾î¾ß ÇÑ´Ù.
+		//? ë§Œì•½ ê¸€ìê°€ ëê¹Œì§€ ì§„í–‰í–ˆë‹¤ë©´ press any keyë¥¼ í‘œí˜„í•˜ê¸° ìœ„í•´ ìŠ¤í¬ë¡¤ì´ ë˜ì–´ì•¼ í•œë‹¤.
 		int xRegion, yRegion, wRegion, hRegion;
 		s_p_game_main->window[GameMain::WINDOWTYPE_CONSOLE]->getRegion(&xRegion, &yRegion, &wRegion, &hRegion);
 
-		gfx::drawText(xRegion, yRegion+hRegion-(config::DEFAULT_FONT_HEIGHT-1), "¾Æ¹«Å°³ª ´©¸£½Ê½Ã¿À ...", game::getRealColor(14));
+		gfx::drawText(xRegion, yRegion+hRegion-(config::DEFAULT_FONT_HEIGHT-1), "ì•„ë¬´í‚¤ë‚˜ ëˆ„ë¥´ì‹­ì‹œì˜¤ ...", game::getRealColor(14));
 		game::updateScreen();
 
 		hadar::KeyBuffer& keyBuffer = KeyBuffer::getKeyBuffer();
@@ -632,7 +670,7 @@ namespace game
 
 		keyBuffer.getKey();
 
-		// È­¸é clear
+		// í™”ë©´ clear
 		LoreConsole& console = LoreConsole::getConsole();
 
 		console.clear();
@@ -640,7 +678,7 @@ namespace game
 		game::updateScreen();
 	}
 
-	//! ¾Æ¹« Å°³ª ´©¸¦ ¶§±îÁö ¸Ş½ÃÁö¸¦ Ãâ·Â¾øÀÌ ´ë±âÇÑ´Ù.
+	//! ì•„ë¬´ í‚¤ë‚˜ ëˆ„ë¥¼ ë•Œê¹Œì§€ ë©”ì‹œì§€ë¥¼ ì¶œë ¥ì—†ì´ ëŒ€ê¸°í•œë‹¤.
 	void waitForAnyKey(void)
 	{
 		hadar::KeyBuffer& keyBuffer = KeyBuffer::getKeyBuffer();
@@ -654,13 +692,13 @@ namespace game
 		keyBuffer.getKey();
 	}
 
-	//! ÁöÁ¤ÇÑ ½Ã°£¸¸Å­ ´ë±âÇÑ´Ù.
+	//! ì§€ì •í•œ ì‹œê°„ë§Œí¼ ëŒ€ê¸°í•œë‹¤.
 	void wait(unsigned long msec)
 	{
 		smutil::delay(msec);
 	}
 
-	//! ¹é¹öÆÛÀÇ ³»¿ëÀ» ½ÇÁ¦ È­¸é¿¡ ¹İ¿µÇÑ´Ù.
+	//! ë°±ë²„í¼ì˜ ë‚´ìš©ì„ ì‹¤ì œ í™”ë©´ì— ë°˜ì˜í•œë‹¤.
 	void updateScreen(void)
 	{
 		p_gfx_device->endDraw();
@@ -668,7 +706,7 @@ namespace game
 		p_gfx_device->beginDraw();
 	}
 
-	//! ¸í½ÃÇÑ ½ºÅ©¸³Æ® ÆÄÀÏ·ÎºÎÅÍ »õ·Î ½ºÅ©¸³Æ®¸¦ ½ÃÀÛÇÑ´Ù.
+	//! ëª…ì‹œí•œ ìŠ¤í¬ë¦½íŠ¸ íŒŒì¼ë¡œë¶€í„° ìƒˆë¡œ ìŠ¤í¬ë¦½íŠ¸ë¥¼ ì‹œì‘í•œë‹¤.
 	bool loadScript(const char* sz_file_name, int xStart, int yStart)
 	{
 		if (!s_p_game_main->loadScript(sz_file_name))
@@ -680,7 +718,7 @@ namespace game
 			s_p_game_main->party.y = yStart;
 		}
 
-		// ½ÃÀÛ½Ã ¹Ù¶óº¸´Â ¹æÇâÀ» Á¤ÇÔ
+		// ì‹œì‘ì‹œ ë°”ë¼ë³´ëŠ” ë°©í–¥ì„ ì •í•¨
 		if (s_p_game_main->party.y > s_map.height / 2)
 			s_p_game_main->party.face(0, -1);
 		else
@@ -691,7 +729,7 @@ namespace game
 		return true;
 	}
 
-	//! ¸í½ÃÇÑ ½ºÅ©¸³Æ® ÆÄÀÏ·ÎºÎÅÍ »õ·Î ½ºÅ©¸³Æ®¸¦ ½ÃÀÛÇÑ´Ù.
+	//! ëª…ì‹œí•œ ìŠ¤í¬ë¦½íŠ¸ íŒŒì¼ë¡œë¶€í„° ìƒˆë¡œ ìŠ¤í¬ë¦½íŠ¸ë¥¼ ì‹œì‘í•œë‹¤.
 	bool playBGM(const char* sz_file_name)
 	{
 		sound::playBGM(sz_file_name);
@@ -705,7 +743,7 @@ namespace game
 
 	namespace map
 	{
-		//! ¸ÊÀ» ÃÊ±âÈ­ÇÏ°í ±× Å©±â¸¦ ÁöÁ¤ÇÑ´Ù.
+		//! ë§µì„ ì´ˆê¸°í™”í•˜ê³  ê·¸ í¬ê¸°ë¥¼ ì§€ì •í•œë‹¤.
 		void init(int width, int height)
 		{
 			s_map.setType(Map::TYPE_TOWN);
@@ -718,19 +756,19 @@ namespace game
 			sena::memclear(s_map.handicap_data, sizeof(s_map.handicap_data));
 		}
 
-		//! ÇöÀç ¸Ê¿¡¼­ ÀûÀÇ ÃâÇö ¹üÀ§¸¦ ÁöÁ¤ÇÑ´Ù.
+		//! í˜„ì¬ ë§µì—ì„œ ì ì˜ ì¶œí˜„ ë²”ìœ„ë¥¼ ì§€ì •í•œë‹¤.
 		void setType(Map::TYPE _type)
 		{
 			s_map.setType(_type);
 		}
 
-		//! ÇöÀç ¸Ê¿¡¼­ÀÇ ÇÚµğÄ¸À» ¼³Á¤ÇÑ´Ù.
+		//! í˜„ì¬ ë§µì—ì„œì˜ í•¸ë””ìº¡ì„ ì„¤ì •í•œë‹¤.
 		void setHandicap(int handicap)
 		{
 			s_map.setHandicap(Map::HANDICAP(handicap));
 		}
 
-		//! ÇöÀç ¸Ê¿¡¼­ ÀûÀÇ ÃâÇö ¹üÀ§¸¦ ÁöÁ¤ÇÑ´Ù.
+		//! í˜„ì¬ ë§µì—ì„œ ì ì˜ ì¶œí˜„ ë²”ìœ„ë¥¼ ì§€ì •í•œë‹¤.
 		void setEncounter(int offset, int range)
 		{
 			ASSERT(offset > 0 && range >= 0);
@@ -738,14 +776,14 @@ namespace game
 			s_map.encounter_range  = range;
 		}
 
-		//! ÇöÀç ¸Ê¿¡¼­ ½ÃÀÛ ÁöÁ¡À» ÁöÁ¤ÇÑ´Ù.
+		//! í˜„ì¬ ë§µì—ì„œ ì‹œì‘ ì§€ì ì„ ì§€ì •í•œë‹¤.
 		void setStartPos(int x, int y)
 		{
 			s_p_game_main->party.x = x;
 			s_p_game_main->party.y = y;
 		}
 
-		//! ¸Ê µ¥ÀÌÅÍ¸¦ Çà ´ÜÀ§·Î ÀÔ·ÂÇÑ´Ù.
+		//! ë§µ ë°ì´í„°ë¥¼ í–‰ ë‹¨ìœ„ë¡œ ì…ë ¥í•œë‹¤.
 		void push(int row, unsigned char* pData, int num_data)
 		{
 			if (row >= 0 && row < s_map.height)
@@ -758,7 +796,7 @@ namespace game
 				sena::memcpy(&s_map.data[row][0], pData, num_data);
 			}
 		}
-		//! ¸ÊÀÇ (x,y) ÁöÁ¡ÀÇ Å¸ÀÏ °ªÀ» º¯°æÇÑ´Ù.
+		//! ë§µì˜ (x,y) ì§€ì ì˜ íƒ€ì¼ ê°’ì„ ë³€ê²½í•œë‹¤.
 		void change(int x, int y, int tile)
 		{
 			s_map.changeMap(x, y, tile);
@@ -771,12 +809,12 @@ namespace game
 		{
 			s_map.resetLight(x, y);
 		}
-		//! ¸ÊÀÇ (x,y) ÁöÁ¡ÀÌ ¿Ã¹Ù¸¥ ÀÌµ¿ ÁöÁ¡ÀÎÁö¸¦ ¾Ë·Á ÁØ´Ù.
+		//! ë§µì˜ (x,y) ì§€ì ì´ ì˜¬ë°”ë¥¸ ì´ë™ ì§€ì ì¸ì§€ë¥¼ ì•Œë ¤ ì¤€ë‹¤.
 		bool isValidWarpPos(int x, int y)
 		{
 			return s_p_game_main->isValidWarpPos(x, y);
 		}
-		//! ÆÄÀÏ·ÎºÎÅÍ ¸ÊÀ» ÀĞ´Â´Ù.
+		//! íŒŒì¼ë¡œë¶€í„° ë§µì„ ì½ëŠ”ë‹¤.
 		bool loadFromFile(const char* sz_file_name)
 		{
 			if (!s_p_game_main->loadMapFromFile(sz_file_name))
@@ -788,7 +826,7 @@ namespace game
 
 	namespace console
 	{
-		//! ÄÜ¼Ö Ã¢¿¡, ¸í½ÃÇÑ ÄÃ·¯ÀÇ ¸í½ÃÇÑ °¡º¯ ÆÄ¶ó¹ÌÅÍÀÇ ¹®ÀÚ¿­ ÁıÇÕÀ» Ãâ·ÂÇÑ´Ù.
+		//! ì½˜ì†” ì°½ì—, ëª…ì‹œí•œ ì»¬ëŸ¬ì˜ ëª…ì‹œí•œ ê°€ë³€ íŒŒë¼ë¯¸í„°ì˜ ë¬¸ìì—´ ì§‘í•©ì„ ì¶œë ¥í•œë‹¤.
 		void writeConsole(unsigned long index, int num_arg, ...)
 		{
 			LoreConsole& console = LoreConsole::getConsole();
@@ -806,11 +844,11 @@ namespace game
 			}
 
 			console.write(s);
-			//@@ ¼º´É ¹®Á¦
+			//@@ ì„±ëŠ¥ ë¬¸ì œ
 			console.display();
 		}
 
-		//! ÄÜ¼Ö Ã¢¿¡, ¸í½ÃÇÑ ÄÃ·¯ÀÇ ¸í½ÃÇÑ ¹®ÀÚ¿­À» Ãâ·ÂÇÑ´Ù.
+		//! ì½˜ì†” ì°½ì—, ëª…ì‹œí•œ ì»¬ëŸ¬ì˜ ëª…ì‹œí•œ ë¬¸ìì—´ì„ ì¶œë ¥í•œë‹¤.
 		void writeLine(const char* sz_text, unsigned long color)
 		{
 			LoreConsole& console = LoreConsole::getConsole();
@@ -818,11 +856,11 @@ namespace game
 			console.setTextColor(color);
 			console.write(sz_text);
 			console.display();
-			//@@ ¼Óµµ ÀúÇÏ°¡ »ı±âÁö´Â ¾ÊÀ»±î?
+			//@@ ì†ë„ ì €í•˜ê°€ ìƒê¸°ì§€ëŠ” ì•Šì„ê¹Œ?
 			game::updateScreen();
 		}
 
-		//! ÄÜ¼Ö Ã¢¿¡, ¸í½ÃÇÑ ÄÃ·¯ÀÇ ¸í½ÃÇÑ ¹®ÀÚ¿­À» »õ·Î Ãâ·ÂÇÑ´Ù.
+		//! ì½˜ì†” ì°½ì—, ëª…ì‹œí•œ ì»¬ëŸ¬ì˜ ëª…ì‹œí•œ ë¬¸ìì—´ì„ ìƒˆë¡œ ì¶œë ¥í•œë‹¤.
 		void showMessage(unsigned long index, const char* sz_message)
 		{
 			LoreConsole& console = LoreConsole::getConsole();
@@ -833,7 +871,7 @@ namespace game
 			console.display();
 		}
 
-		//! ÄÜ¼Ö Ã¢¿¡ Ãâ·ÂµÇ´Â ÅØ½ºÆ®ÀÇ alignment ¼Ó¼ºÀ» ¼³Á¤ÇÑ´Ù.
+		//! ì½˜ì†” ì°½ì— ì¶œë ¥ë˜ëŠ” í…ìŠ¤íŠ¸ì˜ alignment ì†ì„±ì„ ì„¤ì •í•œë‹¤.
 		void setTextAlign(TEXTALIGN align)
 		{
 			LoreConsole::getConsole().setTextAlign(LoreConsole::TEXTALIGN(align));
@@ -842,22 +880,22 @@ namespace game
 
 	namespace tile
 	{
-		//? ÀÓ½Ã
+		//? ì„ì‹œ
 		const int TILE_X_SIZE = config::DEFAULT_TILE_DISPLAY_WIDTH;
 		const int TILE_Y_SIZE = config::DEFAULT_TILE_DISPLAY_HEIGHT;
-		//! ÁöÁ¤ÇÑ Å¸ÀÏÀ» ÀÓ½Ã Å¸ÀÏ(55¹ø)¿¡ º¹»çÇÑ´Ù.
+		//! ì§€ì •í•œ íƒ€ì¼ì„ ì„ì‹œ íƒ€ì¼(55ë²ˆ)ì— ë³µì‚¬í•œë‹¤.
 		void copyToDefaultTile(int ix_tile)
 		{
 			int y_dst = s_map.type * TILE_Y_SIZE;
 			p_tile_image->bitBlt(55*TILE_X_SIZE, y_dst, p_tile_image, ix_tile*TILE_X_SIZE, y_dst, TILE_X_SIZE, TILE_Y_SIZE);
 		}
-		//! ÁöÁ¤ÇÑ ½ºÇÁ¶óÀÌÆ®¸¦ ÀÓ½Ã Å¸ÀÏ(55¹ø)¿¡ º¹»çÇÑ´Ù.
+		//! ì§€ì •í•œ ìŠ¤í”„ë¼ì´íŠ¸ë¥¼ ì„ì‹œ íƒ€ì¼(55ë²ˆ)ì— ë³µì‚¬í•œë‹¤.
 		void copyToDefaultSprite(int ix_sprite)
 		{
 			int y_dst = s_map.type * TILE_Y_SIZE;
 			p_tile_image->bitBlt(55*TILE_X_SIZE, y_dst, p_sprite_image, ix_sprite*TILE_X_SIZE, 0, TILE_X_SIZE, TILE_Y_SIZE);
 		}
-		//! ÁöÁ¤ÇÑ Å¸ÀÏÀ» ÁöÁ¤ÇÑ Å¸ÀÏ¿¡ º¹»çÇÑ´Ù.
+		//! ì§€ì •í•œ íƒ€ì¼ì„ ì§€ì •í•œ íƒ€ì¼ì— ë³µì‚¬í•œë‹¤.
 		void copyTile(int src_tile, int dst_tile)
 		{
 			int y_dst = s_map.type * TILE_Y_SIZE;
@@ -867,7 +905,7 @@ namespace game
 
 	namespace window
 	{
-		//! ¸ÊÀ» È­¸é¿¡ Ãâ·ÂÇÑ´Ù.
+		//! ë§µì„ í™”ë©´ì— ì¶œë ¥í•œë‹¤.
 		void displayMap(void)
 		{
 			s_p_game_main->window[GameMain::WINDOWTYPE_MAP]->setUpdateFlag();
@@ -876,36 +914,36 @@ namespace game
 			s_p_game_main->window[GameMain::WINDOWTYPE_SUBMAP]->setUpdateFlag();
 			s_p_game_main->window[GameMain::WINDOWTYPE_SUBMAP]->display((s_map.type == Map::TYPE_DEN) ? 1 : 0, s_p_game_main->party.ability.magic_torch);
 		}
-		//! ÄÜ¼Ö Ã¢À» È­¸é¿¡ Ãâ·ÂÇÑ´Ù.
+		//! ì½˜ì†” ì°½ì„ í™”ë©´ì— ì¶œë ¥í•œë‹¤.
 		void displayConsole(void)
 		{
 			s_p_game_main->window[GameMain::WINDOWTYPE_CONSOLE]->setUpdateFlag();
 			s_p_game_main->window[GameMain::WINDOWTYPE_CONSOLE]->display();
 		}
-		//! »óÅÂ Ã¢À» È­¸é¿¡ Ãâ·ÂÇÑ´Ù.
+		//! ìƒíƒœ ì°½ì„ í™”ë©´ì— ì¶œë ¥í•œë‹¤.
 		void displayStatus(void)
 		{
 			s_p_game_main->window[GameMain::WINDOWTYPE_STATUS]->setUpdateFlag();
 			s_p_game_main->window[GameMain::WINDOWTYPE_STATUS]->display();
 		}
-		//! ÀüÅõ Ã¢À» È­¸é¿¡ Ãâ·ÂÇÑ´Ù.
+		//! ì „íˆ¬ ì°½ì„ í™”ë©´ì— ì¶œë ¥í•œë‹¤.
 		void displayBattle(int param1)
 		{
 			s_p_game_main->window[GameMain::WINDOWTYPE_BATTLE]->setUpdateFlag();
 			s_p_game_main->window[GameMain::WINDOWTYPE_BATTLE]->display(param1);
 		}
-		//! ÄÜ¼Ö Ã¢ÀÇ Å©±â¸¦ µ¹·Á ÁØ´Ù.
+		//! ì½˜ì†” ì°½ì˜ í¬ê¸°ë¥¼ ëŒë ¤ ì¤€ë‹¤.
 		void getRegionForConsole(int* p_out_x, int* p_out_y, int* p_out_width, int* p_out_height)
 		{
 			LoreConsole::getConsole().getRegion(p_out_x, p_out_y, p_out_width, p_out_height);
-			// ¾Æ·¡Ã³·³ ÇÏ¸é ¾ÈµÊ. console window ³»¿¡ client¿µ¿ªÀ» ¾ò¾î¾ß ÇÏ±â ¶§¹®ÀÓ.
+			// ì•„ë˜ì²˜ëŸ¼ í•˜ë©´ ì•ˆë¨. console window ë‚´ì— clientì˜ì—­ì„ ì–»ì–´ì•¼ í•˜ê¸° ë•Œë¬¸ì„.
 			// s_p_game_main->window[WINDOWTYPE_CONSOLE]->getRegion(pX, pY, pW, pH);
 		}
 	}
 
 	namespace status
 	{
-		//! ÇöÀç ÀüÅõ »óÅÂÀÎÁö ¾Æ´ÑÁö¸¦ ¾Ë·Á ÁØ´Ù.
+		//! í˜„ì¬ ì „íˆ¬ ìƒíƒœì¸ì§€ ì•„ë‹Œì§€ë¥¼ ì•Œë ¤ ì¤€ë‹¤.
 		bool inBattle(void)
 		{
 			return (s_p_game_main->game_state == GameMain::GAMESTATE_BATTLE);
@@ -914,22 +952,22 @@ namespace game
 
 	namespace object
 	{
-		//! ¾Æ±º ¸®½ºÆ®¸¦ vector Çü½ÄÀ¸·Î µ¹·Á ÁØ´Ù.
+		//! ì•„êµ° ë¦¬ìŠ¤íŠ¸ë¥¼ vector í˜•ì‹ìœ¼ë¡œ ëŒë ¤ ì¤€ë‹¤.
 		sena::vector<PcPlayer*>& getPlayerList(void)
 		{
 			return s_p_game_main->player;
 		}
-		//! ÀûÀÇ ¸®½ºÆ®¸¦ vector Çü½ÄÀ¸·Î µ¹·Á ÁØ´Ù.
+		//! ì ì˜ ë¦¬ìŠ¤íŠ¸ë¥¼ vector í˜•ì‹ìœ¼ë¡œ ëŒë ¤ ì¤€ë‹¤.
 		sena::vector<PcEnemy*>&  getEnemyList(void)
 		{
 			return s_p_game_main->enemy;
 		}
-		//! ÆÄÆ¼ÀÇ Á¤º¸¸¦ µ¹·Á ÁØ´Ù.
+		//! íŒŒí‹°ì˜ ì •ë³´ë¥¼ ëŒë ¤ ì¤€ë‹¤.
 		PcParty& getParty(void)
 		{
 			return s_p_game_main->party;
 		}
-		//! ÇöÀç ÁøÇà ÁßÀÎ ¸ÊÀÇ Á¤º¸¸¦ µ¹·Á ÁØ´Ù.
+		//! í˜„ì¬ ì§„í–‰ ì¤‘ì¸ ë§µì˜ ì •ë³´ë¥¼ ëŒë ¤ ì¤€ë‹¤.
 		Map& getMap(void)
 		{
 			return s_map;
@@ -938,7 +976,7 @@ namespace game
 
 	namespace variable
 	{
-		//! ¸í½ÃÇÑ °ÔÀÓ º¯¼ö¸¦ ¼³Á¤ÇÑ´Ù.
+		//! ëª…ì‹œí•œ ê²Œì„ ë³€ìˆ˜ë¥¼ ì„¤ì •í•œë‹¤.
 		void set(int index, int value)
 		{
 			if ((index < 0) || (index >= s_game_option.MAX_VARIABLE))
@@ -949,7 +987,7 @@ namespace game
 
 			s_game_option.variable[index] = value;
 		}
-		//! ¸í½ÃÇÑ °ÔÀÓ º¯¼öÀÇ °ªÀ» 1Áõ°¡ ½ÃÅ²´Ù.
+		//! ëª…ì‹œí•œ ê²Œì„ ë³€ìˆ˜ì˜ ê°’ì„ 1ì¦ê°€ ì‹œí‚¨ë‹¤.
 		void add(int index)
 		{
 			if ((index < 0) || (index >= s_game_option.MAX_VARIABLE))
@@ -960,7 +998,7 @@ namespace game
 
 			++s_game_option.variable[index];
 		}
-		//! ¸í½ÃÇÑ °ÔÀÓ º¯¼öÀÇ °ªÀ» µ¹·Á ÁØ´Ù.
+		//! ëª…ì‹œí•œ ê²Œì„ ë³€ìˆ˜ì˜ ê°’ì„ ëŒë ¤ ì¤€ë‹¤.
 		int get(int index)
 		{
 			if ((index < 0) || (index >= s_game_option.MAX_VARIABLE))
@@ -975,7 +1013,7 @@ namespace game
 	
 	namespace flag
 	{
-		//! ¸í½ÃÇÑ °ÔÀÓ ÇÃ·¡±×¸¦ ¼³Á¤ÇÑ´Ù.
+		//! ëª…ì‹œí•œ ê²Œì„ í”Œë˜ê·¸ë¥¼ ì„¤ì •í•œë‹¤.
 		void set(int index)
 		{
 			if ((index < 0) || (index >= s_game_option.MAX_FLAG))
@@ -986,7 +1024,7 @@ namespace game
 
 			s_game_option.flag[index] = true;
 		}
-		//! ¸í½ÃÇÑ °ÔÀÓ ÇÃ·¡±×¸¦ ÇØÁ¦ÇÑ´Ù.
+		//! ëª…ì‹œí•œ ê²Œì„ í”Œë˜ê·¸ë¥¼ í•´ì œí•œë‹¤.
 		void reset(int index)
 		{
 			if ((index < 0) || (index >= s_game_option.MAX_FLAG))
@@ -997,7 +1035,7 @@ namespace game
 
 			s_game_option.flag[index] = false;
 		}
-		//! ¸í½ÃÇÑ °ÔÀÓ ÇÃ·¡±×ÀÇ ¼³Á¤ ¿©ºÎ¸¦ µ¹·Á ÁØ´Ù.
+		//! ëª…ì‹œí•œ ê²Œì„ í”Œë˜ê·¸ì˜ ì„¤ì • ì—¬ë¶€ë¥¼ ëŒë ¤ ì¤€ë‹¤.
 		bool isSet(int index)
 		{
 			if ((index < 0) || (index >= s_game_option.MAX_FLAG))
@@ -1012,32 +1050,32 @@ namespace game
 
 	namespace battle
 	{
-		//? ¿©±â¿¡ ÀüÅõ ÃÖÁ¾ °á°ú °ªÀ» ³Ö¾î¾ß ÇÑ´Ù.
+		//? ì—¬ê¸°ì— ì „íˆ¬ ìµœì¢… ê²°ê³¼ ê°’ì„ ë„£ì–´ì•¼ í•œë‹¤.
 		static GameMain::BATTLERESULT s_result = GameMain::BATTLERESULT_EVADE;
 
-		//! ÀüÅõ »óÈ²¿¡ µ¹ÀÔÇßÀ½À» ¾Ë·Á ÁØ´Ù.
+		//! ì „íˆ¬ ìƒí™©ì— ëŒì…í–ˆìŒì„ ì•Œë ¤ ì¤€ë‹¤.
 		void init(void)
 		{
 			s_p_game_main->enemy.clear();
 		}
-		//! ÇöÀçÀÇ µ¥ÀÌÅÍ·Î ÀüÅõ¸¦ ÇÑ´Ù.
+		//! í˜„ì¬ì˜ ë°ì´í„°ë¡œ ì „íˆ¬ë¥¼ í•œë‹¤.
 		void start(bool is_assualt_mode)
 		{
 			s_result = s_p_game_main->runBattleMode(is_assualt_mode);
 			s_p_game_main->changeWindowForField();
 		}
-		//! ÀüÅõ¿¡ Âü°¡ÇÏ´Â ÀûÀ» Ãß°¡ÇÑ´Ù. ÀÔ·Â ¹æ½ÄÀº ÀûÀÇ index ¹øÈ£¸¦ ³Ñ°Ü ÁÖ´Â °ÍÀÌ´Ù.
+		//! ì „íˆ¬ì— ì°¸ê°€í•˜ëŠ” ì ì„ ì¶”ê°€í•œë‹¤. ì…ë ¥ ë°©ì‹ì€ ì ì˜ index ë²ˆí˜¸ë¥¼ ë„˜ê²¨ ì£¼ëŠ” ê²ƒì´ë‹¤.
 		void registerEnemy(int ix_enemy)
 		{
 			s_p_game_main->registerEnemy(ix_enemy);
 		}
-		//! ÀüÅõ¿¡ Âü°¡ÇÏ´Â ÀûÀ» È­¸é¿¡ Ç¥½ÃÇÑ´Ù.
+		//! ì „íˆ¬ì— ì°¸ê°€í•˜ëŠ” ì ì„ í™”ë©´ì— í‘œì‹œí•œë‹¤.
 		void showEnemy(void)
 		{
 			s_p_game_main->changeWindowForBattle();
 			game::updateScreen();
 		}
-		//! ÀüÅõÀÇ °á°ú¸¦ µ¹·ÁÁØ´Ù.
+		//! ì „íˆ¬ì˜ ê²°ê³¼ë¥¼ ëŒë ¤ì¤€ë‹¤.
 		int  getResult(void)
 		{
 			switch (s_result)
@@ -1101,7 +1139,7 @@ namespace game
 	
 	namespace player
 	{
-		//! ÇöÀç ÀÇ½ÄÀÌ ÀÖ´Â ¾Æ±ºÀÇ ¼ö¸¦ µ¹·Á ÁØ´Ù.
+		//! í˜„ì¬ ì˜ì‹ì´ ìˆëŠ” ì•„êµ°ì˜ ìˆ˜ë¥¼ ëŒë ¤ ì¤€ë‹¤.
 		int getNumOfConsciousPlayer(void)
 		{
 			int num_alive = 0;
@@ -1186,7 +1224,7 @@ namespace game
 
 	namespace enemy
 	{
-		//! ÇöÀç ÀÇ½ÄÀÌ ÀÖ´Â ÀûÀÇ ¼ö¸¦ µ¹·Á ÁØ´Ù.
+		//! í˜„ì¬ ì˜ì‹ì´ ìˆëŠ” ì ì˜ ìˆ˜ë¥¼ ëŒë ¤ ì¤€ë‹¤.
 		int getNumOfConsciousEnemy(void)
 		{
 			int num_alive = 0;
@@ -1214,27 +1252,27 @@ namespace game
 
 	namespace select
 	{
-		//? MenuSelectionÀÇ default parameter¿¡ ´ëÇÑ º¯°æÀ» ÇÏ´Â °ÍÀÌ ÇÊ¿äÇÒÁöµµ ¸ğ¸§
+		//? MenuSelectionì˜ default parameterì— ëŒ€í•œ ë³€ê²½ì„ í•˜ëŠ” ê²ƒì´ í•„ìš”í• ì§€ë„ ëª¨ë¦„
 		static MenuList s_menu;
 		static int s_result = 0;
 
-		//! ¼±ÅÃ ¾ÆÀÌÅÛÀ» ÃÊ±âÈ­ ÇÑ´Ù.
+		//! ì„ íƒ ì•„ì´í…œì„ ì´ˆê¸°í™” í•œë‹¤.
 		void init(void)
 		{
 			s_menu.clear();
 			s_result = 0;
 		}
-		//! ¼±ÅÃ ¾ÆÀÌÅÛÀ» Ãß°¡ ÇÑ´Ù.
+		//! ì„ íƒ ì•„ì´í…œì„ ì¶”ê°€ í•œë‹¤.
 		void add(const char* sz_string)
 		{
 			s_menu.push_back(sz_string);
 		}
-		//! ÇöÀç ¼±ÅÃµÈ ¾ÆÀÌÅÛÀ¸·Î ¼±ÅÃÀ» ÇÑ´Ù.
+		//! í˜„ì¬ ì„ íƒëœ ì•„ì´í…œìœ¼ë¡œ ì„ íƒì„ í•œë‹¤.
 		void run(void)
 		{
 			s_result = MenuSelection(s_menu)();
 		}
-		//! ¼±ÅÃµÈ °á°ú¸¦ °¡Á® ¿Â´Ù.
+		//! ì„ íƒëœ ê²°ê³¼ë¥¼ ê°€ì ¸ ì˜¨ë‹¤.
 		int  getResult(void)
 		{
 			return s_result;

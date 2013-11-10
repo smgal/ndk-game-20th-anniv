@@ -704,6 +704,9 @@ namespace
 
 			if (p_enemy->special_cast_level > 1)
 			{
+//?? 현재 문제 있음
+if (0)
+{
 				yunjr::shared::PcPlayer p_last_player = *(player.end() - 1);
 				if ((p_last_player->isValid()) && (num_not_dead < 7) && (smutil::random(5) == 0))
 				{
@@ -718,6 +721,7 @@ namespace
 
 					yunjr::game::console::writeConsole(13, 4, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB2), L" 독심술을 사용하여 ", enemy[ix_enemy]->getName(yunjr::PcEnemy::JOSA_OBJ), L" 자기편으로 끌어들였다");
 				}
+}
 			}
 
 			if (p_enemy->special_cast_level > 2)
@@ -729,7 +733,7 @@ namespace
 
 				if (smutil::random(5) == 0)
 				for (ix_player = 0; ix_player < 6; ix_player++)
-				if ((player[ix_player]->dead == 0) && (player[ix_player]->isValid()))
+				if ((ix_player < player.size()) && (player[ix_player]->dead == 0) && (player[ix_player]->isValid()))
 				{
 					yunjr::game::console::writeConsole(13, 4, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), L" ", player[ix_player]->getName(yunjr::PcEnemy::JOSA_NONE), L"에게 죽음의 공격을 시도했다");
 

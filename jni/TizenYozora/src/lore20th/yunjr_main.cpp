@@ -121,7 +121,7 @@ namespace
 	};
 }
 
-namespace
+namespace yunjr
 {
 	// forward
 	void proccessGameOver(yunjr::EXITCODE code);
@@ -1761,19 +1761,22 @@ void yunjr::init(const char* sz_id)
 	{
 		sena::vector<shared::PcPlayer>& player_list = game::object::getPlayerList();
 
+		int order = 0;
+
 		{
 			shared::PcPlayer p_player(new PcPlayer());
 
 			p_player->setDefault(0);
 
 			p_player->setName(L"SMgal");
-			p_player->class_ = 8;
+			p_player->class_ = 3;
 			p_player->level[0] = 19;
 			p_player->level[1] = 19;
 			p_player->level[2] = 19;
 			p_player->hp = 190;
 			p_player->level[0] = 19;
 
+			p_player->order = order++;
 			player_list.push_back(p_player);
 		}
 
@@ -1787,7 +1790,11 @@ void yunjr::init(const char* sz_id)
 			p_player->hp = 17;
 			p_player->sp = 5;
 			p_player->esp = 5;
+			p_player->level[0] = 20;
+			p_player->level[1] = 20;
+			p_player->level[2] = 20;
 
+			p_player->order = order++;
 			player_list.push_back(p_player);
 		}
 
@@ -1801,7 +1808,11 @@ void yunjr::init(const char* sz_id)
 			p_player->hp = 7;
 			p_player->sp = 17;
 			p_player->esp = 5;
+			p_player->level[0] = 20;
+			p_player->level[1] = 20;
+			p_player->level[2] = 20;
 
+			p_player->order = order++;
 			player_list.push_back(p_player);
 		}
 
@@ -1810,14 +1821,19 @@ void yunjr::init(const char* sz_id)
 
 			p_player->setDefault(0);
 
-			p_player->setName(L"Cominus");
+			p_player->setName(L"카미너스");
 			p_player->hp = 10;
 			p_player->sp = 11;
 			p_player->esp = 3;
 			p_player->class_ = 2;
+			p_player->level[0] = 20;
+			p_player->level[1] = 20;
+			p_player->level[2] = 20;
 
+			p_player->order = order++;
 			player_list.push_back(p_player);
 		}
+
 	}
 }
 
