@@ -476,14 +476,14 @@ namespace
 					{
 						if ((*obj)->isValid())
 						{
-							yunjr::game::console::writeConsole(13, 4, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), " ", (*obj)->getName(yunjr::PcEnemy::JOSA_NONE), "의 갑옷파괴를 시도했다");
+							yunjr::game::console::writeConsole(13, 4, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), L" ", (*obj)->getName(yunjr::PcEnemy::JOSA_NONE), L"의 갑옷파괴를 시도했다");
 							if ((*obj)->luck > smutil::random(21))
 							{
-								yunjr::game::console::writeConsole(7, 3, "그러나, ", p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), " 성공하지 못했다");
+								yunjr::game::console::writeConsole(7, 3, L"그러나, ", p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), L" 성공하지 못했다");
 							}
 							else
 							{
-								yunjr::game::console::writeConsole(5, 2, (*obj)->getName(yunjr::PcEnemy::JOSA_NONE), "의 갑옷은 파괴되었다");
+								yunjr::game::console::writeConsole(5, 2, (*obj)->getName(yunjr::PcEnemy::JOSA_NONE), L"의 갑옷은 파괴되었다");
 								if ((*obj)->ac > 0)
 									--(*obj)->ac;
 							}
@@ -699,7 +699,7 @@ namespace
 				}
 
 				yunjr::game::window::displayBattle(0); //@@ 0 맞나?
-				yunjr::game::console::writeConsole(13, 4, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), " ", enemy[ix_enemy]->getName(yunjr::PcEnemy::JOSA_OBJ), " 생성시켰다");
+				yunjr::game::console::writeConsole(13, 4, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), L" ", enemy[ix_enemy]->getName(yunjr::PcEnemy::JOSA_OBJ), L" 생성시켰다");
 			}
 
 			if (p_enemy->special_cast_level > 1)
@@ -790,7 +790,7 @@ namespace
 
 		const MagicTable& magic = MAGIC_TABLE[CONVERT_TABLE[mentality]];
 
-		yunjr::game::console::writeConsole(13, 4, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), " 일행 모두에게 '", magic.sz_magic_name, "'마법을 사용했다");
+		yunjr::game::console::writeConsole(13, 4, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), L" 일행 모두에게 '", magic.sz_magic_name, L"'마법을 사용했다");
 
 		sena::vector<yunjr::shared::PcPlayer>& player = yunjr::game::object::getPlayerList();
 
@@ -839,7 +839,7 @@ namespace
 
 		const MagicTable& magic = MAGIC_TABLE[CONVERT_TABLE[mentality]];
 
-		yunjr::game::console::writeConsole(13, 6, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), " ", p_player->getName(yunjr::PcEnemy::JOSA_NONE), "에게 '", magic.sz_magic_name, "'마법을 사용했다");
+		yunjr::game::console::writeConsole(13, 6, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), L" ", p_player->getName(yunjr::PcEnemy::JOSA_NONE), L"에게 '", magic.sz_magic_name, L"'마법을 사용했다");
 
 		enemyCastAttackSpellSub(p_enemy, p_player, magic.damage * p_enemy->level);
 	}
@@ -847,9 +847,9 @@ namespace
 	void enemyCastCureSpell(PcEnemy* p_enemy, PcEnemy* p_target, int recovery)
 	{
 		if (p_enemy == p_target)
-			yunjr::game::console::writeConsole(13, 2, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), " 자신을 치료했다");
+			yunjr::game::console::writeConsole(13, 2, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), L" 자신을 치료했다");
 		else
-			yunjr::game::console::writeConsole(13, 4, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), " ", p_target->getName(yunjr::PcEnemy::JOSA_OBJ), " 치료했다");
+			yunjr::game::console::writeConsole(13, 4, p_enemy->getName(yunjr::PcEnemy::JOSA_SUB), L" ", p_target->getName(yunjr::PcEnemy::JOSA_OBJ), L" 치료했다");
 
 		if (p_target->dead > 0)
 		{
@@ -873,14 +873,14 @@ namespace
 	{
 		if (smutil::random(20) >= p_enemy->accuracy[1])
 		{
-			yunjr::game::console::writeConsole(7, 2, p_enemy->getName(yunjr::PcEnemy::JOSA_NONE), "의 마법공격은 빗나갔다");
+			yunjr::game::console::writeConsole(7, 2, p_enemy->getName(yunjr::PcEnemy::JOSA_NONE), L"의 마법공격은 빗나갔다");
 			return;
 		}
 
 		if (p_player->isConscious())
 		if (smutil::random(50) < p_player->resistance)
 		{
-			yunjr::game::console::writeConsole(7, 3, "그러나, ", p_player->getName(yunjr::PcEnemy::JOSA_SUB), " 적의 마법을 저지했다");
+			yunjr::game::console::writeConsole(7, 3, L"그러나, ", p_player->getName(yunjr::PcEnemy::JOSA_SUB), L" 적의 마법을 저지했다");
 			return;
 		}
 
@@ -891,7 +891,7 @@ namespace
 
 		if (damage <= 0)
 		{
-			yunjr::game::console::writeConsole(7, 3, "그러나, ", p_player->getName(yunjr::PcEnemy::JOSA_SUB), " 적의 마법을 막아냈다");
+			yunjr::game::console::writeConsole(7, 3, L"그러나, ", p_player->getName(yunjr::PcEnemy::JOSA_SUB), L" 적의 마법을 막아냈다");
 			return;
 		}
 
@@ -904,7 +904,7 @@ namespace
 		if (p_player->hp > 0)
 			p_player->hp -= damage;
 
-		yunjr::game::console::writeConsole(5, 4, p_player->getName(yunjr::PcEnemy::JOSA_SUB), " @D", smutil::IntToStr<wchar_t>(damage)(), "@@만큼의 피해를 입었다");
+		yunjr::game::console::writeConsole(5, 4, p_player->getName(yunjr::PcEnemy::JOSA_SUB), L" @D", smutil::IntToStr<wchar_t>(damage)(), L"@@만큼의 피해를 입었다");
 	}
 
 }

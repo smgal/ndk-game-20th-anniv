@@ -129,25 +129,16 @@ namespace
 	// local
 	yunjr::ControlWindow* s_p_main_window = 0;
 
-
 	void changeWindowForBattle(void)
 	{
-	/* //??
-		window[WINDOWTYPE_MAP]->hide();
-		window[WINDOWTYPE_SUBMAP]->hide();
-
-		window[WINDOWTYPE_BATTLE]->show();
-	*/
+		((yunjr::ControlConsole*)yunjr::resource::getMainWindow()->findControl("MAP"))->hide();
+		((yunjr::ControlConsole*)yunjr::resource::getMainWindow()->findControl("BATTLE"))->show();
 	}
 
 	void changeWindowForField(void)
 	{
-	/* //??
-		window[WINDOWTYPE_BATTLE]->hide();
-
-		window[WINDOWTYPE_MAP]->show();
-		window[WINDOWTYPE_SUBMAP]->show();
-	*/
+		((yunjr::ControlConsole*)yunjr::resource::getMainWindow()->findControl("BATTLE"))->hide();
+		((yunjr::ControlConsole*)yunjr::resource::getMainWindow()->findControl("MAP"))->show();
 	}
 
 	bool isValidWarpPos(int x, int y)
@@ -198,29 +189,30 @@ namespace
 
 	int selectEnemy(void)
 	{
-		return 0;
-	/* //??
-		int num_enabled = enemy.size();
+		yunjr::ControlBattle* p_battle = (yunjr::ControlBattle*)yunjr::resource::getMainWindow()->findControl("BATTLE");
+		sena::vector<yunjr::shared::PcEnemy>& enemy_list = yunjr::game::object::getEnemyList();
+
+		int num_enabled = enemy_list.size();
 		int selected = 0;
 		
 		do
 		{
-			window[WINDOWTYPE_BATTLE]->display(1, selected);
+			p_battle->display(true, selected);
 
 			bool bUpdate = false;
 
 			do
 			{
 				unsigned short key;
-				while ((key = KeyBuffer::getKeyBuffer().getKey()) < 0)
+				while ((key = yunjr::KeyBuffer::getKeyBuffer().getKey()) < 0)
 					;
 
 				switch (key)
 				{
-				case KEY_DIR_UP:
-				case KEY_DIR_DOWN:
+				case yunjr::KEY_DIR_UP:
+				case yunjr::KEY_DIR_DOWN:
 					{
-						int dy = (key == KEY_DIR_UP) ? -1 : +1;
+						int dy = (key == yunjr::KEY_DIR_UP) ? -1 : +1;
 						selected += dy;
 
 						if (selected < 0)
@@ -232,18 +224,17 @@ namespace
 					}
 					break;
 	// 무효 숫자를 돌려주지 않게 함
-	//			case KEY_BTN_A:
+	//			case KEY_BTN_B:
 	//				selected = -1;
 	//				// pass through
 	//
-				case KEY_BTN_B:
-					window[WINDOWTYPE_BATTLE]->display(1);
+				case yunjr::KEY_BTN_A:
+					p_battle->display(true);
 					return selected;
 				}
 			} while (!bUpdate);
 			
 		} while (1);
-	*/
 	}
 
 	void detectGameOver(void)
@@ -316,12 +307,15 @@ namespace
 	// 정상적인 승부로 끝이나면 true, 도망을 치면 false
 	yunjr::BATTLERESULT runBattleMode(bool is_assualt_mode)
 	{
-		return yunjr::BATTLERESULT_LOSE;
-	/* //??
-		BATTLERESULT result = BATTLERESULT_WIN;
-		game_state = GAMESTATE_BATTLE;
+		yunjr::ControlBattle* p_battle = (yunjr::ControlBattle*)yunjr::resource::getMainWindow()->findControl("BATTLE");
+		sena::vector<yunjr::shared::PcPlayer>& player_list = yunjr::game::object::getPlayerList();
+		sena::vector<yunjr::shared::PcEnemy>& enemy_list = yunjr::game::object::getEnemyList();
 
-		ENDBATTLE exitCode = ENDBATTLE_NONE;
+		yunjr::BATTLERESULT result = yunjr::BATTLERESULT_WIN;
+
+		yunjr::GameState::getMutableInstance().setGameState(yunjr::GAMESTATE_BATTLE);
+
+		yunjr::ENDBATTLE exitCode = yunjr::ENDBATTLE_NONE;
 		int battle[MAX_PLAYER][4];
 
 		do
@@ -331,13 +325,15 @@ namespace
 
 			sena::memclear(battle, sizeof(battle));
 
-			window[WINDOWTYPE_BATTLE]->display(0);
+			p_battle->display(false);
 
 			// 명령 등록
 			{
 				bool bAutoBattle = false;
 
-				for (sena::vector<PcPlayer*>::iterator obj = player.begin(); obj != player.end(); ++obj)
+				sena::vector<yunjr::shared::PcPlayer>::iterator obj = player_list.begin();
+
+				for ( ; obj != player_list.end(); ++obj)
 				{
 					int order = (*obj)->order;
 
@@ -345,36 +341,36 @@ namespace
 					{
 						if (!bAutoBattle)
 						{
-							MenuList menu;
+							yunjr::MenuList menu;
 
 							smutil::string str1;
 							str1 += (*obj)->getName();
-							str1 += "의 전투 모드 ===>";
+							str1 += L"의 전투 모드 ===>";
 
 							smutil::string str2;
-							str2 += "한 명의 적을 ";
-							str2 += resource::getWeaponName((*obj)->weapon).sz_name;
-							str2 += resource::getWeaponName((*obj)->weapon).sz_josa_with;
-							str2 += "로 공격";
+							str2 += L"한 명의 적을 ";
+							str2 += yunjr::resource::getWeaponName((*obj)->weapon).sz_name;
+							str2 += yunjr::resource::getWeaponName((*obj)->weapon).sz_josa_with;
+							str2 += L"로 공격";
 
 							menu.reserve(8);
 							menu.push_back(str1);
 							menu.push_back(str2);
-							menu.push_back("한 명의 적에게 마법 공격");
-							menu.push_back("모든 적에게 마법 공격");
-							menu.push_back("적에게 특수 마법 공격");
-							menu.push_back("일행을 치료");
-							menu.push_back("적에게 초능력 사용");
+							menu.push_back(L"한 명의 적에게 마법 공격");
+							menu.push_back(L"모든 적에게 마법 공격");
+							menu.push_back(L"적에게 특수 마법 공격");
+							menu.push_back(L"일행을 치료");
+							menu.push_back(L"적에게 초능력 사용");
 
 							if (order == 0)
-								menu.push_back("일행에게 무조건 공격 할 것을 지시");
+								menu.push_back(L"일행에게 무조건 공격 할 것을 지시");
 							else
-								menu.push_back("도망을 시도함");
+								menu.push_back(L"도망을 시도함");
 
-							int selected = MenuSelection(menu)();
+							int selected = yunjr::MenuSelection(menu)();
 
 							if (selected != 1)
-								LoreConsole::getConsole().clear();
+								yunjr::LoreConsole::getConsole().clear();
 
 							if ((selected == 7) && (order == 0))
 							{
@@ -395,7 +391,7 @@ namespace
 						case 1:
 							{
 								int selected = selectEnemy();
-								LoreConsole::getConsole().clear();
+								yunjr::LoreConsole::getConsole().clear();
 								if (selected == -1)
 									battle[order][1] = 0;
 								battle[order][2] = (*obj)->weapon;
@@ -466,18 +462,18 @@ namespace
 									}
 									break;
 								default:
-									ASSERT(false);
+									assert(false);
 								}
 
-								MenuList menu;
+								yunjr::MenuList menu;
 
 								menu.reserve(8);
-								menu.push_back("");
-								menu.push_back("없음");
+								menu.push_back(L"");
+								menu.push_back(L"없음");
 								for (int i = 0; i < 6; i++)
-									menu.push_back(resource::getMagicName(i+1+ixMagicOffset).sz_name);
+									menu.push_back(yunjr::resource::getMagicName(i+1+ixMagicOffset).sz_name);
 
-								int selected = MenuSelection(menu, num_enabled)();
+								int selected = yunjr::MenuSelection(menu, num_enabled)();
 								int ix_enemy  = -1;
 
 								if ((selected == 0) || (selected == 1))
@@ -485,25 +481,25 @@ namespace
 								else if (isSingleAttack)
 									ix_enemy = selectEnemy();
 
-								LoreConsole::getConsole().clear();
+								yunjr::LoreConsole::getConsole().clear();
 
 								battle[order][2] = selected - 1;
 								battle[order][3] = ix_enemy;
 							}
 							break;
 						case 5:
-							player[order]->castCureSpell();
+							player_list[order]->castCureSpell();
 							break;
 						case 6:
 							{
-								MenuList menu;
+								yunjr::MenuList menu;
 
 								menu.reserve(8);
-								menu.push_back("");
+								menu.push_back(L"");
 								for (int i = 0; i < 5; i++)
-									menu.push_back(resource::getMagicName(i+1+40).sz_name);
+									menu.push_back(yunjr::resource::getMagicName(i+1+40).sz_name);
 
-								int selected = MenuSelection(menu)();
+								int selected = yunjr::MenuSelection(menu)();
 								int ix_enemy  = -1;
 
 								if (selected == 0)
@@ -511,12 +507,12 @@ namespace
 								else
 									ix_enemy = selectEnemy();
 
-								LoreConsole::getConsole().clear();
+								yunjr::LoreConsole::getConsole().clear();
 
 								battle[order][2] = selected;
 								battle[order][3] = ix_enemy;
 
-								if ((ix_enemy < 0) || (enemy[ix_enemy]->unconscious > 0) || (enemy[ix_enemy]->dead > 0))
+								if ((ix_enemy < 0) || (enemy_list[ix_enemy]->unconscious > 0) || (enemy_list[ix_enemy]->dead > 0))
 									battle[order][1] = 0;
 							}
 							break;
@@ -568,9 +564,9 @@ namespace
 								battle[order][2] = 5;
 								{
 									int target = 0;
-									for (int ix_enemy = 1; ix_enemy < int(enemy.size()); ++ix_enemy)
+									for (int ix_enemy = 1; ix_enemy < int(enemy_list.size()); ++ix_enemy)
 									{ // @@ dead 맞나?
-										if ((enemy[ix_enemy]->unconscious == 0) && (enemy[ix_enemy]->dead))
+										if ((enemy_list[ix_enemy]->unconscious == 0) && (enemy_list[ix_enemy]->dead))
 											target = ix_enemy;
 									}
 									battle[order][3] = target;
@@ -578,7 +574,7 @@ namespace
 
 								break;
 							default:
-								ASSERT(false);
+								assert(false);
 							}
 							break;
 						}
@@ -586,11 +582,13 @@ namespace
 				}
 			}
 
-			LoreConsole::getConsole().clear();
+			yunjr::LoreConsole::getConsole().clear();
 
 			// 명령 해석
 			{
-				for (sena::vector<PcPlayer*>::iterator obj = player.begin(); obj != player.end(); ++obj)
+				sena::vector<yunjr::shared::PcPlayer>::iterator obj = player_list.begin();
+
+				for ( ; obj != player_list.end(); ++obj)
 				{
 					if ((*obj)->isConscious())
 					{
@@ -600,59 +598,61 @@ namespace
 
 						if (s_printMessage.isSet(battle[order][1]))
 						{
-							smutil::string s = getBattleMessage(**obj, battle[order][1], battle[order][2], *enemy[battle[order][3]]);
-							LoreConsole::getConsole().setTextColorIndex(15);
-							LoreConsole::getConsole().write(s);
+							smutil::string s = getBattleMessage(**obj, battle[order][1], battle[order][2], *enemy_list[battle[order][3]]);
+							yunjr::LoreConsole::getConsole().setTextColorIndex(15);
+							yunjr::LoreConsole::getConsole().write(s);
 						}
 
 						switch (battle[order][1])
 						{
 							case 1:
-								player[order]->attackWithWeapon(battle[order][2], battle[order][3]);
+								player_list[order]->attackWithWeapon(battle[order][2], battle[order][3]);
 								break;
 							case 2:
-								player[order]->castSpellToOne(battle[order][2], battle[order][3]);
+								player_list[order]->castSpellToOne(battle[order][2], battle[order][3]);
 								break;
 							case 3:
-								player[order]->castSpellToAll(battle[order][2]);
+								player_list[order]->castSpellToAll(battle[order][2]);
 								break;
 							case 4:
-								player[order]->castSpellWithSpecialAbility(battle[order][2], battle[order][3]);
+								player_list[order]->castSpellWithSpecialAbility(battle[order][2], battle[order][3]);
 								break;
 							case 6:
-								player[order]->useESPForBattle(battle[order][2], battle[order][3]);
+								player_list[order]->useESPForBattle(battle[order][2], battle[order][3]);
 								break;
 							case 7:
 								{
 									if ((*obj)->tryToRunAway())
 									{
-										game::pressAnyKey();
+										yunjr::game::pressAnyKey();
 
-										LoreConsole::getConsole().clear();
+										yunjr::LoreConsole::getConsole().clear();
 
-										exitCode = ENDBATTLE_RUN_AWAY;
+										exitCode = yunjr::ENDBATTLE_RUN_AWAY;
 
 										goto END_OF_BATTLE;
 									}
 								}
 						}
 						
-						LoreConsole::getConsole().write("");
+						yunjr::LoreConsole::getConsole().write(L"");
 					}
 				}
 				
-				window[WINDOWTYPE_BATTLE]->display(1);
+				p_battle->display(true);
 
-				LoreConsole::getConsole().write("");
-				LoreConsole::getConsole().display();
-				game::updateScreen();
-				game::pressAnyKey();
+				yunjr::LoreConsole::getConsole().write(L"");
+				yunjr::LoreConsole::getConsole().display();
+				yunjr::game::updateScreen();
+				yunjr::game::pressAnyKey();
 			}
-	QAZ:
-			LoreConsole::getConsole().clear();
+QAZ:
+			yunjr::LoreConsole::getConsole().clear();
 
 			{
-				for (sena::vector<PcEnemy*>::iterator obj = enemy.begin(); obj != enemy.end(); ++obj)
+				sena::vector<yunjr::shared::PcEnemy>::iterator obj = enemy_list.begin();
+
+				for ( ; obj != enemy_list.end(); ++obj)
 				{
 					if ((*obj)->poison > 0)
 					{
@@ -674,10 +674,9 @@ namespace
 				}
 			}
 
-			window[WINDOWTYPE_STATUS]->setUpdateFlag();
-			window[WINDOWTYPE_STATUS]->display();
+			INVALIDATE_STATUS;
 
-			game::updateScreen();
+			yunjr::game::updateScreen();
 
 			if (checkEndOfBattle(exitCode))
 				break;
@@ -685,37 +684,33 @@ namespace
 			is_assualt_mode = true;
 
 			// 원작에서는 적 공격 후에 Press Any Key 문자 출력이 없었음
-			game::pressAnyKey();
+			yunjr::game::pressAnyKey();
 
 		} while (1);
 
-	END_OF_BATTLE:
+END_OF_BATTLE:
 		switch (exitCode)
 		{
-		case ENDBATTLE_LOSE:
-			proccessGameOver(EXITCODE_BY_ENEMY);
-			return BATTLERESULT_LOSE;
-		case ENDBATTLE_WIN:
-			LoreConsole::getConsole().clear();
+		case yunjr::ENDBATTLE_LOSE:
+			proccessGameOver(yunjr::EXITCODE_BY_ENEMY);
+			return yunjr::BATTLERESULT_LOSE;
+		case yunjr::ENDBATTLE_WIN:
+			yunjr::LoreConsole::getConsole().clear();
 			plusGold();
 			break;
-		case ENDBATTLE_RUN_AWAY:
-			result = BATTLERESULT_EVADE;
+		case yunjr::ENDBATTLE_RUN_AWAY:
+			result = yunjr::BATTLERESULT_EVADE;
 			break;
 		default:
-			ASSERT(false);
+			assert(false);
 		}
 
-		window[WINDOWTYPE_MAP]->setUpdateFlag();
-		window[WINDOWTYPE_MAP]->display();
+		INVALIDATE_MAP;
+		INVALIDATE_SUB_MAP;
 
-		window[WINDOWTYPE_SUBMAP]->setUpdateFlag();
-		window[WINDOWTYPE_SUBMAP]->display();
-
-		game_state = GAMESTATE_MAP;
+		yunjr::GameState::getMutableInstance().setGameState(yunjr::GAMESTATE_MAP);
 
 		return result;
-	*/
 	}
 
 	void encounterEnemy(void)
@@ -1695,11 +1690,15 @@ void yunjr::init(const char* sz_id)
 
 		s_p_main_window->addChild(std::make_pair("WAKU",    ControlWaku::newInstance()));
 		s_p_main_window->addChild(std::make_pair("MAP",     ControlMap::newInstance(20*2, 20*2, 216*2, 203*2)));
+		s_p_main_window->addChild(std::make_pair("BATTLE",  ControlBattle::newInstance(20*2, 20*2, 216*2, 203*2)));
 		s_p_main_window->addChild(std::make_pair("CONSOLE", ControlConsole::newInstance(267*2, 21*2, 350*2, 201*2, 20*2, 24*2, 26*2, 24*2)));
 		s_p_main_window->addChild(std::make_pair("STATUS",  ControlStatus::newInstance(21*2, 251*2, 596*2, 90*2)));
 		s_p_main_window->addChild(std::make_pair("PANEL",   ControlPanel::newInstance()));
 
 		resource::setMainWindow(s_p_main_window);
+
+		ControlBattle* p_battle = (ControlBattle*)resource::getMainWindow()->findControl("BATTLE");
+		p_battle->hide();
 	}
 
 	{

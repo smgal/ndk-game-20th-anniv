@@ -26,6 +26,19 @@ namespace yunjr
 
 	};
 
+	struct ControlBattle: public Control
+	{
+		struct Attribute;
+
+	public:
+		void display(bool need_to_clear, int ix_inverted = -1);
+
+		static ControlBattle* newInstance(int x, int y, int width, int height);
+
+	private:
+		ControlBattle();
+
+	};
 }
 
 #endif // #ifndef __YUNJR_CLASS_CONTROL_LV2_H__

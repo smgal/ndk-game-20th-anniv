@@ -10,6 +10,7 @@ namespace yunjr
 	{
 		typedef target::KEY Key;
 
+		GAMESTATE game_state;
 		bool is_terminating;
 		target::InputUpdateInfo current_input_info;
 
@@ -102,6 +103,16 @@ namespace yunjr
 		bool checkKeyPressed(Key key) const
 		{
 			return ((current_input_info.key_pressed_flag & key) != 0);
+		}
+
+		void setGameState(GAMESTATE game_state)
+		{
+			this->game_state = game_state;
+		}
+
+		GAMESTATE getGameState(void) const
+		{
+			return this->game_state;
 		}
 
 		static const GameState& getInstance(void);

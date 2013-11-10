@@ -15,6 +15,7 @@ namespace yunjr
 
 	const int DEFAULT_FONT_SIZE = 28;
 	const int DEFAULT_FONT_BTBD = (16 * 2); // Baseline to Baseline Distance
+	const int DEFAULT_BATTLE_BTBD = (20 * 2);
 
 	const int TILE_W = 24;
 	const int TILE_H = 24;

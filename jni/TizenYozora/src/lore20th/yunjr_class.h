@@ -95,6 +95,7 @@ namespace yunjr
 		void show(void)
 		{
 			is_visible = true;
+			is_damaged = true;
 		}
 
 		void hide(void)
