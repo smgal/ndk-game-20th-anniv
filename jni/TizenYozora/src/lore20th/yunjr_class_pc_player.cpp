@@ -15,6 +15,7 @@
 #include "yunjr_class_map.h"
 #include "yunjr_class_pc_party.h"
 #include "yunjr_class_pc_enemy.h"
+#include "yunjr_class_control_lv1.h"
 #include "yunjr_class_console.h"
 #include "yunjr_class_select.h"
 
@@ -869,15 +870,19 @@ void yunjr::PcPlayer::castPhenominaSpell(void)
 			LoreConsole::getConsole().write(L" ## 5000 공간 이동력");
 			LoreConsole::getConsole().display();
 
-			//@@ console에서 text extent 형식으로 얻어 와야 함
 			int power = 5000;
 			{
 				int x_origin;
 				int y_origin;
 
-				game::window::getRegionForConsole(&x_origin, &y_origin, NULL, NULL);
+				ControlConsole* p_console = (ControlConsole*)resource::getMainWindow()->findControl("CONSOLE");
 
-				power = MenuSelectionUpDown(x_origin + 4*6, y_origin + 2*12, 1000, 9000, 1000, power, game::getRealColor(10), game::getRealColor(8))();
+				// gets client area, not window area
+				int dummy_right, dummy_bottom;
+				p_console->getMargin(x_origin, y_origin, dummy_right, dummy_bottom);
+
+				//?? console에서 text extent 형식으로 얻어 와야 함
+				power = MenuSelectionUpDown(x_origin + 44, y_origin + 2 * DEFAULT_FONT_BTBD + DEFAULT_FONT_ASCENDER, 1000, 9000, 1000, power, game::getRealColor(10), game::getRealColor(8))();
 
 				if (power < 1000)
 					return;

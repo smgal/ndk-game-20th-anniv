@@ -105,13 +105,10 @@ namespace yunjr
 				virtual bool update(Visible* p_this, unsigned long tick)
 				{
 					AttributeChara& attribute = *((AttributeChara*)p_this->getAttribute());
+					PcParty& party = game::object::getParty();
 
-					{
-						PcParty& party = game::object::getParty();
-
-						attribute.dir.x1 = party.faced_x1;
-						attribute.dir.y1 = party.faced_y1;
-					}
+					attribute.dir.x1 = party.faced_x1;
+					attribute.dir.y1 = party.faced_y1;
 
 					int x1 = 0;
 					int y1 = 0;
@@ -139,7 +136,6 @@ namespace yunjr
 
 					if (x1 != 0 || y1 != 0)
 					{
-						PcParty& party = game::object::getParty();
 						Map& map = game::object::getMap();
 
 						bool auto_move = (attribute.pos.x % TILE_W) != 0 || (attribute.pos.y % TILE_H) != 0;
@@ -167,6 +163,14 @@ namespace yunjr
 								attribute.move(x1 * MAP_SCROLL_IN_PIXELS, y1 * MAP_SCROLL_IN_PIXELS);
 								yunjr::sound::playFx(yunjr::sound::SOUND_WALK);
 							}
+						}
+					}
+					else if ((party.x != attribute.pos.x / TILE_W) || (party.y != attribute.pos.y / TILE_H))
+					{
+						if (party.x >= 0 && party.y >= 0)
+						{
+							attribute.pos.x = party.x * TILE_W;
+							attribute.pos.y = party.y * TILE_H;
 						}
 					}
 

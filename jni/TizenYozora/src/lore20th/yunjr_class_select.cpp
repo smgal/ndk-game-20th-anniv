@@ -3,6 +3,8 @@
 
 #include "yunjr_base_gfx.h"
 #include "yunjr_base_key_buffer.h"
+
+#include "yunjr_class_control_lv1.h"
 #include "yunjr_class_console.h"
 #include "yunjr_class_extern.h"
 
@@ -112,12 +114,13 @@ bool yunjr::MenuSelection::loop(void)
 yunjr::MenuSelectionUpDown::MenuSelectionUpDown(int x, int y, int min, int max, int step, int init, unsigned long fgColor, unsigned long bgColor)
 	: m_value(init)
 {
-/*
+	ControlConsole* p_console = (ControlConsole*)resource::getMainWindow()->findControl("CONSOLE");
+
 	do
 	{
-		//@@ smutil::IntToStr를 2번하니 비효율적
-		gfx::fillRect(nullptr, bgColor, x, y, 6*strlen(smutil::IntToStr(m_value)()), 12);
-		gfx::drawText(x, y, smutil::IntToStr(m_value)(), fgColor);
+		//? smutil::IntToStr를 2번하니 비효율적
+//??	gfx::fillRect(nullptr, bgColor, x, y, 6*strlen(smutil::IntToStr(m_value)()), 12);
+		p_console->drawText(x, y, smutil::IntToStr<wchar_t>(m_value)(), fgColor);
 		game::updateScreen();
 
 		bool has_been_updated = false;
@@ -160,5 +163,4 @@ yunjr::MenuSelectionUpDown::MenuSelectionUpDown(int x, int y, int min, int max, 
 		} while (!has_been_updated);
 		
 	} while (1);
-*/
 }

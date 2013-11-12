@@ -1,11 +1,12 @@
 ﻿
+#include "yunjr_class_control_lv1.h"
+
 #include "yunjr_base.h"
 #include "yunjr_base_font.h"
 #include "yunjr_base_gfx.h"
 
 #include "yunjr_class.h"
 #include "yunjr_class_chara.h"
-#include "yunjr_class_control_lv1.h"
 #include "yunjr_class_game_state.h"
 #include "yunjr_util.h"
 

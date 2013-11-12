@@ -83,7 +83,6 @@ namespace yunjr
 			void displayConsole(void);
 			void displayStatus(void);
 			void displayBattle(int);
-			void getRegionForConsole(int* p_out_x, int* p_out_y, int* p_out_width, int* p_out_height);
 		}
 
 		namespace status
