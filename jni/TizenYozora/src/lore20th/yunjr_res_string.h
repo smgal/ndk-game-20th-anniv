@@ -82,7 +82,7 @@ namespace yunjr
 		// Resource 관리 utility
 
 		wchar_t getLastMultiByte(const wchar_t* sz_text);
-		bool hasJongsung(unsigned short code);
+		bool hasJongsung(wchar_t code);
 
 	} // namespace resource
 
