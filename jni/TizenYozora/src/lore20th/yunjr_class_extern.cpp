@@ -180,7 +180,7 @@ namespace yunjr
 			 *
 			 */
 			yunjr::ControlWindow* p_main_window = yunjr::resource::getMainWindow();
-			const BufferDesc* p_buffer_desc = yunjr::resource::getFrameBuffer();
+			const BufferDesc* p_buffer_desc = &gfx::getFrameBuffer()->buffer_desc;
 
 			if (p_main_window && p_buffer_desc)
 			{

@@ -158,12 +158,12 @@ SRC_LORE20TH    := \
                    $(SRC_ROOT)/lore20th/yunjr_class_pc_party.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_class_pc_player.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_class_select.cpp \
-                   $(SRC_ROOT)/lore20th/yunjr_main.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_res.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_res_string.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_script_def.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_script_map_a_dummy.cpp \
                    $(SRC_ROOT)/lore20th/yunjr_script_map_a_sample.cpp \
+                   $(SRC_ROOT)/lore20th/yunjr_z_main.cpp \
                    $(SRC_ROOT)/lore20th/util/sm_util_random.cpp \
                    $(SRC_ROOT)/lore20th/util/sm_util_set.cpp \
                    $(SRC_ROOT)/lore20th/util/sm_util_stream.cpp \

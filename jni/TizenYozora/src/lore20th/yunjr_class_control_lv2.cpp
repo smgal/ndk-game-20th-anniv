@@ -153,7 +153,7 @@ yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int h
 				std::for_each(chara_list.begin(), chara_list.end(), Operator<Chara*, shared::FlatBoard32>(attribute.map_board));
 			}
 
-			const BufferDesc* p_buffer_desc = resource::getFrameBuffer();
+			const BufferDesc* p_buffer_desc = &gfx::getFrameBuffer()->buffer_desc;
 
 			if (p_buffer_desc)
 			{
@@ -261,7 +261,7 @@ void yunjr::ControlBattle::display(bool need_to_clear, int ix_inverted)
 	attribute.need_to_clear = need_to_clear;
 	attribute.ix_inverted = ix_inverted;
 	{
-		const BufferDesc* p_buffer_desc = yunjr::resource::getFrameBuffer();
+		const BufferDesc* p_buffer_desc = &gfx::getFrameBuffer()->buffer_desc;
 		const BufferDesc& buffer_desc = *p_buffer_desc;
 		int dest_buffer_pitch = (buffer_desc.bytes_per_line << 3) / buffer_desc.bits_per_pixel;
 
@@ -326,7 +326,7 @@ yunjr::ControlBattle* yunjr::ControlBattle::newInstance(int x, int y, int width,
 			const int BATTLE_WINDOW_H = attribute.size.height;
 
 			{
-				const BufferDesc* p_buffer_desc = resource::getFrameBuffer();
+				const BufferDesc* p_buffer_desc = &gfx::getFrameBuffer()->buffer_desc;
 
 				unsigned long* p = (unsigned long*)p_buffer_desc->p_start_address;
 				int ppl = (p_buffer_desc->bytes_per_line << 3) / p_buffer_desc->bits_per_pixel;

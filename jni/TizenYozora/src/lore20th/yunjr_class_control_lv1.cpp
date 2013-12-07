@@ -187,7 +187,7 @@ yunjr::ControlWaku* yunjr::ControlWaku::newInstance(void)
 			Attribute& attribute = *((Attribute*)p_this->getAttribute());
 			//dest_board.bitBlt(attribute.pos.x, attribute.pos.y, const_cast<FlatBoard32*>(&attribute.src_ui), 0, 0, attribute.src_ui.getBufferDesc().width, attribute.src_ui.getBufferDesc().height);
 
-			const BufferDesc* p_buffer_desc = resource::getFrameBuffer();
+			const BufferDesc* p_buffer_desc = &gfx::getFrameBuffer()->buffer_desc;
 
 			if (p_buffer_desc)
 			{
@@ -325,7 +325,7 @@ void yunjr::ControlConsole::drawText(int x, int y, const wchar_t* sz_text, unsig
 	const int DIALOG_WINDOW_W = attribute.size.width;
 	const int DIALOG_WINDOW_H = attribute.size.height;
 
-	const BufferDesc* p_buffer_desc = resource::getFrameBuffer();
+	const BufferDesc* p_buffer_desc = &gfx::getFrameBuffer()->buffer_desc;
 
 	unsigned long* p = (unsigned long*)p_buffer_desc->p_start_address;
 	int ppl = (p_buffer_desc->bytes_per_line << 3) / p_buffer_desc->bits_per_pixel;
@@ -410,7 +410,7 @@ yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int widt
 			const int DIALOG_WINDOW_H = attribute.size.height;
 
 			{
-				const BufferDesc* p_buffer_desc = resource::getFrameBuffer();
+				const BufferDesc* p_buffer_desc = &gfx::getFrameBuffer()->buffer_desc;
 
 				unsigned long* p = (unsigned long*)p_buffer_desc->p_start_address;
 				int ppl = (p_buffer_desc->bytes_per_line << 3) / p_buffer_desc->bits_per_pixel;
@@ -508,7 +508,7 @@ yunjr::ControlStatus* yunjr::ControlStatus::newInstance(int x, int y, int width,
 			const int DIALOG_WINDOW_H = attribute.size.height;
 
 			{
-				const BufferDesc* p_buffer_desc = resource::getFrameBuffer();
+				const BufferDesc* p_buffer_desc = &gfx::getFrameBuffer()->buffer_desc;
 
 				unsigned long* p = (unsigned long*)p_buffer_desc->p_start_address;
 				int ppl = (p_buffer_desc->bytes_per_line << 3) / p_buffer_desc->bits_per_pixel;

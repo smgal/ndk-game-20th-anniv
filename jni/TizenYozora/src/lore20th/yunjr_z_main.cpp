@@ -1848,12 +1848,16 @@ bool yunjr::loop(const BufferDesc& buffer_desc)
 
 	if (buffer_desc.bits_per_pixel != 32)
 		return false;
+#if 1
+	yunjr::gfx::beginDraw(buffer_desc);
 
+	shared::FlatBoard32 dest_board = yunjr::gfx::getFrameBuffer();
+#else
 	resource::setFrameBuffer(&buffer_desc);
 
 	int dest_buffer_pitch = (buffer_desc.bytes_per_line << 3) / buffer_desc.bits_per_pixel;
 	shared::FlatBoard32 dest_board(new FlatBoard32((FlatBoard32::Pixel*)buffer_desc.p_start_address, buffer_desc.width, buffer_desc.height, dest_buffer_pitch));
-
+#endif
 	// Galaxy Note I problem: The default filling value of Android bitmap buffer is not defined.
 	{
 		static bool is_first = true;
@@ -1918,7 +1922,11 @@ bool yunjr::loop(const BufferDesc& buffer_desc)
 		s_p_main_window->render(dest_board);
 	}
 
+#if 1
+	yunjr::gfx::endDraw();
+#else
 	resource::setFrameBuffer(0);
+#endif
 
 	return true;
 }

@@ -78,7 +78,6 @@ namespace
 
 namespace
 {
-	const yunjr::BufferDesc* s_ref_current_buffer = 0;
 	struct yunjr::ControlWindow* s_ref_p_main_window = 0;
 	yunjr::shared::Font s_current_font;
 	int s_ref_current_map_pos_x = 0;
@@ -184,16 +183,6 @@ void yunjr::resource::setMainWindow(yunjr::ControlWindow* p_main_window)
 yunjr::ControlWindow* yunjr::resource::getMainWindow(void)
 {
 	return s_ref_p_main_window; 
-}
-
-void yunjr::resource::setFrameBuffer(const BufferDesc* p_buffer)
-{
-	s_ref_current_buffer = p_buffer;
-}
-
-const yunjr::BufferDesc* yunjr::resource::getFrameBuffer(void)
-{
-	return s_ref_current_buffer;
 }
 
 const yunjr::Tile& yunjr::resource::getTile(yunjr::TileId tile_id, int id_offset)

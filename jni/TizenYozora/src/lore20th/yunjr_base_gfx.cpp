@@ -6,6 +6,42 @@
 
 #include "yunjr_res.h"
 
+////////////////////////////////////////////////////////////////////////////////
+
+namespace
+{
+	yunjr::shared::FlatBoard32 _s_flat_board;
+	yunjr::shared::FlatBoard32 _s_flat_board_null;
+}
+
+void yunjr::gfx::beginDraw(const BufferDesc& buffer_desc)
+{
+	int dest_buffer_pitch = (buffer_desc.bytes_per_line << 3) / buffer_desc.bits_per_pixel;
+
+	assert(_s_flat_board.isNull() || _s_flat_board.unique());
+
+	_s_flat_board.setNull();
+	_s_flat_board.bind(new yunjr::FlatBoard32((FlatBoard32::Pixel*)buffer_desc.p_start_address, buffer_desc.width, buffer_desc.height, dest_buffer_pitch));
+}
+
+void yunjr::gfx::endDraw(void)
+{
+	_s_flat_board.setNull();
+}
+
+yunjr::shared::FlatBoard32 yunjr::gfx::getFrameBuffer(void)
+{
+	if (!_s_flat_board.isNull())
+		return _s_flat_board;
+
+	if (_s_flat_board_null.isNull())
+		_s_flat_board_null.bind(new yunjr::FlatBoard32(0, 0, 0, 0));
+
+	return _s_flat_board_null;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 void yunjr::gfx::fillRect(unsigned long* p_dest_32, int w, int h, int dest_pitch, unsigned long color, unsigned long alpha)
 {
 	alpha += (alpha >> 7);

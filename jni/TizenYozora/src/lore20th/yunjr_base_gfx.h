@@ -35,6 +35,15 @@ namespace yunjr
 		typedef sena::shared_ptr<yunjr::FlatBoard32> FlatBoard32;
 	}
 
+	// frame buffer
+	namespace gfx
+	{
+		void beginDraw(const BufferDesc& buffer_desc);
+		void endDraw(void);
+
+		shared::FlatBoard32 getFrameBuffer(void);
+	}
+
 	namespace gfx
 	{
 		void fillRect(unsigned long* p_dest_32, int w, int h, int dest_pitch, unsigned long color, unsigned long alpha);

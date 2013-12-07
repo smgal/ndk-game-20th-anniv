@@ -29,9 +29,6 @@ namespace yunjr
 		void setMainWindow(yunjr::ControlWindow* p_window);
 		yunjr::ControlWindow* getMainWindow(void);
 
-		void setFrameBuffer(const BufferDesc* p_buffer);
-		const BufferDesc* getFrameBuffer(void);
-
 		const Tile& getTile(TileId tile_id, int id_offset = 0);
 		const shared::FlatBoard32& getResimage(ResId res_id);
 
