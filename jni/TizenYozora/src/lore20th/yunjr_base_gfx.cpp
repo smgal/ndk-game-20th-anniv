@@ -1,8 +1,10 @@
 
+#include "yunjr_base_gfx.h"
+
 #include "yunjr_base.h"
 #include "yunjr_base_text_impl.h"
 
-#include "yunjr_base_gfx.h"
+#include "yunjr_res.h"
 
 void yunjr::gfx::fillRect(unsigned long* p_dest_32, int w, int h, int dest_pitch, unsigned long color, unsigned long alpha)
 {
@@ -75,12 +77,12 @@ void yunjr::gfx::bitBlt(unsigned long* p_dest_32, int w, int h, int dest_pitch, 
 	}
 }
 
-void yunjr::gfx::drawTile(FlatBoard32& dest_board, int x, int y, TileId tile_id, int id_offset)
+void yunjr::gfx::drawTile(shared::FlatBoard32& dest_board, int x, int y, TileId tile_id, int id_offset)
 {
 	const Tile& tile = resource::getTile(tile_id, id_offset);
-	const FlatBoard32& src_board = resource::getResimage(tile.id_res);
+	const shared::FlatBoard32 src_board = resource::getResimage(tile.id_res);
 
-	dest_board.bitBlt(x, y, const_cast<FlatBoard32*>(&src_board), tile.bounds.x1, tile.bounds.y1, tile.bounds.x2 - tile.bounds.x1, tile.bounds.y2 - tile.bounds.y1);
+	dest_board->bitBlt(x, y, const_cast<FlatBoard32*>(src_board.get()), tile.bounds.x1, tile.bounds.y1, tile.bounds.x2 - tile.bounds.x1, tile.bounds.y2 - tile.bounds.y1);
 }
 
 ///////////

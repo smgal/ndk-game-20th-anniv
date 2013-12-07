@@ -30,12 +30,12 @@ namespace yunjr
 
 	// for playable rendering
 	template <>
-	void Operator<Chara*, FlatBoard32*>::operator()(Chara* p_obj)
+	void Operator<Chara*, shared::FlatBoard32>::operator()(Chara* p_obj)
 	{
 		if (p_obj)
 		{
 			p_obj->invalidate();
-			p_obj->render(*param);
+			p_obj->render(param);
 		}
 	}
 
@@ -114,12 +114,12 @@ yunjr::ControlWindow* yunjr::ControlWindow::newInstance(int width, int height)
 {
 	struct ShapeWindow: public Visible::Shape
 	{
-		virtual void render(Visible* p_this, FlatBoard32& dest_board) const
+		virtual void render(Visible* p_this, shared::FlatBoard32 dest_board) const
 		{
 			ControlWindow* p_window = (ControlWindow*)p_this;
 			Attribute* p_attribute = (Attribute*)p_window->getAttribute();
 
-			std::for_each(p_attribute->child_list.begin(), p_attribute->child_list.end(), Operator<ControlId, FlatBoard32*>(&dest_board));
+			std::for_each(p_attribute->child_list.begin(), p_attribute->child_list.end(), Operator<ControlId, shared::FlatBoard32>(dest_board));
 		}
 	};
 
@@ -163,7 +163,7 @@ namespace yunjr
 	struct ControlWaku::Attribute: public Visible::Attribute
 	{
 		Control::Pos pos;
-		const FlatBoard32& src_ui;
+		const shared::FlatBoard32 src_ui;
 
 		Attribute()
 			: src_ui(resource::getResimage(ResId(ResId::TAG_TYPE_IMAGE, ResId::TAG_TYPE_IMAGE_UI, 0)))
@@ -182,7 +182,7 @@ yunjr::ControlWaku* yunjr::ControlWaku::newInstance(void)
 {
 	struct ShapeWaku: public Visible::Shape
 	{
-		virtual void render(Visible* p_this, FlatBoard32& dest_board) const
+		virtual void render(Visible* p_this, shared::FlatBoard32 dest_board) const
 		{
 			Attribute& attribute = *((Attribute*)p_this->getAttribute());
 			//dest_board.bitBlt(attribute.pos.x, attribute.pos.y, const_cast<FlatBoard32*>(&attribute.src_ui), 0, 0, attribute.src_ui.getBufferDesc().width, attribute.src_ui.getBufferDesc().height);
@@ -191,8 +191,8 @@ yunjr::ControlWaku* yunjr::ControlWaku::newInstance(void)
 
 			if (p_buffer_desc)
 			{
-				int src_w = attribute.src_ui.getBufferDesc().width;
-				int src_h = attribute.src_ui.getBufferDesc().height;
+				int src_w = attribute.src_ui->getBufferDesc().width;
+				int src_h = attribute.src_ui->getBufferDesc().height;
 				int src_p = src_w; // packed buffer
 
 				int dst_w = p_buffer_desc->width;
@@ -201,9 +201,9 @@ yunjr::ControlWaku* yunjr::ControlWaku::newInstance(void)
 
 				// ura waza
 				{
-					*(const_cast<FlatBoard32*>(&attribute.src_ui)) << baitFillRect;
-					(const_cast<FlatBoard32*>(&attribute.src_ui))->fillRect(0, 0, 1, 1, 0x0);
-					*(const_cast<FlatBoard32*>(&attribute.src_ui)) << attribute.src_ui.getDefaultFillRect();
+					*(const_cast<FlatBoard32*>(attribute.src_ui.get())) << baitFillRect;
+					(const_cast<FlatBoard32*>(attribute.src_ui.get()))->fillRect(0, 0, 1, 1, 0x0);
+					*(const_cast<FlatBoard32*>(attribute.src_ui.get())) << attribute.src_ui->getDefaultFillRect();
 				}
 
 				FlatBoard32::Pixel* p_src = s_p_dest_buffer;
@@ -390,11 +390,11 @@ yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int widt
 {
 	struct ShapeConsole: public Visible::Shape
 	{
-		virtual void render(Visible* p_this, FlatBoard32& dest_board) const
+		virtual void render(Visible* p_this, shared::FlatBoard32 dest_board) const
 		{
 			Attribute& attribute = *((Attribute*)p_this->getAttribute());
 
-			dest_board.fillRect(attribute.pos.x, attribute.pos.y, attribute.size.width, attribute.size.height, 0xFF545454);
+			dest_board->fillRect(attribute.pos.x, attribute.pos.y, attribute.size.width, attribute.size.height, 0xFF545454);
 
 			/* display client area for debugging
 			dest_board.fillRect(attribute.pos.x + attribute.margin.left
@@ -496,11 +496,11 @@ yunjr::ControlStatus* yunjr::ControlStatus::newInstance(int x, int y, int width,
 {
 	struct ShapeConsole: public Visible::Shape
 	{
-		virtual void render(Visible* p_this, FlatBoard32& dest_board) const
+		virtual void render(Visible* p_this, shared::FlatBoard32 dest_board) const
 		{
 			Attribute& attribute = *((Attribute*)p_this->getAttribute());
 
-			dest_board.fillRect(attribute.pos.x, attribute.pos.y, attribute.size.width, attribute.size.height, 0xFF545454);
+			dest_board->fillRect(attribute.pos.x, attribute.pos.y, attribute.size.width, attribute.size.height, 0xFF545454);
 
 			const int DIALOG_WINDOW_X = attribute.pos.x;
 			const int DIALOG_WINDOW_Y = attribute.pos.y;
@@ -640,7 +640,7 @@ yunjr::ControlPanel* yunjr::ControlPanel::newInstance(void)
 {
 	struct ShapePanel: public Visible::Shape
 	{
-		virtual void render(Visible* p_this, FlatBoard32& dest_board) const
+		virtual void render(Visible* p_this, shared::FlatBoard32 dest_board) const
 		{
 		}
 	};

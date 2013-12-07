@@ -71,7 +71,7 @@ namespace yunjr
 				TileId tile_id;
 				std::vector<int> dir_offset[3][3];
 
-				virtual void render(Visible* p_this, FlatBoard32& dest_board) const
+				virtual void render(Visible* p_this, shared::FlatBoard32 dest_board) const
 				{
 					// magic key
 					const int NUM_MAP_X = 9;

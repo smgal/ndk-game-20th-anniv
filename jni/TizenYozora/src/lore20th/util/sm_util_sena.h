@@ -359,21 +359,46 @@ namespace sena
 	class auto_deletor
 	{
 	public:
-		auto_deletor(BaseType* object = 0)
-			: m_object(object)
+		auto_deletor(BaseType* p_object = 0)
+			: m_p_object(p_object)
 		{
 		}
 		~auto_deletor(void)
 		{
-			delete m_object;
+			delete m_p_object;
 		}
-		void set(BaseType* object)
+
+		void bind(BaseType* p_object)
 		{
-			m_object = object;
+			assert(m_p_object == 0);
+			m_p_object = p_object; 
 		}
 
 	private:
-		BaseType* m_object;
+		BaseType* m_p_object;
+	};
+
+	template<typename BaseType>
+	class auto_deletor<BaseType[]>
+	{
+	public:
+		auto_deletor(BaseType* p_object = 0)
+			: m_p_object(p_object)
+		{
+		}
+		~auto_deletor(void)
+		{
+			delete[] m_p_object;
+		}
+
+		void bind(BaseType* p_object)
+		{
+			assert(m_p_object == 0);
+			m_p_object = p_object; 
+		}
+
+	private:
+		BaseType* m_p_object;
 	};
 
 	//! ½Ì±ÛÅæ °´Ã¼¸¦ ¸¸µé¾î ÁÖ±â À§ÇÑ ÅÛÇÃ¸´ (single thread Àü¿ë)
@@ -389,7 +414,7 @@ namespace sena
 			if (m_instance == 0)
 			{
 				m_instance = new BaseType;
-				m_deletor.set(m_instance);
+				m_deletor.bind(m_instance);
 			}
 
 			return *m_instance;
@@ -401,7 +426,7 @@ namespace sena
 			{
 				delete m_instance;
 				m_instance = 0;
-				m_deletor.Set(m_instance);
+				m_deletor.bind(m_instance);
 			}
 		}
 	private:

@@ -81,7 +81,7 @@ namespace yunjr
 		struct { int width, height; } size;
 
 		sena::auto_ptr<FlatBoard32::Pixel[]> auto_buffer;
-		FlatBoard32 map_board;
+		shared::FlatBoard32 map_board;
 
 		Attribute(int x, int y, int width, int height)
 		{
@@ -94,7 +94,7 @@ namespace yunjr
 			int buffer_h = ScaleTraits<SCALE>::GUIDE_HEIGHT;
 
 			auto_buffer.bind(new FlatBoard32::Pixel[buffer_w * buffer_h]);
-			new (&map_board) FlatBoard32(auto_buffer.get(), buffer_w, buffer_h, buffer_w);
+			map_board.bind(new FlatBoard32(auto_buffer.get(), buffer_w, buffer_h, buffer_w));
 		}
 	};
 }
@@ -107,20 +107,20 @@ yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int h
 {
 	struct ShapeMap: public Visible::Shape
 	{
-		virtual void render(Visible* p_this, FlatBoard32& dest_board) const
+		virtual void render(Visible* p_this, shared::FlatBoard32 dest_board) const
 		{
 			Attribute& attribute = *((Attribute*)p_this->getAttribute());
 
-			attribute.map_board << gfx::bitBlt;
+			*attribute.map_board << gfx::bitBlt;
 
-			int buffer_width = attribute.map_board.getBufferDesc().width;
-			int buffer_height = attribute.map_board.getBufferDesc().height;
-			int buffer_x = (dest_board.getBufferDesc().width - buffer_width) >> 1;
-			int buffer_y = (dest_board.getBufferDesc().height - buffer_height) >> 1;
+			int buffer_width = attribute.map_board->getBufferDesc().width;
+			int buffer_height = attribute.map_board->getBufferDesc().height;
+			int buffer_x = (dest_board->getBufferDesc().width - buffer_width) >> 1;
+			int buffer_y = (dest_board->getBufferDesc().height - buffer_height) >> 1;
 
 			{
 				// map
-				attribute.map_board.fillRect(0, 0, buffer_width, buffer_height, 0xFF103050);
+				attribute.map_board->fillRect(0, 0, buffer_width, buffer_height, 0xFF103050);
 
 				int NUM_MAP_X = (ScaleTraits<SCALE>::GUIDE_WIDTH + (TILE_W-1)) / TILE_W;
 				int NUM_MAP_Y = (ScaleTraits<SCALE>::GUIDE_HEIGHT + (TILE_H-1)) / TILE_H;
@@ -150,15 +150,15 @@ yunjr::ControlMap* yunjr::ControlMap::newInstance(int x, int y, int width, int h
 
 				// playable
 				std::vector<Chara*>& chara_list = yunjr::resource::getCharaList();
-				std::for_each(chara_list.begin(), chara_list.end(), Operator<Chara*, FlatBoard32*>(&attribute.map_board));
+				std::for_each(chara_list.begin(), chara_list.end(), Operator<Chara*, shared::FlatBoard32>(attribute.map_board));
 			}
 
 			const BufferDesc* p_buffer_desc = resource::getFrameBuffer();
 
 			if (p_buffer_desc)
 			{
-				int src_w = attribute.map_board.getBufferDesc().width;
-				int src_h = attribute.map_board.getBufferDesc().height;
+				int src_w = attribute.map_board->getBufferDesc().width;
+				int src_h = attribute.map_board->getBufferDesc().height;
 				int src_p = src_w; // packed buffer
 
 				int dst_w = p_buffer_desc->width;
@@ -265,7 +265,7 @@ void yunjr::ControlBattle::display(bool need_to_clear, int ix_inverted)
 		const BufferDesc& buffer_desc = *p_buffer_desc;
 		int dest_buffer_pitch = (buffer_desc.bytes_per_line << 3) / buffer_desc.bits_per_pixel;
 
-		FlatBoard32 dest_board((FlatBoard32::Pixel*)buffer_desc.p_start_address, buffer_desc.width, buffer_desc.height, dest_buffer_pitch);
+		shared::FlatBoard32 dest_board(new FlatBoard32((FlatBoard32::Pixel*)buffer_desc.p_start_address, buffer_desc.width, buffer_desc.height, dest_buffer_pitch));
 
 		this->invalidate();
 		this->render(dest_board);
@@ -353,13 +353,13 @@ yunjr::ControlBattle* yunjr::ControlBattle::newInstance(int x, int y, int width,
 			}
 		}
 
-		virtual void render(Visible* p_this, FlatBoard32& dest_board) const
+		virtual void render(Visible* p_this, shared::FlatBoard32 dest_board) const
 		{
 			Attribute& attribute = *((Attribute*)p_this->getAttribute());
 
 			if (attribute.need_to_clear)
 			{
-				dest_board.fillRect(attribute.pos.x, attribute.pos.y, attribute.size.width, attribute.size.height, 0xFF000000);
+				dest_board->fillRect(attribute.pos.x, attribute.pos.y, attribute.size.width, attribute.size.height, 0xFF000000);
 			}
 
 			if (attribute.ix_inverted >= 0)
@@ -369,7 +369,7 @@ yunjr::ControlBattle* yunjr::ControlBattle::newInstance(int x, int y, int width,
 				int width = attribute.size.width;
 				int height = DEFAULT_BATTLE_BTBD;
 
-				dest_board.fillRect(attribute.pos.x + x, attribute.pos.y + y, width, height, 0xFF808080);
+				dest_board->fillRect(attribute.pos.x + x, attribute.pos.y + y, width, height, 0xFF808080);
 			}
 
 			m_displayEnemies(attribute);

@@ -3,9 +3,10 @@
 #define __YUNJR_CLASS_CONTROL_H__
 
 #include "yunjr_base.h"
-#include "yunjr_base_gfx.h"
 
 #include "yunjr_class.h"
+
+#include "yunjr_res.h"
 
 #include <algorithm>
 #include <string.h>

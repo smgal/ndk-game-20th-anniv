@@ -4,6 +4,8 @@
 
 #include "yunjr_z_config.h"
 
+#include "yunjr_base_res.h"
+
 #include "util/sm_util_sena.h"
 
 #include <cassert>
@@ -44,8 +46,25 @@ namespace yunjr
 
 namespace yunjr
 {
-	typedef flat_board::FlatBoard<flat_board::PIXELFORMAT_ARGB8888> FlatBoard32;
+	const int NUM_TILE_ID_GROUND_W = (1344 / TILE_W);
+	const int NUM_TILE_ID_GROUND_H = (96 / TILE_H);
+	const int NUM_TILE_ID_GROUND = NUM_TILE_ID_GROUND_W * NUM_TILE_ID_GROUND_H;
+	const int NUM_TILE_ID_PLAYER = (672 / TILE_W) * (24 / TILE_H);
+
+	enum TileId
+	{
+		TILE_ID_MIN    = 0,
+		TILE_ID_GROUND = TILE_ID_MIN,
+		TILE_ID_PLAYER = TILE_ID_GROUND + NUM_TILE_ID_GROUND,
+		TILE_ID_MAX    = TILE_ID_PLAYER + NUM_TILE_ID_PLAYER
+	};
+}
+
+namespace yunjr
+{
 	using flat_board::Color32;
+
+	typedef TileBase<ResId> Tile;
 
 	template <typename T>
 	void deleteVector(std::vector<T*>& container)

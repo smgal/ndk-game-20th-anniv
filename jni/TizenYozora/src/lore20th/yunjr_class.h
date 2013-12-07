@@ -3,6 +3,7 @@
 #define __YUNJR_CLASS_H__
 
 #include "yunjr_base.h"
+#include "yunjr_base_gfx.h"
 
 namespace yunjr
 {
@@ -26,7 +27,7 @@ namespace yunjr
 		struct Shape
 		{
 			virtual ~Shape() { }
-			virtual void render(Visible* p_this, FlatBoard32& dest_board) const = 0;
+			virtual void render(Visible* p_this, shared::FlatBoard32 dest_board) const = 0;
 		};
 
 		struct Update
@@ -109,7 +110,7 @@ namespace yunjr
 				is_damaged |= p_update->update(this, tick);
 		}
 
-		void render(FlatBoard32& dest_board)
+		void render(shared::FlatBoard32 dest_board)
 		{
 			if (p_shape && is_visible && is_damaged)
 			{

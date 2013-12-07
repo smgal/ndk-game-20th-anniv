@@ -1,9 +1,7 @@
 
-#include "yunjr_base.h"
-#include "yunjr_base_font.h"
-
 #include "yunjr_res.h"
 
+#include "yunjr_base_font.h"
 
 #include <vector>
 #include <memory>
@@ -13,39 +11,15 @@ using yunjr::TargetPixel;
 
 namespace
 {
-	template <class T>
-	class auto_deletor
-	{
-	public:
-		auto_deletor(T* p_object = 0)
-			: m_p_object(p_object)
-		{
-		}
-
-		~auto_deletor(void)
-		{
-			delete[] m_p_object;
-		}
-
-		void operator()(T* p_object)
-		{
-			m_p_object = p_object;
-		}
-
-	private:
-		T* m_p_object;
-
-	};
-
 	struct ResImage
 	{
-		FlatBoard32 res_ui[1];
-		FlatBoard32 res_movable[1];
-		FlatBoard32 res_tile[2];
+		yunjr::shared::FlatBoard32 res_ui[1];
+		yunjr::shared::FlatBoard32 res_movable[1];
+		yunjr::shared::FlatBoard32 res_tile[2];
 
-		auto_deletor<FlatBoard32::Pixel> auto_release_ui[1];
-		auto_deletor<FlatBoard32::Pixel> auto_release_movable[1];
-		auto_deletor<FlatBoard32::Pixel> auto_release_tile[2];
+		sena::auto_deletor<FlatBoard32::Pixel> auto_release_ui[1];
+		sena::auto_deletor<FlatBoard32::Pixel> auto_release_movable[1];
+		sena::auto_deletor<FlatBoard32::Pixel> auto_release_tile[2];
 
 		ResImage()
 		{
@@ -54,8 +28,8 @@ namespace
 				const struct
 				{
 					const char* sz_res_file_name;
-					FlatBoard32& ref_res;
-					auto_deletor<FlatBoard32::Pixel>& ref_auto_release;
+					yunjr::shared::FlatBoard32& ref_res;
+					sena::auto_deletor<FlatBoard32::Pixel>& ref_auto_release;
 				} RES_LIST[] =
 				{
 					{ "lore20th/lore_tile_8.tga", res_tile[0], auto_release_tile[0] },
@@ -90,8 +64,8 @@ namespace
 
 						delete[] p_buffer;
 
-						new (&RES_LIST[index].ref_res) FlatBoard32(static_cast<FlatBoard32::Pixel*>(p_buffer_target), buffer_width, buffer_height, buffer_width);
-						RES_LIST[index].ref_auto_release(p_buffer_target);
+						RES_LIST[index].ref_res.bind(new FlatBoard32(static_cast<FlatBoard32::Pixel*>(p_buffer_target), buffer_width, buffer_height, buffer_width));
+						RES_LIST[index].ref_auto_release.bind(p_buffer_target);
 					}
 				}
 			}
@@ -227,7 +201,7 @@ const yunjr::Tile& yunjr::resource::getTile(yunjr::TileId tile_id, int id_offset
 	return s_tiles[MAKE_TILE_ID(tile_id, id_offset)];
 }
 
-const FlatBoard32& yunjr::resource::getResimage(ResId res_id)
+const yunjr::shared::FlatBoard32& yunjr::resource::getResimage(ResId res_id)
 {
 	assert(res_id.getType() == ResId::TAG_TYPE_IMAGE);
 	

@@ -186,7 +186,8 @@ namespace yunjr
 			{
 				const BufferDesc& buffer_desc = *p_buffer_desc;
 				int dest_buffer_pitch = (buffer_desc.bytes_per_line << 3) / buffer_desc.bits_per_pixel;
-				FlatBoard32 dest_board((FlatBoard32::Pixel*)buffer_desc.p_start_address, buffer_desc.width, buffer_desc.height, dest_buffer_pitch);
+
+				shared::FlatBoard32 dest_board(new FlatBoard32((FlatBoard32::Pixel*)buffer_desc.p_start_address, buffer_desc.width, buffer_desc.height, dest_buffer_pitch));
 
 				p_main_window->invalidate();
 				p_main_window->render(dest_board);

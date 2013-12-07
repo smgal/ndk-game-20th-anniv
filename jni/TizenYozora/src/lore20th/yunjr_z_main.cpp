@@ -38,12 +38,6 @@ const int MAX_PLAYER = 6;
 ////////////////////////////////////////////////////////////////////////////////
 // type definition
 
-namespace yunjr
-{
-	typedef flat_board::FlatBoard<flat_board::PIXELFORMAT_ARGB8888> FlatBoard32;
-	typedef unsigned long TargetPixel;
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 // local
 
@@ -58,12 +52,12 @@ namespace yunjr
 
 	// for rendering
 	template <>
-	void yunjr::Operator<ControlId, FlatBoard32*>::operator()(ControlId obj)
+	void yunjr::Operator<ControlId, shared::FlatBoard32>::operator()(ControlId obj)
 	{
 		*param << param->getDefaultFillRect();
 		*param << param->getDefaultBitBlt();
 
-		obj.second->render(*param);
+		obj.second->render(param);
 	}
 }
 
@@ -1858,7 +1852,7 @@ bool yunjr::loop(const BufferDesc& buffer_desc)
 	resource::setFrameBuffer(&buffer_desc);
 
 	int dest_buffer_pitch = (buffer_desc.bytes_per_line << 3) / buffer_desc.bits_per_pixel;
-	FlatBoard32 dest_board((FlatBoard32::Pixel*)buffer_desc.p_start_address, buffer_desc.width, buffer_desc.height, dest_buffer_pitch);
+	shared::FlatBoard32 dest_board(new FlatBoard32((FlatBoard32::Pixel*)buffer_desc.p_start_address, buffer_desc.width, buffer_desc.height, dest_buffer_pitch));
 
 	// Galaxy Note I problem: The default filling value of Android bitmap buffer is not defined.
 	{
@@ -1866,7 +1860,7 @@ bool yunjr::loop(const BufferDesc& buffer_desc)
 
 		if (is_first)
 		{
-			dest_board.fillRect(0, 0, buffer_desc.width, buffer_desc.height, 0xFF000000);
+			dest_board->fillRect(0, 0, buffer_desc.width, buffer_desc.height, 0xFF000000);
 			is_first = false;
 		}
 	}

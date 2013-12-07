@@ -771,6 +771,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\lore20th\yunjr_base_res.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\lore20th\yunjr_base_serialized.cpp"
 					>
 				</File>
