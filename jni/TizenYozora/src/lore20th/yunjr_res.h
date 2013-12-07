@@ -232,8 +232,8 @@ namespace yunjr
 		void setCurrentMapPos(int x, int y);
 		void getCurrentMapPos(int& x, int& y);
 
-		void setCurrentFont(shared_ptr<yunjr::Font> p_font);
-		shared_ptr<yunjr::Font> getCurrentFont(void);
+		void setCurrentFont(shared::Font font);
+		shared::Font getCurrentFont(void);
 
 		void setMainWindow(yunjr::ControlWindow* p_window);
 		yunjr::ControlWindow* getMainWindow(void);

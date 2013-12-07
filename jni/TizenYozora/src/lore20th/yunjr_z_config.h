@@ -2,6 +2,27 @@
 #ifndef __YUNJR_Z_CONFIG_H__
 #define __YUNJR_Z_CONFIG_H__
 
+#include "../flat_board/flat_board.h"
+#include "../flat_board/target_dep.h"
+
+namespace yunjr
+{
+	struct BufferDesc
+	{
+		void* p_start_address;
+		int   width;
+		int   height;
+		int   bytes_per_line;
+		int   bits_per_pixel;
+	};
+
+	void init(const char* sz_id);
+	void done(void);
+	bool loop(const BufferDesc& buffer_desc);
+
+	typedef unsigned long TargetPixel;
+}
+
 namespace yunjr
 {
 	const int MAP_SCALE_RATIO = 2;

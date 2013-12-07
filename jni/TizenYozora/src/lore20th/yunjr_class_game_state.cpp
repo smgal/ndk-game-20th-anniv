@@ -3,7 +3,7 @@
 
 namespace
 {
-	yunjr::auto_ptr<yunjr::GameState> s_game_state;
+	sena::auto_ptr<yunjr::GameState> s_game_state;
 }
 
 const yunjr::GameState& yunjr::GameState::getInstance(void)

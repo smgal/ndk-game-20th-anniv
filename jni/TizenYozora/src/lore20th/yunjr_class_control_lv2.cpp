@@ -80,7 +80,7 @@ namespace yunjr
 		struct { int x, y; } pos;
 		struct { int width, height; } size;
 
-		auto_ptr<FlatBoard32::Pixel[]> auto_buffer;
+		sena::auto_ptr<FlatBoard32::Pixel[]> auto_buffer;
 		FlatBoard32 map_board;
 
 		Attribute(int x, int y, int width, int height)

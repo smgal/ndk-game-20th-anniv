@@ -32,13 +32,13 @@ namespace yunjr
 			m_setFontSize(m_old_size);
 		}
 
-		shared_ptr<Font> operator()(void) const
+		shared::Font operator()(void) const
 		{
 			return m_font;
 		}
 
 	private:
-		shared_ptr<Font> m_font;
+		shared::Font m_font;
 		int m_old_size;
 
 		int m_setFontSize(int new_size)

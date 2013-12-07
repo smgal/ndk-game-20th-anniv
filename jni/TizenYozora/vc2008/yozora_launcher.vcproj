@@ -923,10 +923,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\src\lore20th\yunjr_main.cpp"
-					>
-				</File>
-				<File
 					RelativePath="..\src\lore20th\yunjr_res.cpp"
 					>
 				</File>
@@ -968,6 +964,10 @@
 				</File>
 				<File
 					RelativePath="..\src\lore20th\yunjr_z_config.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\lore20th\yunjr_z_main.cpp"
 					>
 				</File>
 				<Filter

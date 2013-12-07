@@ -69,7 +69,7 @@ namespace yunjr
 
 	namespace shared
 	{
-		typedef shared_ptr<yunjr::Font> Font;
+		typedef sena::shared_ptr<yunjr::Font> Font;
 	}
 
 	struct Typeface
@@ -97,7 +97,7 @@ namespace yunjr
 		}
 	};
 
-} // namespace sm2d
+} // namespace yunjr
 
 
 #endif // #ifndef __YUNJR_BASE_FONT_H__

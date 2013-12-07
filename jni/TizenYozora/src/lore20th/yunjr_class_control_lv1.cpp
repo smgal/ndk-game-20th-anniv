@@ -260,7 +260,7 @@ namespace yunjr
 
 		struct { int left, right, top, bottom; } margin;
 
-		std::vector<shared_ptr<Text> > text_line;
+		std::vector<sena::shared_ptr<Text> > text_line;
 
 		Attribute(int x, int y, int width, int height, int margin_left, int margin_right, int margin_top, int margin_bottom)
 		{
@@ -304,7 +304,7 @@ void yunjr::ControlConsole::add(Text& text)
 	{
 		Attribute* p_attribute = (Attribute*)this->getAttribute();
 
-		shared_ptr<Text> p_text(new Text());
+		sena::shared_ptr<Text> p_text(new Text());
 		text.split(0, *p_text);
 
 		p_attribute->text_line.push_back(p_text);
@@ -427,7 +427,7 @@ yunjr::ControlConsole* yunjr::ControlConsole::newInstance(int x, int y, int widt
 				ControlConsole* _p_this = (ControlConsole*)p_this;
 				Attribute* p_attribute = (Attribute*)_p_this->getAttribute();
 
-				std::vector<shared_ptr<Text> >::iterator p_text = p_attribute->text_line.begin();
+				std::vector<sena::shared_ptr<Text> >::iterator p_text = p_attribute->text_line.begin();
 
 				for ( ; p_text != p_attribute->text_line.end(); ++p_text)
 				{

@@ -98,7 +98,7 @@ namespace
 		}
 	};
 
-	yunjr::auto_ptr<ResImage> s_res_image;
+	sena::auto_ptr<ResImage> s_res_image;
 	yunjr::Tile s_tiles[yunjr::TILE_ID_MAX];
 }
 
@@ -106,7 +106,7 @@ namespace
 {
 	const yunjr::BufferDesc* s_ref_current_buffer = 0;
 	struct yunjr::ControlWindow* s_ref_p_main_window = 0;
-	yunjr::shared_ptr<yunjr::Font> s_current_font;
+	yunjr::shared::Font s_current_font;
 	int s_ref_current_map_pos_x = 0;
 	int s_ref_current_map_pos_y = 0;
 
@@ -163,7 +163,7 @@ void yunjr::resource::init(void)
 			unsigned char* p_buffer = new unsigned char[buffer_size];
 			file.read(p_buffer, buffer_size);
 
-			shared_ptr<yunjr::Font> p_font(new Font(p_buffer, buffer_size));
+			shared::Font p_font(new Font(p_buffer, buffer_size));
 
 			delete[] p_buffer;
 
@@ -192,12 +192,12 @@ void yunjr::resource::getCurrentMapPos(int& x, int& y)
 	y = s_ref_current_map_pos_y;
 }
 
-void yunjr::resource::setCurrentFont(shared_ptr<yunjr::Font> p_font)
+void yunjr::resource::setCurrentFont(shared::Font p_font)
 {
 	s_current_font = p_font;
 }
 
-yunjr::shared_ptr<yunjr::Font> yunjr::resource::getCurrentFont(void)
+yunjr::shared::Font yunjr::resource::getCurrentFont(void)
 {
 	return s_current_font;
 }
